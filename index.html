@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Helvetica Neue'; color: #000000; -webkit-text-stroke: #dc3623; background-color: #fbfbfb}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Helvetica Neue'; color: #000000; -webkit-text-stroke: #dc3623; background-color: #fbfbfb; min-height: 16.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">// ✅ 新的 Supabase 調用</span></p>
+<p class="p1"><span class="s1">// 1. 在 HTML head 中加入 Supabase</span></p>
+<p class="p1"><span class="s1">&lt;script src="https://unpkg.com/@supabase/supabase-js@2"&gt;&lt;/script&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// 2. 初始化 Supabase 客戶端</span></p>
+<p class="p1"><span class="s1">const supabaseUrl = 'YOUR_SUPABASE_URL'</span></p>
+<p class="p1"><span class="s1">const supabaseKey = 'YOUR_SUPABASE_ANON_KEY'</span></p>
+<p class="p1"><span class="s1">const supabase = supabase.createClient(supabaseUrl, supabaseKey)</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// 3. 載入課程（替換 loadAllCourses 函數）</span></p>
+<p class="p1"><span class="s1">async function loadAllCourses() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>setStatus('🔄 載入課程中...', 'loading');</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const { data, error } = await supabase</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.from('sessions')</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.select('*')</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.order('startDate', { ascending: true });</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (error) throw error;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>allCourses = data || [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>displayCourses(allCourses);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setStatus('✅ 載入完成', 'success');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('courseCounter').textContent =<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'共找到 ' + allCourses.length + ' 個課程';</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} catch (error) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>console.error('❌ 載入失敗:', error);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setStatus('❌ 載入失敗：' + error.message, 'error');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// 4. 建立課程（替換 createCourse 函數）</span></p>
+<p class="p1"><span class="s1">async function createCourse() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const data = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>title: document.getElementById('title').value.trim(),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>booktitle: document.getElementById('bookTitle').value.trim(),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>startdate: document.getElementById('startDate').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>starttime: document.getElementById('startTime').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>endtime: document.getElementById('endTime').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>timezone: document.getElementById('timezone').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>repeattype: document.getElementById('repeatType').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>repeatdays: selectedDays.join(','),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>repeatduration: document.getElementById('repeatDuration').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>repeatunit: document.getElementById('repeatUnit').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>organizer: document.getElementById('organizer').value.trim(),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>capacity: document.getElementById('capacity').value,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>zoomid: document.getElementById('zoomId').value.trim(),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>zoompass: document.getElementById('zoomPass').value.trim(),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>zoomlink: document.getElementById('zoomLink').value.trim()</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>};</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const { data: result, error } = await supabase</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.from('sessions')</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.insert([data])</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.select();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (error) throw error;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setStatus('✅ 課程建立成功', 'success');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>clearCreateForm();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setTimeout(() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>showTab('list');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>loadAllCourses();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}, 2000);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} catch (error) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setStatus('❌ 建立失敗：' + error.message, 'error');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+</body>
+</html>
