@@ -7,86 +7,218 @@
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="2575.7">
   <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Helvetica Neue'; -webkit-text-stroke: #d1201b; background-color: #fafafa}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Helvetica Neue'; -webkit-text-stroke: #d1201b; background-color: #fafafa; min-height: 16.0px}
-    span.s1 {font-kerning: none}
-    span.s2 {font: 14.0px 'Apple Color Emoji'; font-kerning: none}
-    span.s3 {font: 14.0px 'PingFang TC'; font-kerning: none}
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
   </style>
 </head>
 <body>
-<p class="p1"><span class="s1">// </span><span class="s2">✅</span><span class="s1"> </span><span class="s3">新的</span><span class="s1"> Supabase </span><span class="s3">調用</span></p>
-<p class="p1"><span class="s1">// 1. </span><span class="s3">在</span><span class="s1"> HTML head </span><span class="s3">中加入</span><span class="s1"> Supabase</span></p>
-<p class="p1"><span class="s1">&lt;script src="https://unpkg.com/@supabase/supabase-js@2"&gt;&lt;/script&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// 2. </span><span class="s3">初始化</span><span class="s1"> Supabase </span><span class="s3">客戶端</span></p>
-<p class="p1"><span class="s1">const supabaseUrl = 'https://zcauebtlabxyijhafexr.supabase.co'</span></p>
-<p class="p1"><span class="s1">const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I'</span></p>
-<p class="p1"><span class="s1">const supabase = supabase.createClient(supabaseUrl, supabaseKey)</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// 3. </span><span class="s3">載入課程（替換</span><span class="s1"> loadAllCourses </span><span class="s3">函數）</span></p>
-<p class="p1"><span class="s1">async function loadAllCourses() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>setStatus('</span><span class="s2">🔄</span><span class="s1"> </span><span class="s3">載入課程中</span><span class="s1">...', 'loading');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const { data, error } = await supabase</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.from('sessions')</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.select('*')</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.order('startDate', { ascending: true });</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (error) throw error;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>allCourses = data || [];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>displayCourses(allCourses);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setStatus('</span><span class="s2">✅</span><span class="s1"> </span><span class="s3">載入完成</span><span class="s1">', 'success');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('courseCounter').textContent =<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'</span><span class="s3">共找到</span><span class="s1"> ' + allCourses.length + ' </span><span class="s3">個課程</span><span class="s1">';</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} catch (error) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>console.error('</span><span class="s2">❌</span><span class="s1"> </span><span class="s3">載入失敗</span><span class="s1">:', error);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setStatus('</span><span class="s2">❌</span><span class="s1"> </span><span class="s3">載入失敗：</span><span class="s1">' + error.message, 'error');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// 4. </span><span class="s3">建立課程（替換</span><span class="s1"> createCourse </span><span class="s3">函數）</span></p>
-<p class="p1"><span class="s1">async function createCourse() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const data = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>title: document.getElementById('title').value.trim(),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>booktitle: document.getElementById('bookTitle').value.trim(),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>startdate: document.getElementById('startDate').value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>starttime: document.getElementById('startTime').value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>endtime: document.getElementById('endTime').value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>timezone: document.getElementById('timezone').value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>repeattype: document.getElementById('repeatType').value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>repeatdays: selectedDays.join(','),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>repeatduration: document.getElementById('repeatDuration').value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>repeatunit: document.getElementById('repeatUnit').value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>organizer: document.getElementById('organizer').value.trim(),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>capacity: document.getElementById('capacity').value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>zoomid: document.getElementById('zoomId').value.trim(),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>zoompass: document.getElementById('zoomPass').value.trim(),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>zoomlink: document.getElementById('zoomLink').value.trim()</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>};</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const { data: result, error } = await supabase</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.from('sessions')</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.insert([data])</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.select();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (error) throw error;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setStatus('</span><span class="s2">✅</span><span class="s1"> </span><span class="s3">課程建立成功</span><span class="s1">', 'success');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>clearCreateForm();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setTimeout(() =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>showTab('list');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>loadAllCourses();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}, 2000);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} catch (error) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setStatus('</span><span class="s2">❌</span><span class="s1"> </span><span class="s3">建立失敗：</span><span class="s1">' + error.message, 'error');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1">}</span></p>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="zh-Hant"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;共背團找時段&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="stylesheet" href="styles/main.css"&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;🎓 共背團找時段&lt;/h1&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="status" class="status status-loading"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>🔄 系統初始化中...</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="tabs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="tab-button active" onclick="showTab('list')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>📚 找時段加入</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="tab-button" onclick="showTab('create')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>✨ 建立共背團</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- 找時段頁面 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="listTab" class="tab-content active"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="background: #e3f2fd; padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; color: #1976d2;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>🌍 您的時區：&lt;span id="userTimezoneDisplay"&gt;台灣時間&lt;/span&gt; - 所有時間已自動轉換為您的當地時間</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="search-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="search-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="form-group" style="margin-bottom: 0;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;label&gt;📅 日期篩選&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;input type="date" id="searchDate"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="form-group" style="margin-bottom: 0;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;label&gt;🔍 關鍵字&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;input type="text" id="searchKeyword" placeholder="課程、書目、主揪..." onkeyup="if(event.key==='Enter') searchCourses()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn btn-primary" onclick="searchCourses()"&gt;🔍 搜尋&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn btn-secondary" onclick="loadAllCourses()"&gt;📋 顯示全部&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="courseCounter" style="text-align: center; margin: 20px 0; font-weight: 500; color: #666;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>點擊「顯示全部」載入課程列表</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="courseList"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- 建立課程頁面 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="createTab" class="tab-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="form-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;📖 課程標題 *&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="title" placeholder="例：我愛背書共背團"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;📚 背書書目 *&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="bookTitle" placeholder="例：三十五佛懺"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="form-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;📅 課程開始日期 *&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="date" id="startDate"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div style="font-size: 12px; color: #6c757d; margin-top: 5px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>第一堂課的日期</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;🌍 課程時區 *&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;select id="timezone"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;optgroup label="🌏 亞洲"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="Asia/Taipei"&gt;🇹🇼 台灣時間 (GMT+8)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="Asia/Seoul"&gt;🇰🇷 韓國時間 (GMT+9)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="Asia/Tokyo"&gt;🇯🇵 日本時間 (GMT+9)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/optgroup&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;optgroup label="🌍 歐洲"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="Europe/London"&gt;🇬🇧 倫敦時間 (GMT+0/+1)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/optgroup&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;optgroup label="🌎 北美洲"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="America/New_York"&gt;🇺🇸 紐約時間 (GMT-5/-4)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="America/Los_Angeles"&gt;🇺🇸 洛杉磯時間 (GMT-8/-7)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="America/Toronto"&gt;🇨🇦 多倫多時間 (GMT-5/-4)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="America/Vancouver"&gt;🇨🇦 溫哥華時間 (GMT-8/-7)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/optgroup&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="form-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;⏰ 開始時間 *&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="time" id="startTime"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;⏰ 結束時間 *&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="time" id="endTime"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- 重複模式設定 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="repeat-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;🔄 重複模式 *&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;select id="repeatType" onchange="toggleRepeatOptions()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;option value="none"&gt;單次課程&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;option value="weekly"&gt;每週固定一天&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;option value="weekdays"&gt;週一到週五&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;option value="custom"&gt;自訂星期幾&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">          </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div id="repeatOptions" class="repeat-options"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div style="margin-bottom: 15px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;label&gt;📅 選擇星期幾：&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div id="daysSelector" class="days-selector"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="day-checkbox" data-day="1" onclick="toggleDay(1)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span&gt;週一&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="day-checkbox" data-day="2" onclick="toggleDay(2)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span&gt;週二&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="day-checkbox" data-day="3" onclick="toggleDay(3)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span&gt;週三&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="day-checkbox" data-day="4" onclick="toggleDay(4)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span&gt;週四&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="day-checkbox" data-day="5" onclick="toggleDay(5)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span&gt;週五&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="day-checkbox" data-day="6" onclick="toggleDay(6)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span&gt;週六&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="day-checkbox" data-day="0" onclick="toggleDay(0)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span&gt;週日&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="duration-selector"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;label&gt;持續時間：&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;input type="number" id="repeatDuration" min="1" max="52" value="12" onchange="updateRepeatPreview()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;select id="repeatUnit" onchange="updateRepeatPreview()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="weeks"&gt;週&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="months"&gt;個月&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="repeat-preview"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;strong&gt;預覽：&lt;/strong&gt;&lt;span id="repeatPreview"&gt;將根據您的選擇顯示重複模式&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="form-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;👤 主揪 *&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="organizer" placeholder="您的名字"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;👥 人數上限 *&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="number" id="capacity" value="10" min="1" max="100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="form-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;🔗 Zoom ID *&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="zoomId" placeholder="123456789"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;🔑 Zoom 密碼&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="zoomPass" placeholder="選填"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;🚀 Zoom 連結 &lt;span class="optional-field"&gt;(選填)&lt;/span&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="url" id="zoomLink" placeholder="https://zoom.us/j/123456789"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div style="font-size: 12px; color: #6c757d; margin-top: 5px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>💡 提供連結後，參與者點擊「加入課程」即可看到直接加入連結</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="text-align: center; margin-top: 30px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="btn btn-success" onclick="createCourse()" style="font-size: 18px; padding: 15px 40px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>✨ 建立共背團</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="createMessage"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="js/app.js"&gt;&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
 </body>
 </html>
