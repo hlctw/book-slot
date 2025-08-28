@@ -1,41 +1,40 @@
-const supabaseUrl = "https://YOUR_SUPABASE_URL";
-const supabaseAnonKey = "YOUR_SUPABASE_ANON_KEY";
+import { getSessions } from "./sessions.js";
 
-async function loadAllCourses() {
-  setStatus("🔄 載入課程中...", "loading");
-  try {
-    const res = await fetch("/api/sessions");
-    if (!res.ok) throw new Error(await res.text());
-    const courses = await res.json();
-    allCourses = courses;
-    displayCourses(allCourses);
-    setStatus("✅ 載入完成", "success");
-  } catch (err) {
-    setStatus("❌ 載入失敗: " + err.message, "error");
-  }
-}
-
-async function createCourse() {
-  setStatus("🔄 建立課程中...", "loading");
-  const data = {
-    /* 從表單取得資料 */
+async function loadSessions() {
+  const filter = {
+    date: document.getElementById("searchDate").value,
+    q: document.getElementById("searchKeyword").value,
   };
-  try {
-    const res = await fetch("/api/create-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    const result = await res.json();
-    if (result.success) {
-      setStatus("✅ 建立成功", "success");
-      loadAllCourses();
-    } else {
-      setStatus("❌ 建立失敗: " + (result.error || "未知錯誤"), "error");
-    }
-  } catch (err) {
-    setStatus("❌ 建立錯誤: " + err.message, "error");
+
+  const sessions = await getSessions(filter);
+  const container = document.getElementById("courseList");
+
+  if (!sessions.length) {
+    container.innerHTML = "<p>查無結果</p>";
+    return;
   }
+
+  container.innerHTML = sessions
+    .map(
+      (s) => `
+    <div class="course-card">
+      <h3>${s.title}</h3>
+      <p>主揪：${s.organizer}</p>
+      <p>開始日期：${s.startDate} ${s.startTime}</p>
+      <p>書目：${s.bookTitle}</p>
+      <p>Zoom ID：${s.zoomId}</p>
+    </div>
+  `
+    )
+    .join("");
 }
 
-// 其他 UI、重複日期計算等函式，依您現有功能調整
+// 搜尋按鈕綁定
+document.getElementById("searchBtn").addEventListener("click", () => {
+  loadSessions();
+});
+
+// 頁面讀取後載入
+window.onload = () => {
+  loadSessions();
+};
