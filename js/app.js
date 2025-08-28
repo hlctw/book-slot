@@ -29,12 +29,10 @@ async function loadSessions() {
     .join("");
 }
 
-// 搜尋按鈕綁定
 document.getElementById("searchBtn").addEventListener("click", () => {
   loadSessions();
 });
 
-// 頁面讀取後載入
 window.onload = () => {
   loadSessions();
 };

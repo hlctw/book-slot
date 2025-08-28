@@ -1,11 +1,16 @@
-import { supabase } from "../lib/supabase.js";
+// 直接用 CDN 全局變數 window.supabase
+const supabaseUrl = "https://zcauebtlabxyijhafexr.supabase.co"; // 譬如 https://xxx.supabase.co
+const supabaseAnonKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I";
 
-// 讀取所有開放課程
+const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+// 讀取所有課程資料
 export async function getSessions(filter = {}) {
   let query = supabase.from("Sessions").select("*").eq("status", "open");
 
   if (filter.date) {
-    query = query.ilike("startDate", filter.date + "%"); // 模糊日期搜尋
+    query = query.ilike("startDate", filter.date + "%");
   }
 
   if (filter.q) {
