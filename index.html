@@ -94,6 +94,10 @@
         font-weight: bold;
       }
 
+      .search-section button:hover {
+        background: #2980b9;
+      }
+
       .hidden {
         display: none;
       }
@@ -113,7 +117,6 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
       }
 
-      /* 課程標籤樣式 */
       .course-badge {
         display: inline-block;
         background: #3498db;
@@ -125,7 +128,6 @@
         margin-left: 10px;
       }
 
-      /* 重複設定區域 */
       .repeat-section {
         background: #f8f9fa;
         padding: 20px;
@@ -149,7 +151,6 @@
         margin-top: 15px;
       }
 
-      /* 加入資訊區域樣式 */
       .join-info {
         margin-top: 15px;
         padding: 15px;
@@ -225,6 +226,10 @@
         background: #27ae60;
       }
 
+      .btn-success:hover {
+        background: #229954;
+      }
+
       .btn-large {
         padding: 15px 40px;
         font-size: 18px;
@@ -245,6 +250,24 @@
       .message-error {
         background: #f8d7da;
         color: #721c24;
+      }
+
+      .checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .checkbox-group label {
+        display: flex;
+        align-items: center;
+        font-weight: normal;
+        margin-bottom: 0;
+      }
+
+      .checkbox-group input {
+        margin-right: 5px;
       }
     </style>
   </head>
@@ -314,6 +337,11 @@
           </div>
 
           <div class="form-group">
+            <label>📅 課程結束日期 *</label>
+            <input type="date" id="courseEndDate" required />
+          </div>
+
+          <div class="form-group">
             <label>🕐 開始時間 *</label>
             <input type="time" id="startTime" value="19:00" required />
           </div>
@@ -359,93 +387,37 @@
               </select>
             </div>
 
-            <div class="form-group hidden" id="durationGroup">
-              <label>持續時間</label>
-              <input type="number" id="duration" value="4" min="1" max="365" />
-            </div>
-
-            <div class="form-group hidden" id="unitGroup">
-              <label>時間單位</label>
-              <select id="durationUnit">
-                <option value="days">天</option>
-                <option value="weeks">週</option>
-                <option value="months">月</option>
-              </select>
-            </div>
-
             <div class="form-group hidden" id="customDaysGroup">
               <label>自訂星期 (多選)</label>
-              <div
-                style="
-                  display: flex;
-                  flex-wrap: wrap;
-                  gap: 10px;
-                  margin-top: 8px;
-                "
-              >
+              <div class="checkbox-group">
                 <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    font-weight: normal;
-                  "
+                  ><input type="checkbox" value="1" name="customDays" />
+                  週一</label
                 >
-                  <input type="checkbox" value="1" name="customDays" /> 週一
-                </label>
                 <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    font-weight: normal;
-                  "
+                  ><input type="checkbox" value="2" name="customDays" />
+                  週二</label
                 >
-                  <input type="checkbox" value="2" name="customDays" /> 週二
-                </label>
                 <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    font-weight: normal;
-                  "
+                  ><input type="checkbox" value="3" name="customDays" />
+                  週三</label
                 >
-                  <input type="checkbox" value="3" name="customDays" /> 週三
-                </label>
                 <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    font-weight: normal;
-                  "
+                  ><input type="checkbox" value="4" name="customDays" />
+                  週四</label
                 >
-                  <input type="checkbox" value="4" name="customDays" /> 週四
-                </label>
                 <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    font-weight: normal;
-                  "
+                  ><input type="checkbox" value="5" name="customDays" />
+                  週五</label
                 >
-                  <input type="checkbox" value="5" name="customDays" /> 週五
-                </label>
                 <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    font-weight: normal;
-                  "
+                  ><input type="checkbox" value="6" name="customDays" />
+                  週六</label
                 >
-                  <input type="checkbox" value="6" name="customDays" /> 週六
-                </label>
                 <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    font-weight: normal;
-                  "
+                  ><input type="checkbox" value="0" name="customDays" />
+                  週日</label
                 >
-                  <input type="checkbox" value="0" name="customDays" /> 週日
-                </label>
               </div>
             </div>
           </div>
@@ -490,52 +462,30 @@
       // 切換重複選項顯示
       function toggleRepeatOptions() {
         const repeatType = document.getElementById("repeatType").value;
-        const durationGroup = document.getElementById("durationGroup");
-        const unitGroup = document.getElementById("unitGroup");
         const customGroup = document.getElementById("customDaysGroup");
 
-        if (repeatType === "none") {
-          durationGroup.classList.add("hidden");
-          unitGroup.classList.add("hidden");
-          customGroup.classList.add("hidden");
+        if (repeatType === "custom") {
+          customGroup.classList.remove("hidden");
         } else {
-          durationGroup.classList.remove("hidden");
-          unitGroup.classList.remove("hidden");
-
-          if (repeatType === "custom") {
-            customGroup.classList.remove("hidden");
-          } else {
-            customGroup.classList.add("hidden");
-          }
+          customGroup.classList.add("hidden");
         }
       }
 
       // 計算重複課程總天數
       function calculateTotalDays(
         startDate,
+        endDate,
         repeatType,
-        duration,
-        unit,
         customDays = []
       ) {
         if (repeatType === "none") return 1;
 
         const start = new Date(startDate);
+        const end = new Date(endDate);
         let totalDays = 0;
-        let endDate = new Date(start);
 
-        // 計算結束日期
-        if (unit === "days") {
-          endDate.setDate(start.getDate() + duration - 1);
-        } else if (unit === "weeks") {
-          endDate.setDate(start.getDate() + duration * 7 - 1);
-        } else if (unit === "months") {
-          endDate.setMonth(start.getMonth() + duration);
-        }
-
-        // 計算總天數
         const current = new Date(start);
-        while (current <= endDate) {
+        while (current <= end) {
           const dayOfWeek = current.getDay();
           let shouldInclude = false;
 
@@ -561,25 +511,6 @@
         return totalDays;
       }
 
-      // 格式化日期範圍
-      function formatDateRange(startDate, totalDays, repeatType) {
-        if (totalDays === 1) return startDate;
-
-        const start = new Date(startDate);
-        const end = new Date(start);
-
-        // 簡單估算結束日期（實際可根據重複模式精確計算）
-        if (totalDays <= 7) {
-          end.setDate(start.getDate() + totalDays - 1);
-        } else if (totalDays <= 30) {
-          end.setDate(start.getDate() + totalDays * 2);
-        } else {
-          end.setMonth(start.getMonth() + Math.ceil(totalDays / 20));
-        }
-
-        return `${startDate} ~ ${end.toISOString().split("T")[0]}`;
-      }
-
       // 切換加入資訊顯示
       function toggleJoinInfo(sessionId) {
         const joinInfoDiv = document.getElementById("joinInfo-" + sessionId);
@@ -601,28 +532,31 @@
         const courseMap = new Map();
 
         sessions.forEach((session) => {
-          // 用 organizer + bookTitle + startTime 作為群組鍵
           const key = `${session.organizer}-${session.bookTitle}-${session.startTime}`;
 
           if (!courseMap.has(key)) {
             courseMap.set(key, {
               ...session,
               courseStartDate: session.startDate,
-              courseEndDate: session.endDate || session.startDate,
-              totalDays: 1,
-              isGrouped: false,
+              courseEndDate:
+                session.endDate || session.endDay || session.startDate,
+              displayTotalDays: session.totalDays || 1,
             });
           } else {
             const existing = courseMap.get(key);
-            existing.totalDays++;
-            existing.isGrouped = true;
+            existing.displayTotalDays = Math.max(
+              existing.displayTotalDays,
+              session.totalDays || 1
+            );
 
-            // 更新時間範圍
             if (session.startDate < existing.courseStartDate) {
               existing.courseStartDate = session.startDate;
             }
-            if (session.endDate && session.endDate > existing.courseEndDate) {
-              existing.courseEndDate = session.endDate;
+
+            const sessionEndDate =
+              session.endDate || session.endDay || session.startDate;
+            if (sessionEndDate > existing.courseEndDate) {
+              existing.courseEndDate = sessionEndDate;
             }
 
             courseMap.set(key, existing);
@@ -632,7 +566,7 @@
         return Array.from(courseMap.values());
       }
 
-      // 讀取課程（修改為支援聚合）
+      // 讀取課程
       async function getSessions(filter = {}) {
         try {
           let query = supabase
@@ -662,7 +596,6 @@
             return [];
           }
 
-          // 聚合相同系列課程
           return aggregateSessions(data || []);
         } catch (err) {
           console.error("執行錯誤:", err);
@@ -689,7 +622,7 @@
         displaySessions(sessions);
       }
 
-      // 顯示聚合後的課程列表
+      // 顯示課程列表
       function displaySessions(sessions) {
         const container = document.getElementById("courseList");
 
@@ -701,21 +634,19 @@
 
         container.innerHTML = sessions
           .map((session) => {
-            // 計算顯示的日期範圍
             const dateRange =
-              session.totalDays === 1
+              session.displayTotalDays === 1
                 ? session.startDate
-                : formatDateRange(
-                    session.courseStartDate,
-                    session.totalDays,
-                    session.repeatType
-                  );
+                : `${session.courseStartDate} ~ ${session.courseEndDate}`;
 
-            // 課程標籤
             const badge =
-              session.totalDays > 1
-                ? `<span class="course-badge">${session.totalDays} 天課程</span>`
+              session.displayTotalDays > 1
+                ? `<span class="course-badge">${session.displayTotalDays} 天課程</span>`
                 : "";
+
+            console.log(
+              `課程：${session.title}，總天數：${session.displayTotalDays}`
+            );
 
             return `
           <div class="course-card">
@@ -736,7 +667,6 @@
               📝 我要加入
             </button>
             
-            <!-- 隱藏的 Zoom 資訊區域 -->
             <div class="join-info hidden" id="joinInfo-${session.id}">
               <p><strong>🎉 恭喜！您已加入課程</strong></p>
               <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
@@ -747,7 +677,9 @@
               }
               <p style="color: #7f8c8d; font-size: 12px; margin-top: 10px;">
                 💡 這是${
-                  session.totalDays > 1 ? session.totalDays + "天的" : ""
+                  session.displayTotalDays > 1
+                    ? session.displayTotalDays + "天的"
+                    : ""
                 }課程，請準時參加！
               </p>
             </div>
@@ -759,7 +691,7 @@
         console.log(`✅ 已顯示 ${sessions.length} 個課程系列`);
       }
 
-      // 建立重複課程
+      // 建立課程
       async function createSession(formData) {
         try {
           const customDays = Array.from(
@@ -769,18 +701,16 @@
           // 計算總天數
           const totalDays = calculateTotalDays(
             formData.startDate,
+            formData.courseEndDate,
             formData.repeatType,
-            parseInt(formData.duration),
-            formData.durationUnit,
             customDays
           );
 
-          // 建立課程系列的主記錄
           const sessionData = {
             title: formData.title,
             bookTitle: formData.bookTitle,
             startDate: formData.startDate,
-            endDate: formData.endDate || formData.startDate,
+            endDate: formData.courseEndDate, // 使用現有的 endDate 欄位
             startTime: formData.startTime,
             endTime: formData.endTime,
             organizer: formData.organizer,
@@ -788,11 +718,8 @@
             zoomId: formData.zoomId,
             zoomPass: formData.zoomPass || "",
             status: "open",
-            repeatType: formData.repeatType,
-            repeatDuration: formData.duration,
-            repeatUnit: formData.durationUnit,
-            repeatDays: customDays.join(","),
             totalDays: totalDays,
+            repeatType: formData.repeatType,
             createdAt: new Date().toISOString(),
           };
 
@@ -822,6 +749,7 @@
           title: document.getElementById("title").value.trim(),
           bookTitle: document.getElementById("bookTitle").value.trim(),
           startDate: document.getElementById("startDate").value,
+          courseEndDate: document.getElementById("courseEndDate").value,
           startTime: document.getElementById("startTime").value,
           endTime: document.getElementById("endTime").value,
           organizer: document.getElementById("organizer").value.trim(),
@@ -829,20 +757,24 @@
           zoomId: document.getElementById("zoomId").value.trim(),
           zoomPass: document.getElementById("zoomPass").value.trim(),
           repeatType: document.getElementById("repeatType").value,
-          duration: document.getElementById("duration").value,
-          durationUnit: document.getElementById("durationUnit").value,
         };
 
         if (
           !formData.title ||
           !formData.bookTitle ||
           !formData.startDate ||
+          !formData.courseEndDate ||
           !formData.startTime ||
           !formData.endTime ||
           !formData.organizer ||
           !formData.zoomId
         ) {
           showMessage("❌ 請填寫所有必要欄位", "error");
+          return;
+        }
+
+        if (new Date(formData.courseEndDate) < new Date(formData.startDate)) {
+          showMessage("❌ 課程結束日期不能早於開始日期", "error");
           return;
         }
 
@@ -860,9 +792,17 @@
           document.getElementById("title").value = "";
           document.getElementById("bookTitle").value = "";
           document.getElementById("startDate").value = "";
+          document.getElementById("courseEndDate").value = "";
           document.getElementById("organizer").value = "";
           document.getElementById("zoomId").value = "";
           document.getElementById("zoomPass").value = "";
+          document.getElementById("repeatType").value = "none";
+
+          // 清空複選框
+          document
+            .querySelectorAll('input[name="customDays"]')
+            .forEach((cb) => (cb.checked = false));
+          toggleRepeatOptions();
 
           setTimeout(() => {
             showSearchTab();
