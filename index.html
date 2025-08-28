@@ -94,10 +94,6 @@
         font-weight: bold;
       }
 
-      .search-section button:hover {
-        background: #2980b9;
-      }
-
       .hidden {
         display: none;
       }
@@ -117,6 +113,42 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
       }
 
+      /* 課程標籤樣式 */
+      .course-badge {
+        display: inline-block;
+        background: #3498db;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 10px;
+      }
+
+      /* 重複設定區域 */
+      .repeat-section {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        border: 2px solid #e9ecef;
+        margin: 20px 0;
+      }
+
+      .repeat-section h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .repeat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
       /* 加入資訊區域樣式 */
       .join-info {
         margin-top: 15px;
@@ -129,22 +161,6 @@
 
       .join-info.hidden {
         display: none;
-      }
-
-      .join-info p {
-        margin: 8px 0;
-        font-size: 14px;
-        color: #2c3e50;
-      }
-
-      .join-info .zoom-link {
-        word-break: break-all;
-        color: #3498db;
-        cursor: pointer;
-      }
-
-      .join-info .zoom-link:hover {
-        text-decoration: underline;
       }
 
       @keyframes slideDown {
@@ -209,23 +225,9 @@
         background: #27ae60;
       }
 
-      .btn-success:hover {
-        background: #229954;
-      }
-
       .btn-large {
         padding: 15px 40px;
         font-size: 18px;
-      }
-
-      .btn-joined {
-        background: #27ae60;
-        cursor: default;
-      }
-
-      .btn-joined:hover {
-        background: #27ae60;
-        transform: none;
       }
 
       .message {
@@ -340,10 +342,112 @@
             <label>🔐 Zoom 密碼</label>
             <input type="text" id="zoomPass" placeholder="選填" />
           </div>
+        </div>
 
-          <div class="form-group">
-            <label>🔗 Zoom 連結</label>
-            <input type="text" id="zoomLink" placeholder="選填" />
+        <!-- 重複模式設定區 -->
+        <div class="repeat-section">
+          <h3>🔄 重複模式設定</h3>
+          <div class="repeat-grid">
+            <div class="form-group">
+              <label>重複類型 *</label>
+              <select id="repeatType" onchange="toggleRepeatOptions()">
+                <option value="none">單次課程</option>
+                <option value="daily">每天</option>
+                <option value="weekly">每週固定一天</option>
+                <option value="weekdays">週一到週五</option>
+                <option value="custom">自訂星期幾</option>
+              </select>
+            </div>
+
+            <div class="form-group hidden" id="durationGroup">
+              <label>持續時間</label>
+              <input type="number" id="duration" value="4" min="1" max="365" />
+            </div>
+
+            <div class="form-group hidden" id="unitGroup">
+              <label>時間單位</label>
+              <select id="durationUnit">
+                <option value="days">天</option>
+                <option value="weeks">週</option>
+                <option value="months">月</option>
+              </select>
+            </div>
+
+            <div class="form-group hidden" id="customDaysGroup">
+              <label>自訂星期 (多選)</label>
+              <div
+                style="
+                  display: flex;
+                  flex-wrap: wrap;
+                  gap: 10px;
+                  margin-top: 8px;
+                "
+              >
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    font-weight: normal;
+                  "
+                >
+                  <input type="checkbox" value="1" name="customDays" /> 週一
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    font-weight: normal;
+                  "
+                >
+                  <input type="checkbox" value="2" name="customDays" /> 週二
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    font-weight: normal;
+                  "
+                >
+                  <input type="checkbox" value="3" name="customDays" /> 週三
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    font-weight: normal;
+                  "
+                >
+                  <input type="checkbox" value="4" name="customDays" /> 週四
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    font-weight: normal;
+                  "
+                >
+                  <input type="checkbox" value="5" name="customDays" /> 週五
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    font-weight: normal;
+                  "
+                >
+                  <input type="checkbox" value="6" name="customDays" /> 週六
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    font-weight: normal;
+                  "
+                >
+                  <input type="checkbox" value="0" name="customDays" /> 週日
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -383,39 +487,152 @@
         document.querySelectorAll(".tab-button")[1].classList.add("active");
       }
 
+      // 切換重複選項顯示
+      function toggleRepeatOptions() {
+        const repeatType = document.getElementById("repeatType").value;
+        const durationGroup = document.getElementById("durationGroup");
+        const unitGroup = document.getElementById("unitGroup");
+        const customGroup = document.getElementById("customDaysGroup");
+
+        if (repeatType === "none") {
+          durationGroup.classList.add("hidden");
+          unitGroup.classList.add("hidden");
+          customGroup.classList.add("hidden");
+        } else {
+          durationGroup.classList.remove("hidden");
+          unitGroup.classList.remove("hidden");
+
+          if (repeatType === "custom") {
+            customGroup.classList.remove("hidden");
+          } else {
+            customGroup.classList.add("hidden");
+          }
+        }
+      }
+
+      // 計算重複課程總天數
+      function calculateTotalDays(
+        startDate,
+        repeatType,
+        duration,
+        unit,
+        customDays = []
+      ) {
+        if (repeatType === "none") return 1;
+
+        const start = new Date(startDate);
+        let totalDays = 0;
+        let endDate = new Date(start);
+
+        // 計算結束日期
+        if (unit === "days") {
+          endDate.setDate(start.getDate() + duration - 1);
+        } else if (unit === "weeks") {
+          endDate.setDate(start.getDate() + duration * 7 - 1);
+        } else if (unit === "months") {
+          endDate.setMonth(start.getMonth() + duration);
+        }
+
+        // 計算總天數
+        const current = new Date(start);
+        while (current <= endDate) {
+          const dayOfWeek = current.getDay();
+          let shouldInclude = false;
+
+          switch (repeatType) {
+            case "daily":
+              shouldInclude = true;
+              break;
+            case "weekly":
+              shouldInclude = dayOfWeek === start.getDay();
+              break;
+            case "weekdays":
+              shouldInclude = dayOfWeek >= 1 && dayOfWeek <= 5;
+              break;
+            case "custom":
+              shouldInclude = customDays.includes(dayOfWeek);
+              break;
+          }
+
+          if (shouldInclude) totalDays++;
+          current.setDate(current.getDate() + 1);
+        }
+
+        return totalDays;
+      }
+
+      // 格式化日期範圍
+      function formatDateRange(startDate, totalDays, repeatType) {
+        if (totalDays === 1) return startDate;
+
+        const start = new Date(startDate);
+        const end = new Date(start);
+
+        // 簡單估算結束日期（實際可根據重複模式精確計算）
+        if (totalDays <= 7) {
+          end.setDate(start.getDate() + totalDays - 1);
+        } else if (totalDays <= 30) {
+          end.setDate(start.getDate() + totalDays * 2);
+        } else {
+          end.setMonth(start.getMonth() + Math.ceil(totalDays / 20));
+        }
+
+        return `${startDate} ~ ${end.toISOString().split("T")[0]}`;
+      }
+
       // 切換加入資訊顯示
       function toggleJoinInfo(sessionId) {
         const joinInfoDiv = document.getElementById("joinInfo-" + sessionId);
         const button = document.getElementById("joinBtn-" + sessionId);
 
         if (joinInfoDiv.classList.contains("hidden")) {
-          // 顯示 Zoom 資訊
           joinInfoDiv.classList.remove("hidden");
           button.textContent = "✅ 已加入課程";
-          button.classList.add("btn-joined");
-          button.classList.remove("btn");
+          button.style.background = "#27ae60";
         } else {
-          // 隱藏 Zoom 資訊
           joinInfoDiv.classList.add("hidden");
           button.textContent = "📝 我要加入";
-          button.classList.remove("btn-joined");
-          button.classList.add("btn");
+          button.style.background = "#3498db";
         }
       }
 
-      // 複製到剪貼簿
-      function copyToClipboard(text, type) {
-        navigator.clipboard
-          .writeText(text)
-          .then(() => {
-            alert(`✅ ${type} 已複製到剪貼簿`);
-          })
-          .catch(() => {
-            alert(`❌ 複製失敗，請手動複製`);
-          });
+      // 聚合相同系列的課程
+      function aggregateSessions(sessions) {
+        const courseMap = new Map();
+
+        sessions.forEach((session) => {
+          // 用 organizer + bookTitle + startTime 作為群組鍵
+          const key = `${session.organizer}-${session.bookTitle}-${session.startTime}`;
+
+          if (!courseMap.has(key)) {
+            courseMap.set(key, {
+              ...session,
+              courseStartDate: session.startDate,
+              courseEndDate: session.endDate || session.startDate,
+              totalDays: 1,
+              isGrouped: false,
+            });
+          } else {
+            const existing = courseMap.get(key);
+            existing.totalDays++;
+            existing.isGrouped = true;
+
+            // 更新時間範圍
+            if (session.startDate < existing.courseStartDate) {
+              existing.courseStartDate = session.startDate;
+            }
+            if (session.endDate && session.endDate > existing.courseEndDate) {
+              existing.courseEndDate = session.endDate;
+            }
+
+            courseMap.set(key, existing);
+          }
+        });
+
+        return Array.from(courseMap.values());
       }
 
-      // 讀取課程
+      // 讀取課程（修改為支援聚合）
       async function getSessions(filter = {}) {
         try {
           let query = supabase
@@ -445,7 +662,8 @@
             return [];
           }
 
-          return data || [];
+          // 聚合相同系列課程
+          return aggregateSessions(data || []);
         } catch (err) {
           console.error("執行錯誤:", err);
           return [];
@@ -471,7 +689,7 @@
         displaySessions(sessions);
       }
 
-      // 顯示課程列表 - 修改版（隱藏 Zoom 資訊）
+      // 顯示聚合後的課程列表
       function displaySessions(sessions) {
         const container = document.getElementById("courseList");
 
@@ -482,69 +700,82 @@
         }
 
         container.innerHTML = sessions
-          .map(
-            (session) => `
-        <div class="course-card">
-          <h3>📖 ${session.title}</h3>
-          <div class="course-info">
-            <p><strong>📚 書目：</strong>${session.bookTitle}</p>
-            <p><strong>📅 日期：</strong>${session.startDate}</p>
-            <p><strong>🕐 時間：</strong>${session.startTime} - ${
+          .map((session) => {
+            // 計算顯示的日期範圍
+            const dateRange =
+              session.totalDays === 1
+                ? session.startDate
+                : formatDateRange(
+                    session.courseStartDate,
+                    session.totalDays,
+                    session.repeatType
+                  );
+
+            // 課程標籤
+            const badge =
+              session.totalDays > 1
+                ? `<span class="course-badge">${session.totalDays} 天課程</span>`
+                : "";
+
+            return `
+          <div class="course-card">
+            <h3>📖 ${session.title}${badge}</h3>
+            <div class="course-info">
+              <p><strong>📚 書目：</strong>${session.bookTitle}</p>
+              <p><strong>📅 時間：</strong>${dateRange}</p>
+              <p><strong>🕐 每日：</strong>${session.startTime} - ${
               session.endTime
             }</p>
-            <p><strong>👤 主揪：</strong>${session.organizer}</p>
-            <p><strong>👥 人數：</strong>${session.capacity} 人</p>
-          </div>
-          
-          <button id="joinBtn-${
-            session.id
-          }" class="btn" onclick="toggleJoinInfo('${session.id}')">
-            📝 我要加入
-          </button>
-          
-          <!-- 隱藏的 Zoom 資訊區域 -->
-          <div class="join-info hidden" id="joinInfo-${session.id}">
-            <p><strong>🎉 恭喜！您已加入課程</strong></p>
-            <p><strong>🔗 Zoom ID：</strong>
-              <span onclick="copyToClipboard('${
-                session.zoomId
-              }', 'Zoom ID')" class="zoom-link">${session.zoomId}</span>
-              <small> (點擊複製)</small>
-            </p>
-            ${
-              session.zoomPass
-                ? `
-              <p><strong>🔐 Zoom 密碼：</strong>
-                <span onclick="copyToClipboard('${session.zoomPass}', 'Zoom 密碼')" class="zoom-link">${session.zoomPass}</span>
-                <small> (點擊複製)</small>
+              <p><strong>👤 主揪：</strong>${session.organizer}</p>
+              <p><strong>👥 人數：</strong>${session.capacity} 人</p>
+            </div>
+            
+            <button id="joinBtn-${
+              session.id
+            }" class="btn" onclick="toggleJoinInfo('${session.id}')">
+              📝 我要加入
+            </button>
+            
+            <!-- 隱藏的 Zoom 資訊區域 -->
+            <div class="join-info hidden" id="joinInfo-${session.id}">
+              <p><strong>🎉 恭喜！您已加入課程</strong></p>
+              <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
+              ${
+                session.zoomPass
+                  ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
+                  : ""
+              }
+              <p style="color: #7f8c8d; font-size: 12px; margin-top: 10px;">
+                💡 這是${
+                  session.totalDays > 1 ? session.totalDays + "天的" : ""
+                }課程，請準時參加！
               </p>
-            `
-                : "<p><strong>🔐 Zoom 密碼：</strong>無密碼</p>"
-            }
-            ${
-              session.zoomLink
-                ? `
-              <p><strong>🔗 Zoom 連結：</strong>
-                <a href="${session.zoomLink}" target="_blank" class="zoom-link">點擊進入會議</a>
-              </p>
-            `
-                : ""
-            }
-            <p style="color: #7f8c8d; font-size: 12px; margin-top: 10px;">
-              💡 請準時參加課程，祝您學習愉快！
-            </p>
+            </div>
           </div>
-        </div>
-      `
-          )
+        `;
+          })
           .join("");
 
-        console.log(`✅ 已顯示 ${sessions.length} 個課程`);
+        console.log(`✅ 已顯示 ${sessions.length} 個課程系列`);
       }
 
-      // 建立課程
+      // 建立重複課程
       async function createSession(formData) {
         try {
+          const customDays = Array.from(
+            document.querySelectorAll('input[name="customDays"]:checked')
+          ).map((cb) => parseInt(cb.value));
+
+          // 計算總天數
+          const totalDays = calculateTotalDays(
+            formData.startDate,
+            formData.repeatType,
+            parseInt(formData.duration),
+            formData.durationUnit,
+            customDays
+          );
+
+          // 建立課程系列的主記錄
           const sessionData = {
             title: formData.title,
             bookTitle: formData.bookTitle,
@@ -552,13 +783,16 @@
             endDate: formData.endDate || formData.startDate,
             startTime: formData.startTime,
             endTime: formData.endTime,
-            timezone: formData.timezone || "Asia/Taipei",
             organizer: formData.organizer,
             capacity: Number(formData.capacity) || 10,
             zoomId: formData.zoomId,
             zoomPass: formData.zoomPass || "",
-            zoomLink: formData.zoomLink || "",
             status: "open",
+            repeatType: formData.repeatType,
+            repeatDuration: formData.duration,
+            repeatUnit: formData.durationUnit,
+            repeatDays: customDays.join(","),
+            totalDays: totalDays,
             createdAt: new Date().toISOString(),
           };
 
@@ -594,7 +828,9 @@
           capacity: document.getElementById("capacity").value,
           zoomId: document.getElementById("zoomId").value.trim(),
           zoomPass: document.getElementById("zoomPass").value.trim(),
-          zoomLink: document.getElementById("zoomLink").value.trim(),
+          repeatType: document.getElementById("repeatType").value,
+          duration: document.getElementById("duration").value,
+          durationUnit: document.getElementById("durationUnit").value,
         };
 
         if (
@@ -613,7 +849,12 @@
         const result = await createSession(formData);
 
         if (result.success) {
-          showMessage("✅ 共背團建立成功！", "success");
+          const message =
+            result.totalDays > 1
+              ? `✅ 共背團建立成功！已建立 ${result.totalDays} 天課程`
+              : "✅ 共背團建立成功！";
+
+          showMessage(message, "success");
 
           // 清空表單
           document.getElementById("title").value = "";
@@ -622,7 +863,6 @@
           document.getElementById("organizer").value = "";
           document.getElementById("zoomId").value = "";
           document.getElementById("zoomPass").value = "";
-          document.getElementById("zoomLink").value = "";
 
           setTimeout(() => {
             showSearchTab();
