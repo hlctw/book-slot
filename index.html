@@ -622,20 +622,25 @@
         displaySessions(sessions);
       }
 
-      function getRepeatDayLabel(repeatType, repeatDays) {
+      function getRepeatDayLabel(repeatType, repeatDays, startDate) {
+        const weekMap = [
+          "週日",
+          "週一",
+          "週二",
+          "週三",
+          "週四",
+          "週五",
+          "週六",
+        ];
+
         if (repeatType === "daily") return "每日";
         if (repeatType === "weekdays") return "週一~週五";
-        if (repeatType === "weekly") return ""; // 可進一步擴充
+        if (repeatType === "weekly") {
+          if (!startDate) return "每週";
+          const day = new Date(startDate).getDay();
+          return `每週 ${weekMap[day]}`;
+        }
         if (repeatType === "custom") {
-          const weekMap = [
-            "週日",
-            "週一",
-            "週二",
-            "週三",
-            "週四",
-            "週五",
-            "週六",
-          ];
           const arr = (repeatDays || "")
             .split(",")
             .map((s) => weekMap[Number(s.trim())])
