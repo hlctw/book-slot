@@ -1,11 +1,11 @@
-// 直接用 CDN 全局變數 window.supabase
-const supabaseUrl = "https://zcauebtlabxyijhafexr.supabase.co"; // 譬如 https://xxx.supabase.co
+// 注意：是 window.supabase.createClient，不是 window.supabase
+const supabaseUrl = "https://zcauebtlabxyijhafexr.supabase.co";
 const supabaseAnonKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I";
 
-const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+const { createClient } = window.supabase;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// 讀取所有課程資料
 export async function getSessions(filter = {}) {
   let query = supabase.from("Sessions").select("*").eq("status", "open");
 
@@ -27,5 +27,5 @@ export async function getSessions(filter = {}) {
     return [];
   }
 
-  return data;
+  return data || [];
 }
