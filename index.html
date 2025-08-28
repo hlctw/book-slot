@@ -633,20 +633,25 @@
           "週六",
         ];
 
-        if (repeatType === "daily") return "每日";
         if (repeatType === "weekdays") return "週一~週五";
+
         if (repeatType === "weekly") {
           if (!startDate) return "每週";
           const day = new Date(startDate).getDay();
           return `每週 ${weekMap[day]}`;
         }
-        if (repeatType === "custom") {
-          const arr = (repeatDays || "")
+
+        // 不管 type，只要有 repeatDays，優先用
+        if (repeatDays && repeatDays.trim()) {
+          const arr = repeatDays
             .split(",")
             .map((s) => weekMap[Number(s.trim())])
             .filter(Boolean);
-          return arr.length ? `每週：${arr.join("、")}` : "";
+          if (arr.length) return `每週：${arr.join("、")}`;
         }
+
+        if (repeatType === "daily") return "每日";
+
         return "";
       }
 
