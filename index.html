@@ -6,7 +6,29 @@
     <link rel="stylesheet" href="styles/main.css" />
   </head>
   <body>
-    <!-- 省略畫面架構，保留您原index.html -->
-    <script src="js/app.js"></script>
+    <!-- 保留您原先頁面架構其他內容 -->
+
+    <div
+      class="search-section"
+      style="padding: 15px; max-width: 900px; margin: 0 auto"
+    >
+      <input
+        type="date"
+        id="searchDate"
+        style="padding: 10px; margin-right: 10px"
+      />
+      <input
+        type="text"
+        id="searchKeyword"
+        placeholder="課程、主揪、書目關鍵字"
+        style="padding: 10px; margin-right: 10px; width: 250px"
+      />
+      <button id="searchBtn" style="padding: 10px 20px">搜尋</button>
+    </div>
+
+    <div id="courseList" style="max-width: 900px; margin: 20px auto"></div>
+
+    <!-- 載入主要JavaScript，記得js/app.js要存在且實現功能 -->
+    <script type="module" src="js/app.js"></script>
   </body>
 </html>
