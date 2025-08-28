@@ -32,7 +32,6 @@
         font-size: 2.5em;
       }
 
-      /* 頁籤樣式 */
       .tabs {
         display: flex;
         justify-content: center;
@@ -59,12 +58,6 @@
         box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
       }
 
-      .tab-button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      /* 內容區樣式 */
       .tab-content {
         background: white;
         border-radius: 15px;
@@ -73,7 +66,6 @@
         margin-bottom: 20px;
       }
 
-      /* 搜尋區樣式 */
       .search-section {
         display: flex;
         flex-wrap: wrap;
@@ -84,42 +76,41 @@
         padding: 25px;
         background: #f8f9fa;
         border-radius: 12px;
-        border: 2px solid #e9ecef;
       }
 
-      .search-section input {
+      .search-section input,
+      .search-section button {
         padding: 12px 16px;
         border: 2px solid #ddd;
         border-radius: 8px;
         font-size: 14px;
-        min-width: 200px;
-        transition: border-color 0.3s ease;
-      }
-
-      .search-section input:focus {
-        outline: none;
-        border-color: #3498db;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
       }
 
       .search-section button {
-        padding: 12px 24px;
         background: #3498db;
         color: white;
         border: none;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: bold;
         cursor: pointer;
-        transition: all 0.3s ease;
+        font-weight: bold;
       }
 
       .search-section button:hover {
         background: #2980b9;
-        transform: translateY(-1px);
       }
 
-      /* 表單樣式 */
+      .hidden {
+        display: none;
+      }
+
+      .course-card {
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 15px 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
       .form-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -136,97 +127,16 @@
         font-weight: bold;
         margin-bottom: 8px;
         color: #2c3e50;
-        display: flex;
-        align-items: center;
-        gap: 8px;
       }
 
       .form-group input,
-      .form-group select,
-      .form-group textarea {
+      .form-group select {
         padding: 12px;
         border: 2px solid #ddd;
         border-radius: 8px;
         font-size: 14px;
-        transition: border-color 0.3s ease;
       }
 
-      .form-group input:focus,
-      .form-group select:focus,
-      .form-group textarea:focus {
-        outline: none;
-        border-color: #3498db;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-      }
-
-      /* 重複設定區 */
-      .repeat-section {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 12px;
-        border: 2px solid #e9ecef;
-        margin: 20px 0;
-      }
-
-      .repeat-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-        margin-top: 15px;
-      }
-
-      /* 課程卡片樣式 */
-      .course-card {
-        background: white;
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        padding: 20px;
-        margin: 15px 0;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .course-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: #3498db;
-      }
-
-      .course-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        border-color: #3498db;
-      }
-
-      .course-card h3 {
-        color: #2c3e50;
-        margin-bottom: 15px;
-        font-size: 1.3em;
-      }
-
-      .course-info {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 10px;
-        margin: 15px 0;
-      }
-
-      .course-info p {
-        margin: 5px 0;
-        color: #555;
-      }
-
-      .course-info strong {
-        color: #2c3e50;
-        font-weight: 600;
-      }
-
-      /* 按鈕樣式 */
       .btn {
         padding: 12px 24px;
         border: none;
@@ -234,85 +144,34 @@
         font-size: 16px;
         font-weight: bold;
         cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-      }
-
-      .btn-primary {
         background: #3498db;
         color: white;
       }
 
-      .btn-primary:hover {
+      .btn:hover {
         background: #2980b9;
-        transform: translateY(-1px);
-      }
-
-      .btn-success {
-        background: #27ae60;
-        color: white;
-      }
-
-      .btn-success:hover {
-        background: #229954;
-        transform: translateY(-1px);
       }
 
       .btn-large {
         padding: 15px 40px;
         font-size: 18px;
-        border-radius: 25px;
       }
 
-      /* 訊息提示 */
       .message {
         padding: 15px;
         border-radius: 8px;
         margin: 15px 0;
-        font-weight: bold;
         text-align: center;
       }
 
       .message-success {
         background: #d4edda;
         color: #155724;
-        border: 1px solid #c3e6cb;
       }
 
       .message-error {
         background: #f8d7da;
         color: #721c24;
-        border: 1px solid #f5c6cb;
-      }
-
-      /* 隱藏元素 */
-      .hidden {
-        display: none;
-      }
-
-      /* 響應式設計 */
-      @media (max-width: 768px) {
-        .container {
-          padding: 10px;
-        }
-
-        .search-section {
-          flex-direction: column;
-        }
-
-        .search-section input {
-          min-width: 100%;
-        }
-
-        .form-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .course-info {
-          grid-template-columns: 1fr;
-        }
       }
     </style>
   </head>
@@ -320,7 +179,6 @@
     <div class="container">
       <h1>🎓 共背團找時段</h1>
 
-      <!-- 頁籤切換 -->
       <div class="tabs">
         <button class="tab-button active" onclick="showSearchTab()">
           📚 我時段加入
@@ -339,8 +197,8 @@
             id="searchKeyword"
             placeholder="課程、主揪、書目關鍵字"
           />
-          <button onclick="searchBtn()">🔍 搜尋</button>
-          <button onclick="loadAllBtn()">📋 顯示全部</button>
+          <button onclick="searchSessions()">🔍 搜尋</button>
+          <button onclick="loadAllSessions()">📋 顯示全部</button>
         </div>
 
         <div id="courseList">
@@ -352,150 +210,300 @@
 
       <!-- 建立共背團頁面 -->
       <div id="createTab" class="tab-content hidden">
-        <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50">
+        <h2 style="text-align: center; margin-bottom: 30px">
           ✨ 建立新的共背團
         </h2>
 
-        <form id="createForm">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="title">📚 課程標題 *</label>
-              <input
-                type="text"
-                id="title"
-                placeholder="例：我愛背書共背團"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="bookTitle">📖 背書書目 *</label>
-              <input
-                type="text"
-                id="bookTitle"
-                placeholder="例：三十五佛懺"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="startDate">📅 課程開始日期 *</label>
-              <input type="date" id="startDate" required />
-            </div>
-
-            <div class="form-group">
-              <label for="startTime">🕐 開始時間 *</label>
-              <input type="time" id="startTime" value="19:00" required />
-            </div>
-
-            <div class="form-group">
-              <label for="endTime">🕐 結束時間 *</label>
-              <input type="time" id="endTime" value="20:00" required />
-            </div>
-
-            <div class="form-group">
-              <label for="timezone">🌍 課程時區</label>
-              <select id="timezone">
-                <option value="Asia/Taipei">🇹🇼 台灣時間 (GMT+8)</option>
-                <option value="America/New_York">🇺🇸 美東時間</option>
-                <option value="America/Los_Angeles">🇺🇸 美西時間</option>
-                <option value="Europe/London">🇬🇧 英國時間</option>
-              </select>
-            </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>📚 課程標題 *</label>
+            <input
+              type="text"
+              id="title"
+              placeholder="例：我愛背書共背團"
+              required
+            />
           </div>
 
-          <!-- 重複模式設定 -->
-          <div class="repeat-section">
-            <label style="font-size: 18px; font-weight: bold; color: #2c3e50">
-              🔄 重複模式 *
-            </label>
-            <div class="repeat-grid">
-              <div class="form-group">
-                <label for="repeatType">重複類型</label>
-                <select id="repeatType" onchange="toggleRepeatOptions()">
-                  <option value="none">單次課程</option>
-                  <option value="daily">每天</option>
-                  <option value="weekly">每週</option>
-                  <option value="weekdays">週一到五</option>
-                  <option value="custom">自訂星期</option>
-                </select>
-              </div>
-
-              <div class="form-group" id="repeatDurationGroup">
-                <label for="repeatDuration">持續時間</label>
-                <input
-                  type="number"
-                  id="repeatDuration"
-                  value="4"
-                  min="1"
-                  max="52"
-                />
-              </div>
-
-              <div class="form-group" id="repeatUnitGroup">
-                <label for="repeatUnit">時間單位</label>
-                <select id="repeatUnit">
-                  <option value="weeks">週</option>
-                  <option value="months">月</option>
-                </select>
-              </div>
-
-              <div class="form-group hidden" id="customDaysGroup">
-                <label for="repeatDays">自訂星期 (用逗號分隔)</label>
-                <input
-                  type="text"
-                  id="repeatDays"
-                  placeholder="例：1,3,5 (週一三五)"
-                />
-                <small style="color: #7f8c8d"
-                  >0=週日, 1=週一, 2=週二...6=週六</small
-                >
-              </div>
-            </div>
+          <div class="form-group">
+            <label>📖 背書書目 *</label>
+            <input
+              type="text"
+              id="bookTitle"
+              placeholder="例：三十五佛懺"
+              required
+            />
           </div>
 
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="organizer">👤 主揪 *</label>
-              <input
-                type="text"
-                id="organizer"
-                placeholder="您的名字"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="capacity">👥 人數上限</label>
-              <input type="number" id="capacity" value="10" min="2" max="100" />
-            </div>
-
-            <div class="form-group">
-              <label for="zoomId">🔗 Zoom ID *</label>
-              <input type="text" id="zoomId" placeholder="123456789" required />
-            </div>
-
-            <div class="form-group">
-              <label for="zoomPass">🔐 Zoom 密碼</label>
-              <input type="text" id="zoomPass" placeholder="選填" />
-            </div>
+          <div class="form-group">
+            <label>📅 課程開始日期 *</label>
+            <input type="date" id="startDate" required />
           </div>
 
-          <div style="text-align: center; margin-top: 40px">
-            <button
-              type="button"
-              class="btn btn-success btn-large"
-              onclick="handleCreateSession()"
-            >
-              ✨ 建立共背團
-            </button>
+          <div class="form-group">
+            <label>🕐 開始時間 *</label>
+            <input type="time" id="startTime" value="19:00" required />
           </div>
-        </form>
+
+          <div class="form-group">
+            <label>🕐 結束時間 *</label>
+            <input type="time" id="endTime" value="20:00" required />
+          </div>
+
+          <div class="form-group">
+            <label>👤 主揪 *</label>
+            <input type="text" id="organizer" placeholder="您的名字" required />
+          </div>
+
+          <div class="form-group">
+            <label>👥 人數上限</label>
+            <input type="number" id="capacity" value="10" min="2" max="100" />
+          </div>
+
+          <div class="form-group">
+            <label>🔗 Zoom ID *</label>
+            <input type="text" id="zoomId" placeholder="123456789" required />
+          </div>
+
+          <div class="form-group">
+            <label>🔐 Zoom 密碼</label>
+            <input type="text" id="zoomPass" placeholder="選填" />
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px">
+          <button class="btn btn-large" onclick="handleCreateSession()">
+            ✨ 建立共背團
+          </button>
+        </div>
 
         <div id="createMessage"></div>
       </div>
     </div>
 
-    <script type="module" src="js/app.js"></script>
+    <script>
+      // Supabase 設定
+      const { createClient } = window.supabase;
+      const supabaseUrl = "https://zcauebtlabxyijhafexr.supabase.co";
+      const supabaseAnonKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUzNzI4MTMsImV4cCI6MjA1MDk0ODgxM30.kzBQy6WZ0_e9bX8gJlYBhE8rHwE8CWYOdBmGkPKqO5A";
+      const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+      // 頁籤切換
+      function showSearchTab() {
+        document.getElementById("searchTab").classList.remove("hidden");
+        document.getElementById("createTab").classList.add("hidden");
+        document.querySelectorAll(".tab-button")[0].classList.add("active");
+        document.querySelectorAll(".tab-button")[1].classList.remove("active");
+      }
+
+      function showCreateTab() {
+        document.getElementById("searchTab").classList.add("hidden");
+        document.getElementById("createTab").classList.remove("hidden");
+        document.querySelectorAll(".tab-button")[0].classList.remove("active");
+        document.querySelectorAll(".tab-button")[1].classList.add("active");
+      }
+
+      // 讀取課程
+      async function getSessions(filter = {}) {
+        try {
+          let query = supabase
+            .from("Sessions")
+            .select("*")
+            .eq("status", "open");
+
+          if (filter.date) {
+            query = query.gte("startDate", filter.date);
+          }
+
+          if (filter.q) {
+            const keyword = filter.q.trim();
+            if (keyword) {
+              query = query.or(
+                `title.ilike.%${keyword}%,bookTitle.ilike.%${keyword}%,organizer.ilike.%${keyword}%`
+              );
+            }
+          }
+
+          const { data, error } = await query.order("startDate", {
+            ascending: true,
+          });
+
+          if (error) {
+            console.error("查詢錯誤:", error);
+            return [];
+          }
+
+          return data || [];
+        } catch (err) {
+          console.error("執行錯誤:", err);
+          return [];
+        }
+      }
+
+      // 搜尋課程
+      async function searchSessions() {
+        const filter = {
+          date: document.getElementById("searchDate").value,
+          q: document.getElementById("searchKeyword").value,
+        };
+
+        console.log("🔍 搜尋課程，篩選條件：", filter);
+        const sessions = await getSessions(filter);
+        displaySessions(sessions);
+      }
+
+      // 載入所有課程
+      async function loadAllSessions() {
+        console.log("📋 載入所有課程...");
+        const sessions = await getSessions({});
+        displaySessions(sessions);
+      }
+
+      // 顯示課程列表
+      function displaySessions(sessions) {
+        const container = document.getElementById("courseList");
+
+        if (!sessions.length) {
+          container.innerHTML =
+            '<p style="text-align: center; color: #7f8c8d; padding: 40px;">查無符合條件的課程</p>';
+          return;
+        }
+
+        container.innerHTML = sessions
+          .map(
+            (session) => `
+        <div class="course-card">
+          <h3>📖 ${session.title}</h3>
+          <p><strong>📚 書目：</strong>${session.bookTitle}</p>
+          <p><strong>📅 日期：</strong>${session.startDate}</p>
+          <p><strong>🕐 時間：</strong>${session.startTime} - ${
+              session.endTime
+            }</p>
+          <p><strong>👤 主揪：</strong>${session.organizer}</p>
+          <p><strong>👥 人數：</strong>${session.capacity} 人</p>
+          <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
+          ${
+            session.zoomPass
+              ? `<p><strong>🔐 密碼：</strong>${session.zoomPass}</p>`
+              : ""
+          }
+          <button class="btn" onclick="joinSession('${
+            session.id
+          }')">📝 我要加入</button>
+        </div>
+      `
+          )
+          .join("");
+
+        console.log(`✅ 已顯示 ${sessions.length} 個課程`);
+      }
+
+      // 建立課程
+      async function createSession(formData) {
+        try {
+          const sessionData = {
+            title: formData.title,
+            bookTitle: formData.bookTitle,
+            startDate: formData.startDate,
+            endDate: formData.endDate || formData.startDate,
+            startTime: formData.startTime,
+            endTime: formData.endTime,
+            timezone: formData.timezone || "Asia/Taipei",
+            organizer: formData.organizer,
+            capacity: Number(formData.capacity) || 10,
+            zoomId: formData.zoomId,
+            zoomPass: formData.zoomPass || "",
+            status: "open",
+            createdAt: new Date().toISOString(),
+          };
+
+          const { data, error } = await supabase
+            .from("Sessions")
+            .insert([sessionData])
+            .select();
+
+          if (error) {
+            console.error("建立失敗:", error);
+            return { success: false, error: error.message };
+          }
+
+          console.log("建立成功:", data);
+          return { success: true, data: data?.[0] || null };
+        } catch (err) {
+          console.error("建立過程錯誤:", err);
+          return { success: false, error: err.message };
+        }
+      }
+
+      // 處理建立共背團
+      async function handleCreateSession() {
+        console.log("🎯 開始建立共背團...");
+
+        const formData = {
+          title: document.getElementById("title").value.trim(),
+          bookTitle: document.getElementById("bookTitle").value.trim(),
+          startDate: document.getElementById("startDate").value,
+          startTime: document.getElementById("startTime").value,
+          endTime: document.getElementById("endTime").value,
+          organizer: document.getElementById("organizer").value.trim(),
+          capacity: document.getElementById("capacity").value,
+          zoomId: document.getElementById("zoomId").value.trim(),
+          zoomPass: document.getElementById("zoomPass").value.trim(),
+        };
+
+        if (
+          !formData.title ||
+          !formData.bookTitle ||
+          !formData.startDate ||
+          !formData.startTime ||
+          !formData.endTime ||
+          !formData.organizer ||
+          !formData.zoomId
+        ) {
+          showMessage("❌ 請填寫所有必要欄位", "error");
+          return;
+        }
+
+        const result = await createSession(formData);
+
+        if (result.success) {
+          showMessage("✅ 共背團建立成功！", "success");
+
+          // 清空表單
+          document.getElementById("title").value = "";
+          document.getElementById("bookTitle").value = "";
+          document.getElementById("startDate").value = "";
+          document.getElementById("organizer").value = "";
+          document.getElementById("zoomId").value = "";
+          document.getElementById("zoomPass").value = "";
+
+          setTimeout(() => {
+            showSearchTab();
+            loadAllSessions();
+          }, 2000);
+        } else {
+          showMessage("❌ 建立失敗：" + result.error, "error");
+        }
+      }
+
+      // 顯示訊息
+      function showMessage(message, type) {
+        let messageDiv = document.getElementById("createMessage");
+        messageDiv.className = `message message-${type}`;
+        messageDiv.innerHTML = message;
+
+        setTimeout(() => {
+          messageDiv.innerHTML = "";
+        }, 5000);
+      }
+
+      // 加入課程
+      function joinSession(sessionId) {
+        alert("加入課程功能開發中...");
+      }
+
+      console.log("✅ 頁面載入完成");
+    </script>
   </body>
-</ht
+</html>
