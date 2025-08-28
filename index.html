@@ -109,6 +109,57 @@
         padding: 20px;
         margin: 15px 0;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .course-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      /* 加入資訊區域樣式 */
+      .join-info {
+        margin-top: 15px;
+        padding: 15px;
+        background: #e8f6f3;
+        border: 2px solid #16a085;
+        border-radius: 8px;
+        animation: slideDown 0.3s ease-out;
+      }
+
+      .join-info.hidden {
+        display: none;
+      }
+
+      .join-info p {
+        margin: 8px 0;
+        font-size: 14px;
+        color: #2c3e50;
+      }
+
+      .join-info .zoom-link {
+        word-break: break-all;
+        color: #3498db;
+        cursor: pointer;
+      }
+
+      .join-info .zoom-link:hover {
+        text-decoration: underline;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          max-height: 0;
+          padding-top: 0;
+          padding-bottom: 0;
+        }
+        to {
+          opacity: 1;
+          max-height: 200px;
+          padding-top: 15px;
+          padding-bottom: 15px;
+        }
       }
 
       .form-grid {
@@ -146,15 +197,35 @@
         cursor: pointer;
         background: #3498db;
         color: white;
+        transition: all 0.3s ease;
       }
 
       .btn:hover {
         background: #2980b9;
+        transform: translateY(-1px);
+      }
+
+      .btn-success {
+        background: #27ae60;
+      }
+
+      .btn-success:hover {
+        background: #229954;
       }
 
       .btn-large {
         padding: 15px 40px;
         font-size: 18px;
+      }
+
+      .btn-joined {
+        background: #27ae60;
+        cursor: default;
+      }
+
+      .btn-joined:hover {
+        background: #27ae60;
+        transform: none;
       }
 
       .message {
@@ -269,10 +340,18 @@
             <label>🔐 Zoom 密碼</label>
             <input type="text" id="zoomPass" placeholder="選填" />
           </div>
+
+          <div class="form-group">
+            <label>🔗 Zoom 連結</label>
+            <input type="text" id="zoomLink" placeholder="選填" />
+          </div>
         </div>
 
         <div style="text-align: center; margin-top: 40px">
-          <button class="btn btn-large" onclick="handleCreateSession()">
+          <button
+            class="btn btn-success btn-large"
+            onclick="handleCreateSession()"
+          >
             ✨ 建立共背團
           </button>
         </div>
@@ -282,11 +361,11 @@
     </div>
 
     <script>
-      // Supabase 設定
+      // Supabase 設定 - 請替換為您的實際金鑰
       const { createClient } = window.supabase;
       const supabaseUrl = "https://zcauebtlabxyijhafexr.supabase.co";
       const supabaseAnonKey =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUzNzI4MTMsImV4cCI6MjA1MDk0ODgxM30.kzBQy6WZ0_e9bX8gJlYBhE8rHwE8CWYOdBmGkPKqO5A";
       const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
       // 頁籤切換
@@ -302,6 +381,38 @@
         document.getElementById("createTab").classList.remove("hidden");
         document.querySelectorAll(".tab-button")[0].classList.remove("active");
         document.querySelectorAll(".tab-button")[1].classList.add("active");
+      }
+
+      // 切換加入資訊顯示
+      function toggleJoinInfo(sessionId) {
+        const joinInfoDiv = document.getElementById("joinInfo-" + sessionId);
+        const button = document.getElementById("joinBtn-" + sessionId);
+
+        if (joinInfoDiv.classList.contains("hidden")) {
+          // 顯示 Zoom 資訊
+          joinInfoDiv.classList.remove("hidden");
+          button.textContent = "✅ 已加入課程";
+          button.classList.add("btn-joined");
+          button.classList.remove("btn");
+        } else {
+          // 隱藏 Zoom 資訊
+          joinInfoDiv.classList.add("hidden");
+          button.textContent = "📝 我要加入";
+          button.classList.remove("btn-joined");
+          button.classList.add("btn");
+        }
+      }
+
+      // 複製到剪貼簿
+      function copyToClipboard(text, type) {
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            alert(`✅ ${type} 已複製到剪貼簿`);
+          })
+          .catch(() => {
+            alert(`❌ 複製失敗，請手動複製`);
+          });
       }
 
       // 讀取課程
@@ -360,7 +471,7 @@
         displaySessions(sessions);
       }
 
-      // 顯示課程列表
+      // 顯示課程列表 - 修改版（隱藏 Zoom 資訊）
       function displaySessions(sessions) {
         const container = document.getElementById("courseList");
 
@@ -375,22 +486,54 @@
             (session) => `
         <div class="course-card">
           <h3>📖 ${session.title}</h3>
-          <p><strong>📚 書目：</strong>${session.bookTitle}</p>
-          <p><strong>📅 日期：</strong>${session.startDate}</p>
-          <p><strong>🕐 時間：</strong>${session.startTime} - ${
+          <div class="course-info">
+            <p><strong>📚 書目：</strong>${session.bookTitle}</p>
+            <p><strong>📅 日期：</strong>${session.startDate}</p>
+            <p><strong>🕐 時間：</strong>${session.startTime} - ${
               session.endTime
             }</p>
-          <p><strong>👤 主揪：</strong>${session.organizer}</p>
-          <p><strong>👥 人數：</strong>${session.capacity} 人</p>
-          <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
-          ${
-            session.zoomPass
-              ? `<p><strong>🔐 密碼：</strong>${session.zoomPass}</p>`
-              : ""
-          }
-          <button class="btn" onclick="joinSession('${
+            <p><strong>👤 主揪：</strong>${session.organizer}</p>
+            <p><strong>👥 人數：</strong>${session.capacity} 人</p>
+          </div>
+          
+          <button id="joinBtn-${
             session.id
-          }')">📝 我要加入</button>
+          }" class="btn" onclick="toggleJoinInfo('${session.id}')">
+            📝 我要加入
+          </button>
+          
+          <!-- 隱藏的 Zoom 資訊區域 -->
+          <div class="join-info hidden" id="joinInfo-${session.id}">
+            <p><strong>🎉 恭喜！您已加入課程</strong></p>
+            <p><strong>🔗 Zoom ID：</strong>
+              <span onclick="copyToClipboard('${
+                session.zoomId
+              }', 'Zoom ID')" class="zoom-link">${session.zoomId}</span>
+              <small> (點擊複製)</small>
+            </p>
+            ${
+              session.zoomPass
+                ? `
+              <p><strong>🔐 Zoom 密碼：</strong>
+                <span onclick="copyToClipboard('${session.zoomPass}', 'Zoom 密碼')" class="zoom-link">${session.zoomPass}</span>
+                <small> (點擊複製)</small>
+              </p>
+            `
+                : "<p><strong>🔐 Zoom 密碼：</strong>無密碼</p>"
+            }
+            ${
+              session.zoomLink
+                ? `
+              <p><strong>🔗 Zoom 連結：</strong>
+                <a href="${session.zoomLink}" target="_blank" class="zoom-link">點擊進入會議</a>
+              </p>
+            `
+                : ""
+            }
+            <p style="color: #7f8c8d; font-size: 12px; margin-top: 10px;">
+              💡 請準時參加課程，祝您學習愉快！
+            </p>
+          </div>
         </div>
       `
           )
@@ -414,6 +557,7 @@
             capacity: Number(formData.capacity) || 10,
             zoomId: formData.zoomId,
             zoomPass: formData.zoomPass || "",
+            zoomLink: formData.zoomLink || "",
             status: "open",
             createdAt: new Date().toISOString(),
           };
@@ -450,6 +594,7 @@
           capacity: document.getElementById("capacity").value,
           zoomId: document.getElementById("zoomId").value.trim(),
           zoomPass: document.getElementById("zoomPass").value.trim(),
+          zoomLink: document.getElementById("zoomLink").value.trim(),
         };
 
         if (
@@ -477,6 +622,7 @@
           document.getElementById("organizer").value = "";
           document.getElementById("zoomId").value = "";
           document.getElementById("zoomPass").value = "";
+          document.getElementById("zoomLink").value = "";
 
           setTimeout(() => {
             showSearchTab();
@@ -496,11 +642,6 @@
         setTimeout(() => {
           messageDiv.innerHTML = "";
         }, 5000);
-      }
-
-      // 加入課程
-      function joinSession(sessionId) {
-        alert("加入課程功能開發中...");
       }
 
       console.log("✅ 頁面載入完成");
