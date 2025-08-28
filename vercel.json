@@ -1,0 +1,16 @@
+{
+  "functions": {
+    "api/sessions.js": {
+      "runtime": "nodejs18.x"
+    },
+    "api/create-session.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ]
+}
