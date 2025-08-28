@@ -652,13 +652,16 @@
           <div class="course-card">
             <h3>📖 ${session.title}${badge}</h3>
             <div class="course-info">
-              <p><strong>📚 書目：</strong>${session.bookTitle}</p>
-              <p><strong>📅 時間：</strong>${dateRange}</p>
-              <p><strong>🕐 每日：</strong>${session.startTime} - ${
-              session.endTime
-            }</p>
-              <p><strong>👤 主揪：</strong>${session.organizer}</p>
-              <p><strong>👥 人數：</strong>${session.capacity} 人</p>
+            <p>📚 書目：${session.bookTitle}</p>
+  <p>📅 時間：${session.startDate}</p>
+  <p>🕒 每日：${session.startTime} - ${session.endTime}</p>
+  ${
+    session.repeatType !== "none"
+      ? `<p>📆 ${getRepeatDayLabel(session.repeatType, session.repeatDays)}</p>`
+      : ""
+  }
+  <p>👤 主揪：${session.organizer}</p>
+  <p>👥 人數：${session.capacity} 人</p>
             </div>
             
             <button id="joinBtn-${
