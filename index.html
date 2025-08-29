@@ -801,19 +801,13 @@
             document.querySelectorAll('input[name="customDays"]:checked')
           ).map((cb) => parseInt(cb.value));
 
-          // 計算總天數
-          const totalDays = calculateTotalDays(
-            formData.startDate,
-            formData.courseEndDate,
-            formData.repeatType,
-            customDays
-          );
+          console.log("選擇的星期：", customDays); // 除錯用
 
           const sessionData = {
             title: formData.title,
             bookTitle: formData.bookTitle,
             startDate: formData.startDate,
-            endDate: formData.courseEndDate, // 使用現有的 endDate 欄位
+            endDate: formData.courseEndDate,
             startTime: formData.startTime,
             endTime: formData.endTime,
             organizer: formData.organizer,
@@ -821,10 +815,20 @@
             zoomId: formData.zoomId,
             zoomPass: formData.zoomPass || "",
             status: "open",
-            totalDays: totalDays,
             repeatType: formData.repeatType,
+            repeatDays:
+              formData.repeatType === "custom" ? customDays.join(",") : "", // 重要：只有 custom 才儲存
+            totalDays: calculateTotalDays(
+              formData.startDate,
+              formData.courseEndDate,
+              formData.repeatType,
+              customDays
+            ),
+            note: formData.note || null,
             createdAt: new Date().toISOString(),
           };
+
+          console.log("準備儲存的資料：", sessionData); // 除錯用
 
           const { data, error } = await supabase
             .from("Sessions")
@@ -836,8 +840,11 @@
             return { success: false, error: error.message };
           }
 
-          console.log("建立成功:", data);
-          return { success: true, data: data?.[0] || null };
+          return {
+            success: true,
+            data: data[0],
+            totalDays: sessionData.totalDays,
+          };
         } catch (err) {
           console.error("建立過程錯誤:", err);
           return { success: false, error: err.message };
