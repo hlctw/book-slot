@@ -694,17 +694,16 @@
           <div class="course-card">
             <h3>📖 ${session.title}${badge}</h3>
             <div class="course-info">
-            <p>📚 書目：${session.bookTitle}</p>
-  <p>📅 時間：${session.startDate}</p>
-  <p>🕒 每日：${session.startTime} - ${session.endTime}</p>
+            <p>📚 背誦書目：${session.bookTitle}</p>
+  <p>📅 開課日期：${session.startDate}</p>
+  <p>🕒 課程時間：${session.startTime} - ${session.endTime}</p>
   ${
     session.repeatType !== "none"
       ? `<p>📆 ${getRepeatDayLabel(session.repeatType, session.repeatDays)}</p>`
       : ""
   }
-  <p>👤 主揪：${session.organizer}</p>
-  <p>👥 人數：${session.capacity} 人</p>
-   ${session.note ? `<p><strong>📝 備註：</strong>${session.note}</p>` : ""}
+  <p>👤 主揪團主：${session.organizer}</p>
+  <p>👥 上限人數：${session.capacity} 人</p>
             </div>
             
             <button id="joinBtn-${
@@ -714,13 +713,18 @@
             </button>
             
             <div class="join-info hidden" id="joinInfo-${session.id}">
-              <p><strong>🎉 已提供課程資訊</strong></p>
+              <p><strong>🎉 課程資訊</strong></p>
               <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
               ${
                 session.zoomPass
                   ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
                   : ""
               }
+                   ${
+                     session.note
+                       ? `<p><strong>📝 備註：</strong>${session.note}</p>`
+                       : ""
+                   }  
               <p style="color: #7f8c8d; font-size: 12px; margin-top: 10px;">
                 💡 這是${
                   session.displayTotalDays > 1
