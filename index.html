@@ -453,6 +453,35 @@
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I";
       const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+      function linkifyText(text) {
+        if (!text) return "";
+
+        // 轉義 HTML 字符防止 XSS 攻擊
+        text = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+
+        // 檢測並轉換 http:// 或 https:// 開頭的網址
+        const urlPattern = /(https?:\/\/[^\s]+)/g;
+        text = text.replace(
+          urlPattern,
+          '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #3498db; text-decoration: underline;">$1</a>'
+        );
+
+        // 檢測並轉換 www. 開頭的網址
+        const wwwPattern = /(^|[^\/])(www\.[^\s]+)/g;
+        text = text.replace(
+          wwwPattern,
+          '$1<a href="http://$2" target="_blank" rel="noopener noreferrer" style="color: #3498db; text-decoration: underline;">$2</a>'
+        );
+
+        // 轉換換行符為 <br>
+        text = text.replace(/\n/g, "<br>");
+
+        return text;
+      }
+
       // 頁籤切換
       function showSearchTab() {
         document.getElementById("searchTab").classList.remove("hidden");
@@ -725,9 +754,12 @@
               }
                    ${
                      session.note
-                       ? `<p><strong>📝 備註：</strong>${session.note}</p>`
+                       ? `<p><strong>📝 備註：</strong><span>${linkifyText(
+                           session.note
+                         )}</span></p>`
                        : ""
-                   }  
+                   }
+
               <p style="color: #7f8c8d; font-size: 12px; margin-top: 10px;">
                 💡 這是${
                   session.displayTotalDays > 1
