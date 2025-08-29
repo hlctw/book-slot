@@ -669,24 +669,44 @@
           "週六",
         ];
 
-        if (repeatType === "weekdays") return "週一~週五";
+        // 處理每天類型
+        if (repeatType === "daily") {
+          // 如果有指定特定星期，顯示星期
+          if (repeatDays && repeatDays.trim()) {
+            const arr = repeatDays
+              .split(",")
+              .map((s) => weekMap[Number(s.trim())])
+              .filter(Boolean);
+            if (arr.length) return `每週：${arr.join("、")}`;
+          }
+          return "每日";
+        }
 
+        // 處理週一到週五
+        if (repeatType === "weekdays") {
+          return "週一~週五";
+        }
+
+        // 處理自訂星期
+        if (repeatType === "custom") {
+          const arr = (repeatDays || "")
+            .split(",")
+            .map((s) => weekMap[Number(s.trim())])
+            .filter(Boolean);
+          if (arr.length) return `每週：${arr.join("、")}`;
+          return "";
+        }
+
+        // 處理舊資料的相容性
         if (repeatType === "weekly") {
           if (!startDate) return "每週";
           const day = new Date(startDate).getDay();
           return `每週 ${weekMap[day]}`;
         }
 
-        // 不管 type，只要有 repeatDays，優先用
-        if (repeatDays && repeatDays.trim()) {
-          const arr = repeatDays
-            .split(",")
-            .map((s) => weekMap[Number(s.trim())])
-            .filter(Boolean);
-          if (arr.length) return `每週：${arr.join("、")}`;
+        if (repeatType === "none") {
+          return "";
         }
-
-        if (repeatType === "daily") return "每日";
 
         return "";
       }
