@@ -372,6 +372,15 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label>📝 備註說明</label>
+          <textarea
+            id="note"
+            rows="3"
+            placeholder="可輸入補充資訊、注意事項等（選填）"
+          ></textarea>
+        </div>
+
         <!-- 重複模式設定區 -->
         <div class="repeat-section">
           <h3>🔄 重複模式設定</h3>
@@ -695,6 +704,7 @@
   }
   <p>👤 主揪：${session.organizer}</p>
   <p>👥 人數：${session.capacity} 人</p>
+   ${session.note ? `<p><strong>📝 備註：</strong>${session.note}</p>` : ""}
             </div>
             
             <button id="joinBtn-${
@@ -793,6 +803,7 @@
           zoomId: document.getElementById("zoomId").value.trim(),
           zoomPass: document.getElementById("zoomPass").value.trim(),
           repeatType: document.getElementById("repeatType").value,
+          note: document.getElementById("note").value.trim() || null,
         };
 
         if (
