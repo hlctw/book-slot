@@ -299,7 +299,7 @@
 
         <div id="courseList">
           <p style="text-align: center; color: #db102e; padding: 40px">
-            請使用「搜尋」功能，或點選「📋 顯示全部」載入課程列表
+            請使用「🔍 搜尋」功能，或點選「📋 顯示全部」載入課程列表
           </p>
         </div>
       </div>
@@ -343,12 +343,12 @@
 
           <div class="form-group">
             <label>🕐 開始時間 *</label>
-            <input type="time" id="startTime" value="19:00" required />
+            <input type="time" id="startTime" value="11:00" required />
           </div>
 
           <div class="form-group">
             <label>🕐 結束時間 *</label>
-            <input type="time" id="endTime" value="20:00" required />
+            <input type="time" id="endTime" value="11:30" required />
           </div>
 
           <div class="form-group">
@@ -373,7 +373,7 @@
         </div>
 
         <div class="form-group">
-          <label>📝 備註說明</label>
+          <label>📝 備註</label>
           <textarea
             id="note"
             rows="3"
@@ -388,9 +388,7 @@
             <div class="form-group">
               <label>重複類型 *</label>
               <select id="repeatType" onchange="toggleRepeatOptions()">
-                <option value="none">單次課程</option>
                 <option value="daily">每天</option>
-                <option value="weekly">每週固定一天</option>
                 <option value="weekdays">週一到週五</option>
                 <option value="custom">自訂星期幾</option>
               </select>
@@ -735,7 +733,7 @@
       : ""
   }
   <p>👤 主揪團長：${session.organizer}</p>
-  <p>👥 上限人數：${session.capacity} 人</p>
+  <p>👥 人數上限：${session.capacity} 人</p>
             </div>
             
             <button id="joinBtn-${
