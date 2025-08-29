@@ -677,7 +677,7 @@
               .split(",")
               .map((s) => weekMap[Number(s.trim())])
               .filter(Boolean);
-            if (arr.length) return `每週：${arr.join("、")}`;
+            if (arr.length) return `${arr.join("、")}`;
           }
           return "每日";
         }
@@ -693,7 +693,7 @@
             .split(",")
             .map((s) => weekMap[Number(s.trim())])
             .filter(Boolean);
-          if (arr.length) return `每週：${arr.join("、")}`;
+          if (arr.length) return `${arr.join("、")}`;
           return "";
         }
 
@@ -701,7 +701,7 @@
         if (repeatType === "weekly") {
           if (!startDate) return "每週";
           const day = new Date(startDate).getDay();
-          return `每週 ${weekMap[day]}`;
+          return `${weekMap[day]}`;
         }
 
         if (repeatType === "none") {
