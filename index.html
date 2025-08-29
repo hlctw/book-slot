@@ -699,7 +699,10 @@
   <p>🕒 課程時間：${session.startTime} - ${session.endTime}</p>
   ${
     session.repeatType !== "none"
-      ? `<p>📆 ${getRepeatDayLabel(session.repeatType, session.repeatDays)}</p>`
+      ? `<p>📆上課頻率：${getRepeatDayLabel(
+          session.repeatType,
+          session.repeatDays
+        )}</p>`
       : ""
   }
   <p>👤 主揪團主：${session.organizer}</p>
