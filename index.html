@@ -728,13 +728,13 @@
   <p>🕒 課程時間：${session.startTime} - ${session.endTime}</p>
   ${
     session.repeatType !== "none"
-      ? `<p>📆上課頻率：${getRepeatDayLabel(
+      ? `<p>📆 課程頻率：${getRepeatDayLabel(
           session.repeatType,
           session.repeatDays
         )}</p>`
       : ""
   }
-  <p>👤 主揪團主：${session.organizer}</p>
+  <p>👤 主揪團長：${session.organizer}</p>
   <p>👥 上限人數：${session.capacity} 人</p>
             </div>
             
