@@ -698,7 +698,7 @@
             .split(",")
             .map((s) => weekMap[Number(s.trim())])
             .filter(Boolean);
-          if (arr.length) return `每週：${arr.join("、")}`;
+          if (arr.length) return `${arr.join("、")}`;
           return "";
         }
 
@@ -751,9 +751,9 @@
       <div class="course-card">
         <h3>📖 ${session.title}${badge}</h3>
         <div class="course-info">
-          <p><strong>📚 書目：</strong>${session.bookTitle}</p>
-          <p><strong>📅 時間：</strong>${dateRange}</p>
-          <p><strong>🕐 每日：</strong>${session.startTime}${
+          <p><strong>📚 背誦書目：</strong>${session.bookTitle}</p>
+          <p><strong>📅 開課日期：</strong>${dateRange}</p>
+          <p><strong>🕐 每日時間：</strong>${session.startTime}${
               session.endTime ? " - " + session.endTime : ""
             }</p>
           ${label ? `<p><strong>📆 課程頻率：</strong>${label}</p>` : ""}
