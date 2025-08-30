@@ -568,7 +568,8 @@
         const courseMap = new Map();
 
         sessions.forEach((session) => {
-          const key = `${session.organizer}-${session.bookTitle}-${session.startTime}`;
+          // 加入 id 和 startDate 確保唯一性
+          const key = `${session.organizer}-${session.bookTitle}-${session.startTime}-${session.id}-${session.startDate}`;
 
           if (!courseMap.has(key)) {
             courseMap.set(key, {
