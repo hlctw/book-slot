@@ -751,14 +751,14 @@
       <div class="course-card">
         <h3>📖 ${session.title}${badge}</h3>
         <div class="course-info">
-          <p><strong>📚 背誦書目：</strong>${session.bookTitle}</p>
+          <p><strong>📚 背誦書目：${session.bookTitle}</strong></p>
           <p><strong>📅 開課日期：</strong>${dateRange}</p>
-          <p><strong>🕐 每日時間：</strong>${session.startTime}${
+          <p><strong>🕐 課程時間：</strong>${session.startTime}${
               session.endTime ? " - " + session.endTime : ""
             }</p>
           ${label ? `<p><strong>📆 課程頻率：</strong>${label}</p>` : ""}
-          <p><strong>👤 主揪：</strong>${session.organizer}</p>
-          <p><strong>👥 名額：</strong>${session.capacity} 人</p>
+          <p><strong>👤 主揪團長：</strong>${session.organizer}</p>
+          <p><strong>👥 最高人數：</strong>${session.capacity} 人</p>
         </div>
         
         <button id="joinBtn-${
