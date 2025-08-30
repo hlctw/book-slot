@@ -810,7 +810,7 @@
             title: formData.title,
             bookTitle: formData.bookTitle,
             startDate: formData.startDate,
-            endDate: formData.courseEndDate,
+            endTime: formData.endTime || null, // 允許為空值
             startTime: formData.startTime,
             endTime: formData.endTime,
             organizer: formData.organizer,
