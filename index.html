@@ -735,11 +735,10 @@
             }
 
             // 2. 修正：課程天數標籤
-            const displayTotalDays = session.totalDays || 1;
-            const badge =
-              displayTotalDays > 1
-                ? `<span class="course-badge">${displayTotalDays} 天課程</span>`
-                : "";
+            let badge = "";
+            if (session.endTime && session.totalDays && session.totalDays > 1) {
+              badge = `<span class="course-badge">${session.totalDays} 天課程</span>`;
+            }
 
             // 3. 修正：課程頻率標籤
             const label = getRepeatDayLabel(
