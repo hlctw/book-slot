@@ -348,7 +348,7 @@
 
           <div class="form-group">
             <label>🕐 結束時間 *</label>
-            <input type="time" id="endTime" value="11:30" required />
+            <input type="time" id="endTime" value="11:30" />
           </div>
 
           <div class="form-group">
@@ -636,6 +636,7 @@
             return [];
           }
 
+          // 直接返回，不進行聚合（避免重複課程被合併）
           return data || [];
         } catch (err) {
           console.error("執行錯誤:", err);
@@ -681,7 +682,7 @@
               .split(",")
               .map((s) => weekMap[Number(s.trim())])
               .filter(Boolean);
-            if (arr.length) return `${arr.join("、")}`;
+            if (arr.length) return `每週：${arr.join("、")}`;
           }
           return "每日";
         }
@@ -697,7 +698,7 @@
             .split(",")
             .map((s) => weekMap[Number(s.trim())])
             .filter(Boolean);
-          if (arr.length) return `${arr.join("、")}`;
+          if (arr.length) return `每週：${arr.join("、")}`;
           return "";
         }
 
@@ -705,7 +706,7 @@
         if (repeatType === "weekly") {
           if (!startDate) return "每週";
           const day = new Date(startDate).getDay();
-          return `${weekMap[day]}`;
+          return `每週 ${weekMap[day]}`;
         }
 
         if (repeatType === "none") {
@@ -727,75 +728,75 @@
 
         container.innerHTML = sessions
           .map((session) => {
-            const dateRange =
-              session.displayTotalDays === 1
-                ? session.startDate
-                : `${session.courseStartDate} ~ ${session.courseEndDate}`;
+            // 1. 修正：智能日期範圍顯示
+            let dateRange = session.startDate;
+            if (session.endDate && session.endDate !== session.startDate) {
+              dateRange = `${session.startDate} ~ ${session.endDate}`;
+            }
 
+            // 2. 修正：課程天數標籤
+            const displayTotalDays = session.totalDays || 1;
             const badge =
-              session.displayTotalDays > 1
-                ? `<span class="course-badge">${session.displayTotalDays} 天課程</span>`
+              displayTotalDays > 1
+                ? `<span class="course-badge">${displayTotalDays} 天課程</span>`
                 : "";
 
-            console.log(
-              `課程：${session.title}，總天數：${session.displayTotalDays}`
+            // 3. 修正：課程頻率標籤
+            const label = getRepeatDayLabel(
+              session.repeatType,
+              session.repeatDays,
+              session.startDate
             );
 
-            return `
-          <div class="course-card">
-            <h3>📖 ${session.title}${badge}</h3>
-            <div class="course-info">
-            <p>📚 背誦書目：${session.bookTitle}</p>
-  <p>📅 開課日期：${session.startDate}</p>
-  <p>🕒 課程時間：${session.startTime} - ${session.endTime}</p>
-  ${
-    session.repeatType !== "none"
-      ? `<p>📆 課程頻率：${getRepeatDayLabel(
-          session.repeatType,
-          session.repeatDays
-        )}</p>`
-      : ""
-  }
-  <p>👤 主揪團長：${session.organizer}</p>
-  <p>👥 人數上限：${session.capacity} 人</p>
-            </div>
-            
-            <button id="joinBtn-${
-              session.id
-            }" class="btn" onclick="toggleJoinInfo('${session.id}')">
-              📝 課程資訊
-            </button>
-            
-            <div class="join-info hidden" id="joinInfo-${session.id}">
-              <p><strong>🎉 課程資訊</strong></p>
-              <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
-              ${
-                session.zoomPass
-                  ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
-                  : ""
-              }
-                   ${
-                     session.note
-                       ? `<p><strong>📝 備註：</strong><span>${linkifyText(
-                           session.note
-                         )}</span></p>`
-                       : ""
-                   }
+            console.log(`課程：${session.title}，總天數：${displayTotalDays}`); // 除錯用
 
-              <p style="color: #7f8c8d; font-size: 12px; margin-top: 10px;">
-                💡 這是${
-                  session.displayTotalDays > 1
-                    ? session.displayTotalDays + "天的"
-                    : ""
-                }課程，請準時參加！
-              </p>
-            </div>
-          </div>
-        `;
+            return `
+      <div class="course-card">
+        <h3>📖 ${session.title}${badge}</h3>
+        <div class="course-info">
+          <p><strong>📚 書目：</strong>${session.bookTitle}</p>
+          <p><strong>📅 時間：</strong>${dateRange}</p>
+          <p><strong>🕐 每日：</strong>${session.startTime}${
+              session.endTime ? " - " + session.endTime : ""
+            }</p>
+          ${label ? `<p><strong>📆 課程頻率：</strong>${label}</p>` : ""}
+          <p><strong>👤 主揪：</strong>${session.organizer}</p>
+          <p><strong>👥 名額：</strong>${session.capacity} 人</p>
+        </div>
+        
+        <button id="joinBtn-${
+          session.id
+        }" class="btn" onclick="toggleJoinInfo('${session.id}')">
+          📝 課程資訊
+        </button>
+        
+        <div class="join-info hidden" id="joinInfo-${session.id}">
+          <p><strong>🎉 恭喜！您已加入課程</strong></p>
+          <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
+          ${
+            session.zoomPass
+              ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
+              : ""
+          }
+          ${
+            session.note
+              ? `<p><strong>📝 備註：</strong><span>${linkifyText(
+                  session.note
+                )}</span></p>`
+              : ""
+          }
+          <p style="color: #7f8c8d; font-size: 12px; margin-top: 10px;">
+            💡 這是${
+              displayTotalDays > 1 ? displayTotalDays + "天的" : ""
+            }課程，請準時參加！
+          </p>
+        </div>
+      </div>
+    `;
           })
           .join("");
 
-        console.log(`✅ 已顯示 ${sessions.length} 個課程系列`);
+        console.log(`✅ 已顯示 ${sessions.length} 個課程`);
       }
 
       // 建立課程
@@ -804,8 +805,6 @@
           const customDays = Array.from(
             document.querySelectorAll('input[name="customDays"]:checked')
           ).map((cb) => parseInt(cb.value));
-
-          console.log("選擇的星期：", customDays); // 除錯用
 
           const sessionData = {
             title: formData.title,
@@ -821,18 +820,16 @@
             status: "open",
             repeatType: formData.repeatType,
             repeatDays:
-              formData.repeatType === "custom" ? customDays.join(",") : "", // 重要：只有 custom 才儲存
+              formData.repeatType === "custom" ? customDays.join(",") : "",
             totalDays: calculateTotalDays(
               formData.startDate,
               formData.courseEndDate,
               formData.repeatType,
               customDays
             ),
-            note: formData.note || null,
+            note: formData.note, // ← **這行很重要！確保備註寫入資料庫**
             createdAt: new Date().toISOString(),
           };
-
-          console.log("準備儲存的資料：", sessionData); // 除錯用
 
           const { data, error } = await supabase
             .from("Sessions")
