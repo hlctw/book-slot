@@ -728,26 +728,24 @@
 
         container.innerHTML = sessions
           .map((session) => {
-            // 1. 修正：智能日期範圍顯示
+            // 日期範圍顯示
             let dateRange = session.startDate;
             if (session.endDate && session.endDate !== session.startDate) {
               dateRange = `${session.startDate} ~ ${session.endDate}`;
             }
 
-            // 2. 修正：課程天數標籤
+            // 修改：只有在有結束時間時才顯示天數標籤
             let badge = "";
             if (session.endTime && session.totalDays && session.totalDays > 1) {
               badge = `<span class="course-badge">${session.totalDays} 天課程</span>`;
             }
 
-            // 3. 修正：課程頻率標籤
+            // 課程頻率標籤
             const label = getRepeatDayLabel(
               session.repeatType,
               session.repeatDays,
               session.startDate
             );
-
-            console.log(`課程：${session.title}，總天數：${displayTotalDays}`); // 除錯用
 
             return `
       <div class="course-card">
@@ -786,7 +784,9 @@
           }
           <p style="color: #7f8c8d; font-size: 12px; margin-top: 10px;">
             💡 這是${
-              displayTotalDays > 1 ? displayTotalDays + "天的" : ""
+              session.totalDays && session.totalDays > 1
+                ? session.totalDays + "天的"
+                : ""
             }課程，請準時參加！
           </p>
         </div>
