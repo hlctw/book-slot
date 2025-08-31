@@ -615,7 +615,7 @@
             // 修正：搜尋在指定日期期間內進行中的課程
             query = query
               .lte("startDate", filter.date) // 開課日 <= 搜尋日期
-              .gte("endDate", filter.date); // 結束日 >= 搜尋日期
+              .gte(`endDate.gte.${filter.date},endDate.is.null`); // 結束日 >= 搜尋日期或是null
           }
 
           if (filter.q) {
