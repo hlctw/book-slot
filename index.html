@@ -614,7 +614,9 @@
           if (filter.date) {
             query = query
               .lte("startDate", filter.date)
-              .or(`endDate.gte.${filter.date},endDate.is.null`);
+              .or(
+                `endDate.gte.${filter.date},endDate.is.null,endDate.eq.EMPTY,endDate.eq.`
+              );
           }
 
           const { data, error } = await query.order("startDate", {
