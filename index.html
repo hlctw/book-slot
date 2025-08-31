@@ -612,19 +612,9 @@
             .eq("status", "open");
 
           if (filter.date) {
-            // 修正：搜尋在指定日期期間內進行中的課程
             query = query
-              .lte("startDate", filter.date) // 開課日 <= 搜尋日期
-              .gte(`endDate.gte.${filter.date},endDate.is.null`); // 結束日 >= 搜尋日期或是null
-          }
-
-          if (filter.q) {
-            const keyword = filter.q.trim();
-            if (keyword) {
-              query = query.or(
-                `title.ilike.%${keyword}%,bookTitle.ilike.%${keyword}%,organizer.ilike.%${keyword}%`
-              );
-            }
+              .lte("startDate", filter.date)
+              .or(`endDate.gte.${filter.date},endDate.is.null`);
           }
 
           const { data, error } = await query.order("startDate", {
@@ -636,7 +626,6 @@
             return [];
           }
 
-          // 直接返回，不進行聚合（避免重複課程被合併）
           return data || [];
         } catch (err) {
           console.error("執行錯誤:", err);
