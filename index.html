@@ -197,17 +197,20 @@
       }
 
       /* 只要課程卡片class是course-card或card就有效 */
-      .course-card {
-        position: relative !important;
-        background: white !important;
+      .course-card,
+      .card {
+        background-color: white !important;
         border-radius: 16px !important;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important; /* 無漸層陰影，固定值 */
         border: 1px solid #e0e0e0 !important;
         padding: 24px 28px !important;
         margin-bottom: 32px !important;
-        width: 96% !important;
-        max-width: 720px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
         box-sizing: border-box !important;
+        transition: none !important; /* 取消過渡動畫 */
+        transform: none !important; /* 不位移 */
       }
 
       /* 卡片背景統一為白色，取消交替色 */
@@ -275,25 +278,12 @@
         border-left: 4px solid #34a853;
       }
 
-      .join-info {
-        position: absolute !important;
-        top: 100% !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-        max-width: 720px !important;
-        margin-top: 8px !important;
-        padding: 20px !important;
-        background: #f9fbfc !important;
-        border-radius: 10px !important;
-        border: 1px solid #4285f4 !important;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
-        z-index: 1000 !important;
-        box-sizing: border-box !important;
+      .join-info p {
+        margin: 8px 0;
       }
 
-      .join-info.hidden {
-        display: none !important;
+      .hidden {
+        display: none;
       }
 
       .create-form {
