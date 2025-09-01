@@ -196,21 +196,41 @@
         padding: 0 20px; /* 給容器一點邊距 */
       }
 
-      /* 只要課程卡片class是course-card或card就有效 */
+      /* =======================
+     🔧 這是唯一的卡片樣式（已合併），根治越包越窄
+     ======================= */
       .course-card,
       .card {
-        background-color: white !important;
+        background-color: #fff !important;
         border-radius: 16px !important;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important; /* 無漸層陰影，固定值 */
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
         border: 1px solid #e0e0e0 !important;
+
         padding: 24px 28px !important;
-        margin-bottom: 32px !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        width: 100% !important;
+        margin: 0 auto 36px !important;
+
+        width: 100% !important; /* 關鍵：不再用 96% */
+        max-width: 720px !important; /* 用 max-width 控寬 */
         box-sizing: border-box !important;
+
         transition: none !important; /* 取消過渡動畫 */
         transform: none !important; /* 不位移 */
+      }
+
+      /* 防止「卡片套卡片」：內層改為內容容器，不再縮窄/再套卡片視覺 */
+      .course-card .course-card,
+      .card .card,
+      .course-card .card,
+      .card .course-card {
+        width: 100% !important;
+        max-width: none !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
       }
 
       /* 卡片背景統一為白色，取消交替色 */
@@ -221,7 +241,7 @@
         background-color: white !important;
       }
 
-      /* 取消滑鼠經過的放大和陰影變化 */
+      /* 取消滑鼠經過的放大和陰影變化（維持穩定） */
       .course-card:hover,
       .card:hover {
         background-color: white !important;
@@ -274,7 +294,7 @@
         width: 100% !important;
         box-sizing: border-box !important;
 
-        /* 下面沿用你現有設定（可留可不改） */
+        /* 保留你的原始風格 */
         background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
         padding: 20px;
         border-radius: 12px;
@@ -391,6 +411,7 @@
         }
       }
 
+      /* ========= 行動端修正（移除 99vw，避免橫向捲動） ========= */
       @media (max-width: 768px) {
         .time-range-group {
           background: white;
@@ -402,13 +423,11 @@
           gap: 8px;
           width: 100%;
         }
-
         .time-range-group .time-label {
           font-size: 14px;
           color: #666;
           white-space: nowrap;
         }
-
         .time-range-group input[type="time"] {
           border: none;
           background: transparent;
@@ -417,57 +436,32 @@
           font-size: 16px;
           padding: 0;
         }
-
         .time-range-group input[type="time"]:focus {
           outline: none;
           box-shadow: none;
           transform: none;
         }
-
         .time-range-group span {
           font-size: 12px;
           color: #999;
         }
-      }
-      /* 主卡片，維持最大寬度 */
-      .course-card,
-      .card {
-        width: 96% !important;
-        max-width: 720px !important;
-        margin: 0 auto 36px auto !important;
-        box-sizing: border-box !important;
-        background: #fff !important;
-        border-radius: 16px !important;
-        padding: 24px 28px !important;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
-        border: 1px solid #e0e0e0 !important;
-      }
 
-      .course-card,
-      .card {
-        border: 1px solid #e0e0e0 !important; /* 清晰灰色框線 */
-        background-color: white !important; /* 白底框線才明顯 */
-        border-radius: 16px !important;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
-        padding: 24px 28px !important;
-        margin-bottom: 36px !important;
-        width: 96% !important;
-        max-width: 720px !important;
-        box-sizing: border-box !important;
-        transition: none !important;
-        transform: none !important;
-      }
-
-      /* 手機也保持框線 */
-      @media (max-width: 768px) {
+        /* 卡片在手機上維持滿寬且置中 */
         .course-card,
         .card {
-          width: 99vw !important;
-          max-width: 99vw !important;
-          border: 1px solid #e0e0e0 !important;
+          width: 100% !important;
+          max-width: 100% !important;
           margin-left: auto !important;
           margin-right: auto !important;
-          padding: 18px 12px !important;
+          padding: 18px 16px !important;
+          border: 1px solid #e0e0e0 !important;
+          border-radius: 12px !important;
+        }
+
+        /* 內部資訊區塊微調 */
+        .join-info {
+          margin-top: 14px !important;
+          padding: 16px 16px !important;
         }
       }
     </style>
