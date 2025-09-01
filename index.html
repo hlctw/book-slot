@@ -238,6 +238,26 @@
       }
 
       /* 防止卡片嵌套造成變窄；內層看作內容容器 */
+      .course-card,
+      .card {
+        background: #fff !important;
+        border-radius: 12px !important;
+
+        border: 1px solid #000 !important; /* ⬅️ 黑色框線 */
+        box-shadow: none !important; /* 不要陰影 */
+
+        padding: 24px 28px !important;
+        margin: 0 auto 36px !important;
+
+        width: 95% !important;
+        max-width: 720px !important;
+        box-sizing: border-box !important;
+
+        transition: none !important;
+        transform: none !important;
+      }
+
+      /* 防止卡片嵌套造成變窄；內層看作內容容器 */
       .course-card .course-card,
       .card .card,
       .course-card .card,
@@ -251,10 +271,10 @@
         padding: 0 !important;
       }
 
-      /* hover 時只加深邊框，不加陰影 */
+      /* hover 狀態：維持黑色框線，不變色 */
       .course-card:hover,
       .card:hover {
-        border-color: #999 !important;
+        border-color: #000 !important;
         background: #fff !important;
         transform: none !important;
       }
@@ -456,15 +476,16 @@
 
         /* 卡片在手機上維持滿寬且置中 */
         .course-card,
+        .course-card,
         .card {
           width: 94% !important;
           max-width: 100% !important;
           margin: 0 auto 24px auto !important;
           padding: 18px 16px !important;
 
-          border: 1px solid #c2c2c2 !important; /* 框線更明顯 */
+          border: 1px solid #000 !important; /* ⬅️ 黑色框線 */
           border-radius: 10px !important;
-          box-shadow: none !important; /* 移除陰影 */
+          box-shadow: none !important; /* 不要陰影 */
         }
 
         /* 內部資訊區塊微調 */
