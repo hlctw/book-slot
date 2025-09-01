@@ -196,27 +196,37 @@
         padding: 0 20px; /* 給容器一點邊距 */
       }
 
-      .course-card {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        border: 1px solid #ddd;
-        margin-left: 0;
-        margin-right: 0;
+      /* 只要課程卡片class是course-card或card就有效 */
+      .course-card,
+      .card {
+        background: #fff !important;
+        border-radius: 16px !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
+        border: 1px solid #e0e0e0 !important;
+        padding: 24px 28px !important;
+        margin-bottom: 32px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        transition: none !important;
+        transform: none !important;
       }
 
-      .course-card:nth-child(odd) {
-        background: white;
+      .course-card:nth-child(odd),
+      .course-card:nth-child(even),
+      .card:nth-child(odd),
+      .card:nth-child(even) {
+        background: #fff !important;
       }
 
-      .course-card:nth-child(even) {
-        background: #fff9e6;
-      }
-
-      .course-card:hover {
-        /* 什麼都不做，保持原樣 */
+      /* 乾脆取消所有hover漸層、移動效果 */
+      .course-card:hover,
+      .card:hover {
+        background: #fff !important;
+        box-shadow: 0 3px 14px rgba(0, 0, 0, 0.14) !important;
+        border-color: #bbbbbb !important;
+        transform: none !important;
       }
 
       .course-badge {
