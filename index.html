@@ -218,38 +218,46 @@
       }
 
       /* 防止「卡片套卡片」：內層改為內容容器，不再縮窄/再套卡片視覺 */
+      .course-card,
+      .card {
+        background: #fff !important;
+        border-radius: 12px !important;
+
+        border: 1px solid #c2c2c2 !important; /* 清晰灰色框線 */
+        box-shadow: none !important; /* 移除陰影 */
+
+        padding: 24px 28px !important;
+        margin: 0 auto 36px !important;
+
+        width: 95% !important;
+        max-width: 720px !important;
+        box-sizing: border-box !important;
+
+        transition: none !important;
+        transform: none !important;
+      }
+
+      /* 防止卡片嵌套造成變窄；內層看作內容容器 */
       .course-card .course-card,
       .card .card,
       .course-card .card,
       .card .course-card {
         width: 100% !important;
         max-width: none !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-
+        margin: 0 !important;
         background: transparent !important;
         border: 0 !important;
         box-shadow: none !important;
         padding: 0 !important;
       }
 
-      /* 卡片背景統一為白色，取消交替色 */
-      .course-card:nth-child(odd),
-      .course-card:nth-child(even),
-      .card:nth-child(odd),
-      .card:nth-child(even) {
-        background-color: white !important;
-      }
-
-      /* 取消滑鼠經過的放大和陰影變化（維持穩定） */
+      /* hover 時只加深邊框，不加陰影 */
       .course-card:hover,
       .card:hover {
-        background-color: white !important;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
-        border-color: #e0e0e0 !important;
+        border-color: #999 !important;
+        background: #fff !important;
         transform: none !important;
       }
-
       .course-badge {
         background: linear-gradient(135deg, #4285f4, #34a853);
         color: white;
@@ -449,13 +457,14 @@
         /* 卡片在手機上維持滿寬且置中 */
         .course-card,
         .card {
-          width: 100% !important;
+          width: 94% !important;
           max-width: 100% !important;
-          margin-left: auto !important;
-          margin-right: auto !important;
+          margin: 0 auto 24px auto !important;
           padding: 18px 16px !important;
-          border: 1px solid #e0e0e0 !important;
-          border-radius: 12px !important;
+
+          border: 1px solid #c2c2c2 !important; /* 框線更明顯 */
+          border-radius: 10px !important;
+          box-shadow: none !important; /* 移除陰影 */
         }
 
         /* 內部資訊區塊微調 */
