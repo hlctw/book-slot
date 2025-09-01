@@ -166,34 +166,7 @@
         transform: translateY(-2px);
       }
 
-      .tabs {
-        display: flex;
-        background: #f8f9fa;
-        border-radius: 12px;
-        margin-bottom: 30px;
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 4px;
-      }
-
-      .tab {
-        flex: 1;
-        padding: 15px;
-        text-align: center;
-        cursor: pointer;
-        border-radius: 8px;
-        font-weight: 500;
-        font-size: 16px;
-        transition: all 0.2s;
-      }
-
-      .tab.active {
-        background: #4285f4;
-        color: white;
-        box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
-      }
-
+      /* 移除重複的tabs，只保留一組 */
       .tab-content {
         display: none;
       }
@@ -404,6 +377,7 @@
     </style>
   </head>
   <body>
+    <!-- 修正：只保留一組主按鈕 -->
     <div class="header">
       <h1>🎓 共背團找時段</h1>
       <div class="main-buttons">
@@ -414,11 +388,6 @@
           ✨ 建立共背團
         </button>
       </div>
-    </div>
-
-    <div class="tabs">
-      <div class="tab active" onclick="showTab('search')">🔍 找時段加入</div>
-      <div class="tab" onclick="showTab('create')">➕ 建立共背團</div>
     </div>
 
     <!-- 搜尋頁面 -->
@@ -543,11 +512,20 @@
     </div>
 
     <script>
-      // Supabase 設定 - 請替換為您的實際金鑰
-      const supabase = supabase.createClient(
-        "YOUR_SUPABASE_URL",
-        "YOUR_SUPABASE_ANON_KEY"
-      );
+      // 修正：先宣告變數，再初始化 Supabase
+      let supabase;
+
+      // 頁面載入完成後初始化 Supabase
+      document.addEventListener("DOMContentLoaded", function () {
+        // 初始化 Supabase - 請替換為您的實際金鑰
+        supabase = supabase.createClient(
+          "YOUR_SUPABASE_URL",
+          "YOUR_SUPABASE_ANON_KEY"
+        );
+
+        // 載入所有課程
+        showAll();
+      });
 
       // 分頁功能
       function showTab(tabName) {
@@ -555,12 +533,7 @@
           content.classList.remove("active");
         });
 
-        document.querySelectorAll(".tab").forEach((tab) => {
-          tab.classList.remove("active");
-        });
-
         document.getElementById(tabName + "Tab").classList.add("active");
-        event.target.classList.add("active");
 
         if (tabName === "search") {
           const courseList = document.getElementById("courseList");
@@ -625,6 +598,12 @@
 
       // 顯示全部
       function showAll() {
+        // 檢查 supabase 是否已初始化
+        if (!supabase) {
+          showMessage("⏳ 系統初始化中，請稍後再試", "info");
+          return;
+        }
+
         document.getElementById("filterStartTime").value = "";
         document.getElementById("filterEndTime").value = "";
         document.getElementById("keyword").value = "";
@@ -640,6 +619,13 @@
       // 取得課程資料（修改為只支援時間搜尋）
       async function getSessions(filter = {}) {
         try {
+          // 檢查 supabase 是否已初始化
+          if (!supabase) {
+            console.error("Supabase 未初始化");
+            showMessage("❌ 系統初始化失敗", "error");
+            return [];
+          }
+
           let query = supabase
             .from("Sessions")
             .select("*")
@@ -652,7 +638,7 @@
 
           // 結束時間篩選
           if (filter.endTime) {
-            query = query.lte("startTime", filter.endTime); // 課程開始時間要在搜尋結束時間之前
+            query = query.lte("startTime", filter.endTime);
           }
 
           // 關鍵字搜尋
@@ -701,7 +687,6 @@
 
         container.innerHTML = sessions
           .map((session) => {
-            // 日期範圍顯示
             let dateRange = session.startDate;
             if (
               session.endDate &&
@@ -711,7 +696,6 @@
               dateRange = `${session.startDate} ~ ${session.endDate}`;
             }
 
-            // 天數標籤（只有在有結束時間時才顯示）
             let badge = "";
             if (session.endTime && session.totalDays && session.totalDays > 1) {
               badge = `<span class="course-badge">${session.totalDays} 天課程</span>`;
@@ -769,6 +753,11 @@
 
       // 建立課程
       async function handleCreateSession() {
+        if (!supabase) {
+          showMessage("❌ 系統未初始化，請重新載入頁面", "error");
+          return;
+        }
+
         const formData = {
           title: document.getElementById("title").value.trim(),
           bookTitle: document.getElementById("bookTitle").value.trim(),
@@ -861,11 +850,6 @@
           messageDiv.remove();
         }, 3000);
       }
-
-      // 頁面載入時初始化
-      document.addEventListener("DOMContentLoaded", function () {
-        showAll();
-      });
     </script>
   </body>
 </html>
