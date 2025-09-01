@@ -197,38 +197,26 @@
       }
 
       .course-card {
+        background: white;
         border-radius: 15px;
         padding: 25px;
         margin-bottom: 30px;
-        /* 所有卡片使用相同的陰影 */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         border: 1px solid #ddd;
-        /* 完全取消動畫 */
-        transition: none !important;
-        transform: none !important;
+        margin-left: 0;
+        margin-right: 0;
       }
 
-      /* 第1、3、5張 - 純白色 */
       .course-card:nth-child(odd) {
-        background: white !important;
+        background: white;
       }
 
-      /* 第2、4、6張 - 純淡黃色 */
       .course-card:nth-child(even) {
-        background: #fff9e6 !important;
+        background: #fff9e6;
       }
 
-      /* 取消所有hover效果 */
       .course-card:hover {
-        transform: none !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-        border-color: #ddd !important;
-      }
-
-      .course-card h3 {
-        color: #2c3e50;
-        margin-bottom: 15px;
-        font-size: 1.3em;
+        /* 什麼都不做，保持原樣 */
       }
 
       .course-badge {
@@ -463,7 +451,7 @@
         <!-- 按鈕區域 -->
         <div class="search-buttons">
           <button class="show-all-btn" onclick="handleTimeSearch()">
-            🕐 搜尋時段
+            🕐 點我搜尋
           </button>
           <button class="search-btn" onclick="showAll()">📋 顯示全部</button>
         </div>
@@ -478,7 +466,7 @@
             font-size: 25px;
           "
         >
-          請輸入「🔍 關鍵字」來搜尋課程，或點選「📋 顯示全部」載入所有課程
+          請輸入「🔍 關鍵字」搜尋課程，或點選「📋 顯示全部」載入所有課程
         </p>
       </div>
     </div>
