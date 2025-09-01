@@ -406,10 +406,10 @@
           id="keyword"
           placeholder="🔍 搜尋課程、主揪、書目關鍵字"
         />
-        <button class="search-btn" onclick="handleTimeSearch()">
+        <button class="show-all-btn" onclick="handleTimeSearch()">
           🕐 搜尋時段
         </button>
-        <button class="show-all-btn" onclick="showAll()">📋 顯示全部</button>
+        <button class="search-btn" onclick="showAll()">📋 顯示全部</button>
       </div>
 
       <div id="courseList">
@@ -632,13 +632,40 @@
       });
 
       // 分頁功能
+      // 分頁功能 - 修正版本
       function showTab(tabName) {
+        // 隱藏所有分頁內容
         document.querySelectorAll(".tab-content").forEach((content) => {
           content.classList.remove("active");
         });
 
+        // 顯示選中的分頁內容
         document.getElementById(tabName + "Tab").classList.add("active");
 
+        // 更新主按鈕狀態
+        document.querySelectorAll(".main-buttons button").forEach((btn) => {
+          btn.classList.remove("btn-primary");
+          btn.classList.add("btn-secondary");
+        });
+
+        // 設定當前按鈕為主要狀態
+        if (tabName === "search") {
+          document
+            .querySelector(".main-buttons button:first-child")
+            .classList.remove("btn-secondary");
+          document
+            .querySelector(".main-buttons button:first-child")
+            .classList.add("btn-primary");
+        } else if (tabName === "create") {
+          document
+            .querySelector(".main-buttons button:last-child")
+            .classList.remove("btn-secondary");
+          document
+            .querySelector(".main-buttons button:last-child")
+            .classList.add("btn-primary");
+        }
+
+        // 如果切換到搜尋頁面且沒有課程，載入全部課程
         if (tabName === "search") {
           const courseList = document.getElementById("courseList");
           if (courseList.children.length === 1) {
@@ -818,33 +845,59 @@
       }
 
       // 顯示全部
+      // 顯示全部 - 修正版本
       function showAll() {
+        console.log("showAll 被調用");
+
         // 檢查 supabaseClient 是否已初始化
         if (!supabaseClient) {
-          showMessage("⏳ 系統初始化中，請稍後再試", "info");
-          return;
+          console.log("supabaseClient 未初始化，嘗試重新初始化...");
+          // 嘗試重新初始化
+          try {
+            supabaseClient = window.supabase.createClient(
+              "https://zcauebtlabxyijhafexr.supabase.co",
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I"
+            );
+          } catch (e) {
+            console.error("Supabase 初始化失敗:", e);
+            showMessage("⚠️ 系統初始化失敗，請重新載入頁面", "error");
+            return;
+          }
         }
 
+        // 清空搜尋條件
         document.getElementById("filterStartTime").value = "";
         document.getElementById("filterEndTime").value = "";
         document.getElementById("keyword").value = "";
 
-        getSessions({}).then((sessions) => {
-          displaySessions(sessions);
-          if (sessions.length > 0) {
-            showMessage(`📋 載入了 ${sessions.length} 個課程`, "success");
-          }
-        });
+        console.log("開始載入所有課程...");
+
+        // 載入所有課程
+        getSessions({})
+          .then((sessions) => {
+            console.log("取得課程資料:", sessions);
+            displaySessions(sessions);
+            if (sessions && sessions.length > 0) {
+              showMessage(`📋 載入了 ${sessions.length} 個課程`, "success");
+            } else {
+              showMessage("📋 目前沒有可用的課程", "info");
+            }
+          })
+          .catch((error) => {
+            console.error("載入課程失敗:", error);
+            showMessage("❌ 載入課程失敗", "error");
+          });
       }
 
       // 取得課程資料
+      // 取得課程資料（改善錯誤處理）
       async function getSessions(filter = {}) {
         try {
+          console.log("getSessions 開始，filter:", filter);
+
           // 檢查 supabaseClient 是否已初始化
           if (!supabaseClient) {
-            console.error("Supabase 未初始化");
-            showMessage("❌ 系統初始化失敗", "error");
-            return [];
+            throw new Error("Supabase 客戶端未初始化");
           }
 
           let query = supabaseClient
@@ -854,11 +907,13 @@
 
           // 開始時間篩選
           if (filter.startTime) {
+            console.log("應用開始時間篩選:", filter.startTime);
             query = query.gte("startTime", filter.startTime);
           }
 
           // 結束時間篩選
           if (filter.endTime) {
+            console.log("應用結束時間篩選:", filter.endTime);
             query = query.lte("startTime", filter.endTime);
           }
 
@@ -866,12 +921,14 @@
           if (filter.q) {
             const keyword = filter.q.trim();
             if (keyword) {
+              console.log("應用關鍵字搜尋:", keyword);
               query = query.or(
                 `title.ilike.%${keyword}%,bookTitle.ilike.%${keyword}%,organizer.ilike.%${keyword}%`
               );
             }
           }
 
+          console.log("執行查詢...");
           const { data, error } = await query.order("startTime", {
             ascending: true,
           });
@@ -882,10 +939,10 @@
             return [];
           }
 
-          console.log("查詢結果:", data);
+          console.log("查詢成功，結果數量:", data ? data.length : 0);
           return data || [];
         } catch (err) {
-          console.error("執行錯誤:", err);
+          console.error("getSessions 執行錯誤:", err);
           showMessage("❌ 系統錯誤：" + err.message, "error");
           return [];
         }
