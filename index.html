@@ -231,6 +231,7 @@
       }
 
       .course-badge {
+        background: linear-gradient(135deg, #4285f4, #34a853);
         color: white;
         padding: 6px 15px;
         border-radius: 20px;
@@ -251,6 +252,7 @@
       }
 
       .btn {
+        background: linear-gradient(135deg, #34a853, #4caf50);
         color: white;
         padding: 12px 25px;
         border: none;
@@ -263,11 +265,13 @@
       }
 
       .btn:hover {
+        background: linear-gradient(135deg, #2d8f47, #45a049);
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(52, 168, 83, 0.3);
       }
 
       .join-info {
+        background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
         padding: 20px;
         border-radius: 12px;
         margin-top: 15px;
@@ -421,61 +425,21 @@
           color: #999;
         }
       }
-      /* 強制移除所有線性漸層背景 */
-      .course-badge,
-      .join-info,
-      .message,
-      .btn,
-      .btn-primary,
-      .btn-secondary {
-        background-image: none !important;
-        background: none !important;
-        box-shadow: none !important;
-        border-image: none !important;
-      }
-
-      /* 強制卡片背景與陰影 */
-      .course-card,
-      .card {
-        background-color: white !important;
-        border-radius: 16px !important;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
-        border: 1px solid #e0e0e0 !important;
-        padding: 24px 28px !important;
-        margin-bottom: 32px !important;
-        width: 96% !important;
-        max-width: 720px !important;
+      .join-info {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 16px 0 0 0 !important;
         box-sizing: border-box !important;
-        transition: none !important;
-        transform: none !important;
-      }
-
-      /* 取消 hover 漸層和 transform */
-      .course-card:hover,
-      .card:hover {
-        background-color: white !important;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
-        border-color: #bbbbbb !important;
-        transform: none !important;
-      }
-
-      /* 強制按鈕純色背景 */
-      .btn,
-      .btn-primary,
-      .btn-secondary {
-        background-image: none !important;
-        background-color: #4285f4 !important;
+        background: #f9fbfc !important;
+        border-radius: 10px !important;
+        border-left: 4px solid #4285f4 !important;
+        padding: 18px 20px !important;
         box-shadow: none !important;
-        border: none !important;
-        color: white !important;
+        display: block !important;
       }
-
-      .btn:hover,
-      .btn-primary:hover,
-      .btn-secondary:hover {
-        background-color: #3367d6 !important;
-        transform: none !important;
-        box-shadow: none !important;
+      .course-card .join-info {
+        width: 100% !important;
+        margin: 16px 0 0 0 !important;
       }
     </style>
   </head>
@@ -769,20 +733,6 @@
             .querySelector(".main-buttons button:last-child")
             .classList.add("btn-primary");
         }
-        document.querySelectorAll(".course-card").forEach((el) => {
-          el.style.background = "white";
-          el.style.backgroundImage = "none";
-          el.style.boxShadow = "0 3px 10px rgba(0,0,0,0.1)";
-          el.style.transform = "none";
-        });
-        document
-          .querySelectorAll(".btn, .btn-primary, .btn-secondary")
-          .forEach((el) => {
-            el.style.backgroundImage = "none";
-            el.style.backgroundColor = "#4285f4";
-            el.style.boxShadow = "none";
-            el.style.transform = "none";
-          });
       }
 
       // 處理重複類型變更
