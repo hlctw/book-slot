@@ -65,21 +65,21 @@
 
       .search-container {
         display: flex;
-        flex-wrap: wrap;
-        align-items: center;
+        flex-direction: column; /* 改為垂直排列 */
         gap: 20px;
         background: white;
         border-radius: 15px;
-        padding: 25px;
+        padding: 30px;
         margin: 20px auto;
         max-width: 900px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       }
 
+      /* 時間範圍組 - 保持橫向排列 */
       .time-range-group {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         background: #f8f9fa;
         padding: 15px;
         border-radius: 12px;
@@ -91,56 +91,71 @@
         border-color: #4285f4;
       }
 
-      .time-label {
+      .time-range-group .time-label {
         font-weight: 600;
         color: #2c3e50;
         font-size: 16px;
         white-space: nowrap;
+        min-width: 100px;
       }
 
-      .search-container input[type="time"] {
-        font-size: 18px;
-        padding: 12px 15px;
+      .time-range-group input[type="time"] {
+        font-size: 16px;
+        padding: 10px 15px;
         border: 2px solid #e1e5e9;
         border-radius: 10px;
         background: white;
-        min-width: 120px;
+        min-width: 140px;
         transition: all 0.2s;
       }
 
-      .search-container input[type="time"]:focus {
+      .time-range-group input[type="time"]:focus {
         outline: none;
         border-color: #4285f4;
         box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
         transform: scale(1.02);
       }
 
-      .search-container input[type="text"] {
+      .time-range-group span {
+        font-weight: bold;
+        color: #5f6368;
+        margin: 0 5px;
+      }
+
+      /* 關鍵字搜尋欄 */
+      #keyword {
+        width: 100%;
         font-size: 16px;
-        padding: 12px 15px;
+        padding: 15px 20px;
         border: 2px solid #e1e5e9;
-        border-radius: 10px;
+        border-radius: 12px;
         background: white;
-        min-width: 200px;
-        flex: 1;
+        box-sizing: border-box;
         transition: all 0.2s;
       }
 
-      .search-container input[type="text"]:focus {
+      #keyword:focus {
         outline: none;
         border-color: #4285f4;
         box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
       }
 
+      /* 按鈕區域 */
+      .search-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+      }
+
       .search-container button {
         font-size: 18px;
-        padding: 15px 25px;
+        padding: 15px 35px;
         border: none;
         border-radius: 12px;
         cursor: pointer;
         font-weight: 600;
         transition: all 0.3s;
-        text-transform: none;
+        min-width: 160px;
       }
 
       .search-btn {
@@ -425,19 +440,24 @@
         <div class="time-range-group">
           <span class="time-label">🕐 課程時間範圍</span>
           <input type="time" id="filterStartTime" placeholder="開始時間" />
-          <span style="font-weight: bold; color: #5f6368">至</span>
+          <span>至</span>
           <input type="time" id="filterEndTime" placeholder="結束時間" />
         </div>
 
+        <!-- 關鍵字搜尋 -->
         <input
           type="text"
           id="keyword"
           placeholder="🔍 搜尋課程、主揪、書目關鍵字"
         />
-        <button class="show-all-btn" onclick="handleTimeSearch()">
-          🔍 點我搜尋
-        </button>
-        <button class="search-btn" onclick="showAll()">📋 顯示全部</button>
+
+        <!-- 按鈕區域 -->
+        <div class="search-buttons">
+          <button class="show-all-btn" onclick="handleTimeSearch()">
+            🕐 搜尋時段
+          </button>
+          <button class="search-btn" onclick="showAll()">📋 顯示全部</button>
+        </div>
       </div>
 
       <div id="courseList">
