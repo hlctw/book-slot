@@ -241,43 +241,29 @@
       .course-card,
       .card {
         background: #fff !important;
+        border: 1px solid #ddd !important; /* 清楚的灰色框線 */
         border-radius: 12px !important;
-
-        border: 1px solid #000 !important; /* ⬅️ 黑色框線 */
-        box-shadow: none !important; /* 不要陰影 */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important; /* 柔和陰影 */
 
         padding: 24px 28px !important;
-        margin: 0 auto 36px !important;
-
+        margin: 0 auto 24px !important;
         width: 95% !important;
         max-width: 720px !important;
         box-sizing: border-box !important;
 
-        transition: none !important;
+        transition: none !important; /* 保持穩定 */
         transform: none !important;
       }
 
-      /* 防止卡片嵌套造成變窄；內層看作內容容器 */
-      .course-card .course-card,
-      .card .card,
-      .course-card .card,
-      .card .course-card {
-        width: 100% !important;
-        max-width: none !important;
-        margin: 0 !important;
-        background: transparent !important;
-        border: 0 !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-      }
-
-      /* hover 狀態：維持黑色框線，不變色 */
+      /* 保持 hover 穩定，不需要放大或改變顏色 */
       .course-card:hover,
       .card:hover {
-        border-color: #000 !important;
+        border: 1px solid #ddd !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
         background: #fff !important;
         transform: none !important;
       }
+
       .course-badge {
         background: linear-gradient(135deg, #4285f4, #34a853);
         color: white;
@@ -476,16 +462,15 @@
 
         /* 卡片在手機上維持滿寬且置中 */
         .course-card,
-        .course-card,
         .card {
           width: 94% !important;
           max-width: 100% !important;
           margin: 0 auto 24px auto !important;
           padding: 18px 16px !important;
 
-          border: 1px solid #000 !important; /* ⬅️ 黑色框線 */
+          border: 1px solid #c2c2c2 !important; /* 框線更明顯 */
           border-radius: 10px !important;
-          box-shadow: none !important; /* 不要陰影 */
+          box-shadow: none !important; /* 移除陰影 */
         }
 
         /* 內部資訊區塊微調 */
