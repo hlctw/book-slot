@@ -47,22 +47,25 @@
         background: #4285f4;
         color: white;
       }
+
       .btn-secondary {
         background: #f8f9fa;
         color: #4285f4;
         border: 2px solid #4285f4;
       }
+
       .btn-primary:hover {
         background: #3367d6;
         transform: translateY(-2px);
       }
+
       .btn-secondary:hover {
         background: #e8f0fe;
       }
 
       .search-container {
         display: flex;
-        flex-direction: column;
+        flex-direction: column; /* 改為垂直排列 */
         gap: 20px;
         background: white;
         border-radius: 15px;
@@ -72,35 +75,157 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       }
 
+      /* 時間範圍組 - 保持橫向排列 */
+      .time-range-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 12px;
+        border: 2px solid #e1e5e9;
+        transition: border-color 0.2s;
+      }
+
+      .time-range-group:hover {
+        border-color: #4285f4;
+      }
+
+      .time-range-group .time-label {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 16px;
+        white-space: nowrap;
+        min-width: 100px;
+      }
+
+      .time-range-group input[type="time"] {
+        font-size: 16px;
+        padding: 10px 15px;
+        border: 2px solid #e1e5e9;
+        border-radius: 10px;
+        background: white;
+        min-width: 140px;
+        transition: all 0.2s;
+      }
+
+      .time-range-group input[type="time"]:focus {
+        outline: none;
+        border-color: #4285f4;
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+        transform: scale(1.02);
+      }
+
+      .time-range-group span {
+        font-weight: bold;
+        color: #5f6368;
+        margin: 0 5px;
+      }
+
+      /* 關鍵字搜尋欄 */
+      #keyword {
+        width: 100%;
+        font-size: 16px;
+        padding: 15px 20px;
+        border: 2px solid #e1e5e9;
+        border-radius: 12px;
+        background: white;
+        box-sizing: border-box;
+        transition: all 0.2s;
+      }
+
+      #keyword:focus {
+        outline: none;
+        border-color: #4285f4;
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+      }
+
+      /* 按鈕區域 */
+      .search-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .search-container button {
+        font-size: 18px;
+        padding: 15px 35px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        min-width: 160px;
+      }
+
+      .search-btn {
+        background: #4285f4;
+        color: white;
+        box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+      }
+
+      .search-btn:hover {
+        background: #3367d6;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+      }
+
+      .show-all-btn {
+        background: #f1f3f4;
+        color: #5f6368;
+        border: 2px solid #dadce0;
+      }
+
+      .show-all-btn:hover {
+        background: #e8eaed;
+        transform: translateY(-2px);
+      }
+
+      /* 移除重複的tabs，只保留一組 */
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      #courseList {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px; /* 給容器一點邊距 */
+      }
+
       /* =======================
-     卡片樣式
+     🔧 這是唯一的卡片樣式（已合併），根治越包越窄
      ======================= */
       .course-card,
       .card {
         background-color: #fff !important;
         border-radius: 16px !important;
-        border: 1px solid #d0d0d0 !important; /* 更清楚的框線顏色 */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
+        border: 1px solid #e0e0e0 !important;
 
         padding: 24px 28px !important;
-        margin: 0 auto 36px auto !important;
+        margin: 0 auto 36px !important;
 
-        width: 95% !important; /* 留白，讓陰影不會貼齊容器 */
-        max-width: 720px !important;
+        width: 100% !important; /* 關鍵：不再用 96% */
+        max-width: 720px !important; /* 用 max-width 控寬 */
         box-sizing: border-box !important;
 
-        transition: none !important;
-        transform: none !important;
+        transition: none !important; /* 取消過渡動畫 */
+        transform: none !important; /* 不位移 */
       }
 
-      /* 防止「卡片套卡片」 */
+      /* 防止「卡片套卡片」：內層改為內容容器，不再縮窄/再套卡片視覺 */
       .course-card .course-card,
       .card .card,
       .course-card .card,
       .card .course-card {
         width: 100% !important;
         max-width: none !important;
-        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
 
         background: transparent !important;
         border: 0 !important;
@@ -108,19 +233,21 @@
         padding: 0 !important;
       }
 
-      /* 卡片 hover 狀態，邊框更醒目 */
-      .course-card:hover,
-      .card:hover {
-        border-color: #b5b5b5 !important;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
-      }
-
-      /* 統一背景 */
+      /* 卡片背景統一為白色，取消交替色 */
       .course-card:nth-child(odd),
       .course-card:nth-child(even),
       .card:nth-child(odd),
       .card:nth-child(even) {
         background-color: white !important;
+      }
+
+      /* 取消滑鼠經過的放大和陰影變化（維持穩定） */
+      .course-card:hover,
+      .card:hover {
+        background-color: white !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
+        border-color: #e0e0e0 !important;
+        transform: none !important;
       }
 
       .course-badge {
@@ -156,6 +283,7 @@
         transition: all 0.3s;
         font-size: 1em;
       }
+
       .btn:hover {
         background: linear-gradient(135deg, #2d8f47, #45a049);
         transform: translateY(-2px);
@@ -166,12 +294,14 @@
         width: 100% !important;
         box-sizing: border-box !important;
 
+        /* 保留你的原始風格 */
         background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
         padding: 20px;
         border-radius: 12px;
         margin-top: 15px;
         border-left: 4px solid #34a853;
       }
+
       .join-info p {
         margin: 8px 0;
       }
@@ -188,6 +318,7 @@
         max-width: 600px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       }
+
       .create-form h2 {
         color: #2c3e50;
         margin-bottom: 25px;
@@ -197,6 +328,7 @@
       .form-group {
         margin-bottom: 20px;
       }
+
       .form-group label {
         display: block;
         margin-bottom: 8px;
@@ -204,6 +336,7 @@
         color: #2c3e50;
         font-size: 16px;
       }
+
       .form-group input,
       .form-group textarea,
       .form-group select {
@@ -215,6 +348,7 @@
         box-sizing: border-box;
         transition: all 0.2s;
       }
+
       .form-group input:focus,
       .form-group textarea:focus,
       .form-group select:focus {
@@ -237,6 +371,7 @@
         text-transform: uppercase;
         letter-spacing: 1px;
       }
+
       .create-btn:hover {
         background: linear-gradient(135deg, #3367d6, #1565c0);
         transform: translateY(-2px);
@@ -254,6 +389,7 @@
         z-index: 1000;
         animation: slideIn 0.3s ease;
       }
+
       .message.success {
         background: linear-gradient(135deg, #34a853, #4caf50);
       }
@@ -275,17 +411,54 @@
         }
       }
 
-      /* ========= 行動端修正 ========= */
+      /* ========= 行動端修正（移除 99vw，避免橫向捲動） ========= */
       @media (max-width: 768px) {
+        .time-range-group {
+          background: white;
+          border: 2px solid #e1e5e9;
+          border-radius: 10px;
+          padding: 12px 15px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          width: 100%;
+        }
+        .time-range-group .time-label {
+          font-size: 14px;
+          color: #666;
+          white-space: nowrap;
+        }
+        .time-range-group input[type="time"] {
+          border: none;
+          background: transparent;
+          flex: 1;
+          min-width: 80px;
+          font-size: 16px;
+          padding: 0;
+        }
+        .time-range-group input[type="time"]:focus {
+          outline: none;
+          box-shadow: none;
+          transform: none;
+        }
+        .time-range-group span {
+          font-size: 12px;
+          color: #999;
+        }
+
+        /* 卡片在手機上維持滿寬且置中 */
         .course-card,
         .card {
-          width: 94% !important; /* 保留陰影空間 */
+          width: 100% !important;
           max-width: 100% !important;
-          margin: 0 auto 24px auto !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
           padding: 18px 16px !important;
-          border: 1px solid #d0d0d0 !important;
+          border: 1px solid #e0e0e0 !important;
           border-radius: 12px !important;
         }
+
+        /* 內部資訊區塊微調 */
         .join-info {
           margin-top: 14px !important;
           padding: 16px 16px !important;
