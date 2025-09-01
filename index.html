@@ -512,15 +512,15 @@
     </div>
 
     <script>
-      // 修正：先宣告變數，再初始化 Supabase
-      let supabase;
+      // 修正：正確的 Supabase 初始化方式
+      let supabaseClient;
 
       // 頁面載入完成後初始化 Supabase
       document.addEventListener("DOMContentLoaded", function () {
-        // 初始化 Supabase - 請替換為您的實際金鑰
-        supabase = supabase.createClient(
-          "YOUR_SUPABASE_URL",
-          "YOUR_SUPABASE_ANON_KEY"
+        // 使用 window.supabase 來初始化 - 請替換為您的實際金鑰
+        supabaseClient = window.supabase.createClient(
+          "https://zcauebtlabxyijhafexr.supabase.co",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I"
         );
 
         // 載入所有課程
@@ -598,8 +598,8 @@
 
       // 顯示全部
       function showAll() {
-        // 檢查 supabase 是否已初始化
-        if (!supabase) {
+        // 檢查 supabaseClient 是否已初始化
+        if (!supabaseClient) {
           showMessage("⏳ 系統初始化中，請稍後再試", "info");
           return;
         }
@@ -616,17 +616,17 @@
         });
       }
 
-      // 取得課程資料（修改為只支援時間搜尋）
+      // 取得課程資料
       async function getSessions(filter = {}) {
         try {
-          // 檢查 supabase 是否已初始化
-          if (!supabase) {
+          // 檢查 supabaseClient 是否已初始化
+          if (!supabaseClient) {
             console.error("Supabase 未初始化");
             showMessage("❌ 系統初始化失敗", "error");
             return [];
           }
 
-          let query = supabase
+          let query = supabaseClient
             .from("Sessions")
             .select("*")
             .eq("status", "open");
@@ -676,12 +676,12 @@
 
         if (!sessions.length) {
           container.innerHTML = `
-          <div style="text-align: center; padding: 60px 20px;">
-            <div style="font-size: 4em; margin-bottom: 20px;">🔍</div>
-            <h3 style="color: #7f8c8d; margin-bottom: 15px;">查無符合條件的課程</h3>
-            <p style="color: #95a5a6; font-size: 16px;">請嘗試調整搜尋條件或點選「顯示全部」</p>
-          </div>
-        `;
+        <div style="text-align: center; padding: 60px 20px;">
+          <div style="font-size: 4em; margin-bottom: 20px;">🔍</div>
+          <h3 style="color: #7f8c8d; margin-bottom: 15px;">查無符合條件的課程</h3>
+          <p style="color: #95a5a6; font-size: 16px;">請嘗試調整搜尋條件或點選「顯示全部」</p>
+        </div>
+      `;
           return;
         }
 
@@ -702,43 +702,43 @@
             }
 
             return `
-          <div class="course-card">
-            <h3>📖 ${session.title}${badge}</h3>
-            <div class="course-info">
-              <p><strong>📚 背誦書目：</strong>${session.bookTitle}</p>
-              <p><strong>📅 課程日期：</strong>${dateRange}</p>
-              <p><strong>🕐 上課時間：</strong>${session.startTime}${
+        <div class="course-card">
+          <h3>📖 ${session.title}${badge}</h3>
+          <div class="course-info">
+            <p><strong>📚 背誦書目：</strong>${session.bookTitle}</p>
+            <p><strong>📅 課程日期：</strong>${dateRange}</p>
+            <p><strong>🕐 上課時間：</strong>${session.startTime}${
               session.endTime ? " - " + session.endTime : ""
             }</p>
-              <p><strong>👤 主揪：</strong>${session.organizer}</p>
-              <p><strong>👥 名額：</strong>${session.capacity} 人</p>
-            </div>
-
-            <button class="btn" onclick="toggleJoinInfo('${session.id}')">
-              📝 查看課程資訊
-            </button>
-
-            <div class="join-info hidden" id="joinInfo-${session.id}">
-              <p><strong>🎉 課程資訊</strong></p>
-              <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
-              ${
-                session.zoomPass
-                  ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
-                  : ""
-              }
-              ${
-                session.note
-                  ? `<p><strong>📝 備註：</strong><span>${linkifyText(
-                      session.note
-                    )}</span></p>`
-                  : ""
-              }
-              <p style="color: #7f8c8d; font-size: 14px; margin-top: 15px;">
-                💡 請按時參加課程，共同學習進步！
-              </p>
-            </div>
+            <p><strong>👤 主揪：</strong>${session.organizer}</p>
+            <p><strong>👥 名額：</strong>${session.capacity} 人</p>
           </div>
-        `;
+
+          <button class="btn" onclick="toggleJoinInfo('${session.id}')">
+            📝 查看課程資訊
+          </button>
+
+          <div class="join-info hidden" id="joinInfo-${session.id}">
+            <p><strong>🎉 課程資訊</strong></p>
+            <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
+            ${
+              session.zoomPass
+                ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
+                : ""
+            }
+            ${
+              session.note
+                ? `<p><strong>📝 備註：</strong><span>${linkifyText(
+                    session.note
+                  )}</span></p>`
+                : ""
+            }
+            <p style="color: #7f8c8d; font-size: 14px; margin-top: 15px;">
+              💡 請按時參加課程，共同學習進步！
+            </p>
+          </div>
+        </div>
+      `;
           })
           .join("");
 
@@ -753,7 +753,7 @@
 
       // 建立課程
       async function handleCreateSession() {
-        if (!supabase) {
+        if (!supabaseClient) {
           showMessage("❌ 系統未初始化，請重新載入頁面", "error");
           return;
         }
@@ -801,7 +801,7 @@
             createdAt: new Date().toISOString(),
           };
 
-          const { data, error } = await supabase
+          const { data, error } = await supabaseClient
             .from("Sessions")
             .insert([sessionData])
             .select();
