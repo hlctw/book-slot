@@ -32,6 +32,34 @@
         font-size: 2.5em;
       }
 
+          /* 第4點：新增CSS美化 */
+    input[type="date"], input[type="time"] {
+      outline: none;
+      box-shadow: none;
+      font-size: 18px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      border: 1px solid #dee3ed;
+    }
+
+    input:focus {
+      border-color: #a5bfee;
+      background: #f0f7ff;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 9px 30px;
+      border-radius: 10px;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    button:hover {
+      box-shadow: 0 1px 8px rgba(69,141,230,0.13);
+    }
+    
       .tabs {
         display: flex;
         justify-content: center;
@@ -285,17 +313,39 @@
       </div>
 
       <!-- 搜尋頁面 -->
-      <div id="searchTab" class="tab-content">
-        <div class="search-section">
-          <input type="date" id="searchDate" placeholder="選擇日期" />
-          <input
-            type="text"
-            id="searchKeyword"
-            placeholder="課程、主揪、書目關鍵字"
-          />
-          <button onclick="searchSessions()">🔍 搜尋</button>
-          <button onclick="loadAllSessions()">📋 顯示全部</button>
-        </div>
+<div class="search-bar" style="
+  display: flex; flex-wrap: wrap; align-items: center; gap: 20px; background: #f9fafe;
+  border-radius: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 22px 30px; margin: 0 auto 32px auto;
+  max-width: 720px;">
+
+  <label for="filterDate" style="display:flex;align-items:center;font-size: 19px;">
+    <span style="font-size:22px;margin-right:6px;">📅</span>日期
+  </label>
+  <input type="date" id="filterDate" style="font-size:18px; border-radius:10px; padding:8px 12px; border:1px solid #dee3ed;">
+
+  <label for="filterStartTime" style="display:flex;align-items:center;font-size:19px;">
+    <span style="font-size:22px;margin-right:6px;">🕐</span>起始時間
+  </label>
+  <input type="time" id="filterStartTime" style="font-size:18px; border-radius:10px; padding:8px 12px; border:1px solid #dee3ed;">
+
+  <label for="filterEndTime" style="display:flex;align-items:center;font-size:19px;">
+    <span style="font-size:22px;margin-right:6px;">⏰</span>結束時間
+  </label>
+  <input type="time" id="filterEndTime" style="font-size:18px; border-radius:10px; padding:8px 12px; border:1px solid #dee3ed;">
+  
+  <button onclick="handleSearch()" style="
+    font-size:18px; padding:9px 30px; border-radius:10px; background:#458de6; color:#fff;
+    border:none; cursor:pointer; transition:.2s;">
+    🔍 搜尋
+  </button>
+
+  <button onclick="showAll()" style="
+    font-size:18px; padding:9px 30px; border-radius:10px; background:#f5faff; color:#458de6;
+    border:1px solid #bfd7f2; cursor:pointer; transition:.2s; margin-left:8px;">
+    📋 顯示全部
+  </button>
+</div>
+
 
         <div id="courseList">
           <p style="text-align: center; color: #db102e; padding: 40px">
@@ -460,7 +510,8 @@
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;");
 
-        // 檢測並轉換 http:// 或 https:// 開頭的網址
+        
+          // 檢測並轉換 http:// 或 https:// 開頭的網址
         const urlPattern = /(https?:\/\/[^\s]+)/g;
         text = text.replace(
           urlPattern,
@@ -479,7 +530,18 @@
 
         return text;
       }
+//新增或修改這個函數
+      function handleSearch() {
+    const date = document.getElementById('filterDate').value;
+    const startTime = document.getElementById('filterStartTime').value;
+    const endTime = document.getElementById('filterEndTime').value;
+    const keyword = document.getElementById('keyword') ? document.getElementById('keyword').value.trim() : '';
 
+    const filter = { date, startTime, endTime, keyword };
+    
+    getSessions(filter);
+  }
+  
       // 頁籤切換
       function showSearchTab() {
         document.getElementById("searchTab").classList.remove("hidden");
@@ -604,36 +666,42 @@
       }
 
       // 讀取課程
-      async function getSessions(filter = {}) {
-        try {
-          let query = supabase
-            .from("Sessions")
-            .select("*")
-            .eq("status", "open");
 
-          if (filter.date) {
-            query = query
-              .lte("startDate", filter.date)
-              .or(
-                `endDate.gte.${filter.date},endDate.is.null,endDate.eq.EMPTY,endDate.eq.`
-              );
-          }
+  // 第3點：修改現有的 getSessions 函數
+  async function getSessions(filter = {}) {
+    try {
+      let query = supabase.from('Sessions').select('*').eq('status', 'open');
 
-          const { data, error } = await query.order("startDate", {
-            ascending: true,
-          });
-
-          if (error) {
-            console.error("查詢錯誤:", error);
-            return [];
-          }
-
-          return data || [];
-        } catch (err) {
-          console.error("執行錯誤:", err);
-          return [];
-        }
+      if (filter.date) {
+        query = query.lte('startDate', filter.date)
+                     .or(`"endDate".gte.${filter.date},"endDate".is.null,"endDate".eq.EMPTY,"endDate".eq.`);
       }
+      if (filter.startTime) {
+        query = query.gte('startTime', filter.startTime);
+      }
+      if (filter.endTime) {
+        query = query.lte('endTime', filter.endTime);
+      }
+      if (filter.keyword) {
+        const kw = filter.keyword;
+        query = query.or(`title.ilike.%${kw}%,bookTitle.ilike.%${kw}%,organizer.ilike.%${kw}%`);
+      }
+
+      const { data, error } = await query.order('startDate', { ascending: true });
+      
+      if (error) {
+        console.error('查詢錯誤:', error);
+        return [];
+      }
+      
+      return data || [];
+      
+    } catch (err) {
+      console.error('執行錯誤:', err);
+      return [];
+    }
+  }
+
 
       // 搜尋課程
       async function searchSessions() {
