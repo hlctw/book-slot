@@ -178,21 +178,27 @@
       #courseList {
         max-width: 900px;
         margin: 0 auto;
+        padding: 0 20px; /* 給容器一點邊距 */
       }
 
       .course-card {
         background: white;
         border-radius: 12px;
-        padding: 25px;
-        margin-bottom: 20px;
-        border: 2px solid #f5f7fa;
+        padding: 30px;
+        margin-bottom: 40px; /* 增大卡片之間的間距 */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* 減少陰影強度 */
         transition: all 0.3s;
+        border: 1px solid #e8e8e8; /* 清淡邊框，增加獨立感 */
+        /* 確保卡片不會有縮排效果 */
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
       }
 
       .course-card:hover {
-        border-color: #4285f4;
-        box-shadow: 0 4px 15px rgba(66, 133, 244, 0.1);
-        transform: translateY(-2px);
+        transform: translateY(-2px); /* 減少懸浮效果 */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-color: #c0c0c0;
       }
 
       .course-card h3 {
