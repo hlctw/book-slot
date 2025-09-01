@@ -197,23 +197,30 @@
       }
 
       .course-card {
-        background: white;
-        border-radius: 12px;
-        padding: 30px;
-        margin-bottom: 40px; /* 增大卡片之間的間距 */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* 減少陰影強度 */
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         transition: all 0.3s;
-        border: 1px solid #e8e8e8; /* 清淡邊框，增加獨立感 */
-        /* 確保卡片不會有縮排效果 */
+        border: 1px solid #eee;
         margin-left: 0;
         margin-right: 0;
-        width: 100%;
+      }
+
+      /* 第1、3、5張卡片 - 白色背景 */
+      .course-card:nth-child(odd) {
+        background-color: white;
+      }
+
+      /* 第2、4、6張卡片 - 淡鵝黃色背景 */
+      .course-card:nth-child(even) {
+        background-color: #fff9e6; /* 淡鵝黃色 */
       }
 
       .course-card:hover {
-        transform: translateY(-2px); /* 減少懸浮效果 */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        border-color: #c0c0c0;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        border-color: #4285f4;
       }
 
       .course-card h3 {
