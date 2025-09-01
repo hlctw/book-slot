@@ -65,7 +65,7 @@
 
       .search-container {
         display: flex;
-        flex-direction: column; /* 改為垂直排列 */
+        flex-direction: column;
         gap: 20px;
         background: white;
         border-radius: 15px;
@@ -75,7 +75,6 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       }
 
-      /* 時間範圍組 - 保持橫向排列 */
       .time-range-group {
         display: flex;
         align-items: center;
@@ -122,7 +121,6 @@
         margin: 0 5px;
       }
 
-      /* 關鍵字搜尋欄 */
       #keyword {
         width: 100%;
         font-size: 16px;
@@ -140,7 +138,6 @@
         box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
       }
 
-      /* 按鈕區域 */
       .search-buttons {
         display: flex;
         gap: 15px;
@@ -181,7 +178,6 @@
         transform: translateY(-2px);
       }
 
-      /* 移除重複的tabs，只保留一組 */
       .tab-content {
         display: none;
       }
@@ -190,34 +186,32 @@
         display: block;
       }
 
+      /* 🔧 修正1：增加padding避免陰影被裁切 */
       #courseList {
         max-width: 900px;
         margin: 0 auto;
-        padding: 0 20px; /* 給容器一點邊距 */
+        padding: 0 30px 30px 30px; /* 增加左右和下方padding */
       }
 
-      /* =======================
-     🔧 這是唯一的卡片樣式（已合併），根治越包越窄
-     ======================= */
+      /* 🔧 修正2：加強框線顏色和陰影 */
       .course-card,
       .card {
         background-color: #fff !important;
         border-radius: 16px !important;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
-        border: 1px solid #e0e0e0 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important; /* 加強陰影 */
+        border: 2px solid #d1d5db !important; /* 加深框線顏色 */
 
         padding: 24px 28px !important;
         margin: 0 auto 36px !important;
 
-        width: 100% !important; /* 關鍵：不再用 96% */
-        max-width: 720px !important; /* 用 max-width 控寬 */
+        width: 100% !important;
+        max-width: 720px !important;
         box-sizing: border-box !important;
 
-        transition: none !important; /* 取消過渡動畫 */
-        transform: none !important; /* 不位移 */
+        transition: none !important;
+        transform: none !important;
       }
 
-      /* 防止「卡片套卡片」：內層改為內容容器，不再縮窄/再套卡片視覺 */
       .course-card .course-card,
       .card .card,
       .course-card .card,
@@ -226,14 +220,12 @@
         max-width: none !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
-
         background: transparent !important;
         border: 0 !important;
         box-shadow: none !important;
         padding: 0 !important;
       }
 
-      /* 卡片背景統一為白色，取消交替色 */
       .course-card:nth-child(odd),
       .course-card:nth-child(even),
       .card:nth-child(odd),
@@ -241,12 +233,12 @@
         background-color: white !important;
       }
 
-      /* 取消滑鼠經過的放大和陰影變化（維持穩定） */
+      /* 🔧 修正3：hover時保持框線清晰 */
       .course-card:hover,
       .card:hover {
         background-color: white !important;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
-        border-color: #e0e0e0 !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important; /* hover時加強陰影 */
+        border-color: #9ca3af !important; /* hover時框線更深 */
         transform: none !important;
       }
 
@@ -293,8 +285,6 @@
       .join-info {
         width: 100% !important;
         box-sizing: border-box !important;
-
-        /* 保留你的原始風格 */
         background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
         padding: 20px;
         border-radius: 12px;
@@ -411,7 +401,7 @@
         }
       }
 
-      /* ========= 行動端修正（移除 99vw，避免橫向捲動） ========= */
+      /* 🔧 修正4：手機版保持清晰框線 */
       @media (max-width: 768px) {
         .time-range-group {
           background: white;
@@ -446,7 +436,7 @@
           color: #999;
         }
 
-        /* 卡片在手機上維持滿寬且置中 */
+        /* 手機版卡片保持框線 */
         .course-card,
         .card {
           width: 100% !important;
@@ -454,14 +444,19 @@
           margin-left: auto !important;
           margin-right: auto !important;
           padding: 18px 16px !important;
-          border: 1px solid #e0e0e0 !important;
+          border: 2px solid #d1d5db !important; /* 手機版也用清晰框線 */
           border-radius: 12px !important;
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
         }
 
-        /* 內部資訊區塊微調 */
         .join-info {
           margin-top: 14px !important;
           padding: 16px 16px !important;
+        }
+
+        /* 🔧 修正5：手機版容器padding調整 */
+        #courseList {
+          padding: 0 15px 20px 15px; /* 手機版減少左右padding但保留下方 */
         }
       }
     </style>
