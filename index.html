@@ -19,7 +19,6 @@
         text-align: center;
         margin-bottom: 30px;
       }
-
       .header h1 {
         color: #2c3e50;
         margin-bottom: 20px;
@@ -32,7 +31,6 @@
         justify-content: center;
         margin-bottom: 40px;
       }
-
       .main-buttons button {
         padding: 15px 30px;
         font-size: 18px;
@@ -42,23 +40,19 @@
         font-weight: 600;
         transition: all 0.3s;
       }
-
       .btn-primary {
         background: #4285f4;
-        color: white;
+        color: #fff;
       }
-
       .btn-secondary {
         background: #f8f9fa;
         color: #4285f4;
         border: 2px solid #4285f4;
       }
-
       .btn-primary:hover {
         background: #3367d6;
         transform: translateY(-2px);
       }
-
       .btn-secondary:hover {
         background: #e8f0fe;
       }
@@ -67,7 +61,7 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-        background: white;
+        background: #fff;
         border-radius: 15px;
         padding: 30px;
         margin: 20px auto;
@@ -75,6 +69,7 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       }
 
+      /* 時間範圍組 */
       .time-range-group {
         display: flex;
         align-items: center;
@@ -85,11 +80,9 @@
         border: 2px solid #e1e5e9;
         transition: border-color 0.2s;
       }
-
       .time-range-group:hover {
         border-color: #4285f4;
       }
-
       .time-range-group .time-label {
         font-weight: 600;
         color: #2c3e50;
@@ -97,53 +90,50 @@
         white-space: nowrap;
         min-width: 100px;
       }
-
       .time-range-group input[type="time"] {
         font-size: 16px;
         padding: 10px 15px;
         border: 2px solid #e1e5e9;
         border-radius: 10px;
-        background: white;
+        background: #fff;
         min-width: 140px;
         transition: all 0.2s;
       }
-
       .time-range-group input[type="time"]:focus {
         outline: none;
         border-color: #4285f4;
         box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
         transform: scale(1.02);
       }
-
       .time-range-group span {
         font-weight: bold;
         color: #5f6368;
         margin: 0 5px;
       }
 
+      /* 關鍵字欄 */
       #keyword {
         width: 100%;
         font-size: 16px;
         padding: 15px 20px;
         border: 2px solid #e1e5e9;
         border-radius: 12px;
-        background: white;
+        background: #fff;
         box-sizing: border-box;
         transition: all 0.2s;
       }
-
       #keyword:focus {
         outline: none;
         border-color: #4285f4;
         box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
       }
 
+      /* 按鈕區域 */
       .search-buttons {
         display: flex;
         gap: 15px;
         justify-content: center;
       }
-
       .search-container button {
         font-size: 18px;
         padding: 15px 35px;
@@ -154,25 +144,21 @@
         transition: all 0.3s;
         min-width: 160px;
       }
-
       .search-btn {
         background: #4285f4;
-        color: white;
+        color: #fff;
         box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
       }
-
       .search-btn:hover {
         background: #3367d6;
         transform: translateY(-2px);
         box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
       }
-
       .show-all-btn {
         background: #f1f3f4;
         color: #5f6368;
         border: 2px solid #dadce0;
       }
-
       .show-all-btn:hover {
         background: #e8eaed;
         transform: translateY(-2px);
@@ -181,30 +167,33 @@
       .tab-content {
         display: none;
       }
-
       .tab-content.active {
         display: block;
       }
 
-      /* 🔧 修正1：增加padding避免陰影被裁切 */
+      /* 1) 容器留白加大，避免陰影貼齊字柱 */
       #courseList {
         max-width: 900px;
         margin: 0 auto;
-        padding: 0 30px 30px 30px; /* 增加左右和下方padding */
+        padding: 0 32px; /* ⬅️ 原本 0 20px 改為 0 32px，多留白讓陰影完整顯示 */
       }
 
-      /* 🔧 修正2：加強框線顏色和陰影 */
+      /* =======================
+     卡片（電腦版）
+     ======================= */
       .course-card,
       .card {
-        background-color: #fff !important;
+        background: #fff !important;
         border-radius: 16px !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important; /* 加強陰影 */
-        border: 2px solid #d1d5db !important; /* 加深框線顏色 */
+
+        /* 2/3) 框線加深 & 確保有框線 */
+        border: 1px solid #c7c7c7 !important; /* ⬅️ 由 #e0e0e0 改深一階提升辨識度 */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 
         padding: 24px 28px !important;
         margin: 0 auto 36px !important;
 
-        width: 100% !important;
+        width: 95% !important; /* ⬅️ 不是 100%，留出容器邊緣空隙讓陰影不貼齊 */
         max-width: 720px !important;
         box-sizing: border-box !important;
 
@@ -212,39 +201,40 @@
         transform: none !important;
       }
 
+      /* 防止卡片嵌套造成變窄；內層看作內容容器 */
       .course-card .course-card,
       .card .card,
       .course-card .card,
       .card .course-card {
         width: 100% !important;
         max-width: none !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+        margin: 0 !important;
         background: transparent !important;
         border: 0 !important;
         box-shadow: none !important;
         padding: 0 !important;
       }
 
+      /* hover 更清楚的邊框對比 */
+      .course-card:hover,
+      .card:hover {
+        border-color: #b5b5b5 !important;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+        background: #fff !important;
+        transform: none !important;
+      }
+
+      /* 統一白底 */
       .course-card:nth-child(odd),
       .course-card:nth-child(even),
       .card:nth-child(odd),
       .card:nth-child(even) {
-        background-color: white !important;
-      }
-
-      /* 🔧 修正3：hover時保持框線清晰 */
-      .course-card:hover,
-      .card:hover {
-        background-color: white !important;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important; /* hover時加強陰影 */
-        border-color: #9ca3af !important; /* hover時框線更深 */
-        transform: none !important;
+        background: #fff !important;
       }
 
       .course-badge {
         background: linear-gradient(135deg, #4285f4, #34a853);
-        color: white;
+        color: #fff;
         padding: 6px 15px;
         border-radius: 20px;
         font-size: 12px;
@@ -252,20 +242,18 @@
         margin-left: 10px;
         text-transform: uppercase;
       }
-
       .course-info p {
         margin: 10px 0;
         line-height: 1.6;
         font-size: 1.1em;
       }
-
       .course-info strong {
         color: #2c3e50;
       }
 
       .btn {
         background: linear-gradient(135deg, #34a853, #4caf50);
-        color: white;
+        color: #fff;
         padding: 12px 25px;
         border: none;
         border-radius: 10px;
@@ -275,7 +263,6 @@
         transition: all 0.3s;
         font-size: 1em;
       }
-
       .btn:hover {
         background: linear-gradient(135deg, #2d8f47, #45a049);
         transform: translateY(-2px);
@@ -291,7 +278,6 @@
         margin-top: 15px;
         border-left: 4px solid #34a853;
       }
-
       .join-info p {
         margin: 8px 0;
       }
@@ -301,14 +287,13 @@
       }
 
       .create-form {
-        background: white;
+        background: #fff;
         border-radius: 15px;
         padding: 30px;
         margin: 20px auto;
         max-width: 600px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       }
-
       .create-form h2 {
         color: #2c3e50;
         margin-bottom: 25px;
@@ -318,7 +303,6 @@
       .form-group {
         margin-bottom: 20px;
       }
-
       .form-group label {
         display: block;
         margin-bottom: 8px;
@@ -326,7 +310,6 @@
         color: #2c3e50;
         font-size: 16px;
       }
-
       .form-group input,
       .form-group textarea,
       .form-group select {
@@ -338,7 +321,6 @@
         box-sizing: border-box;
         transition: all 0.2s;
       }
-
       .form-group input:focus,
       .form-group textarea:focus,
       .form-group select:focus {
@@ -349,7 +331,7 @@
 
       .create-btn {
         background: linear-gradient(135deg, #4285f4, #1976d2);
-        color: white;
+        color: #fff;
         padding: 18px 40px;
         border: none;
         border-radius: 12px;
@@ -361,7 +343,6 @@
         text-transform: uppercase;
         letter-spacing: 1px;
       }
-
       .create-btn:hover {
         background: linear-gradient(135deg, #3367d6, #1565c0);
         transform: translateY(-2px);
@@ -374,12 +355,11 @@
         right: 20px;
         padding: 15px 25px;
         border-radius: 10px;
-        color: white;
+        color: #fff;
         font-weight: 600;
         z-index: 1000;
         animation: slideIn 0.3s ease;
       }
-
       .message.success {
         background: linear-gradient(135deg, #34a853, #4caf50);
       }
@@ -401,10 +381,10 @@
         }
       }
 
-      /* 🔧 修正4：手機版保持清晰框線 */
+      /* ========= 手機版 ========= */
       @media (max-width: 768px) {
         .time-range-group {
-          background: white;
+          background: #fff;
           border: 2px solid #e1e5e9;
           border-radius: 10px;
           padding: 12px 15px;
@@ -436,27 +416,25 @@
           color: #999;
         }
 
-        /* 手機版卡片保持框線 */
+        /* 3) 手機版也有清楚框線與留白 */
         .course-card,
         .card {
-          width: 100% !important;
+          width: 94% !important; /* 留出側邊空氣感，陰影不貼邊 */
           max-width: 100% !important;
-          margin-left: auto !important;
-          margin-right: auto !important;
+          margin: 0 auto 24px auto !important;
           padding: 18px 16px !important;
-          border: 2px solid #d1d5db !important; /* 手機版也用清晰框線 */
+          border: 1px solid #c7c7c7 !important; /* ⬅️ 手機同樣使用較深框線 */
           border-radius: 12px !important;
-          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
         }
 
         .join-info {
           margin-top: 14px !important;
           padding: 16px 16px !important;
         }
-
-        /* 🔧 修正5：手機版容器padding調整 */
+        /* 容器內距在手機維持 24px，以免過窄 */
         #courseList {
-          padding: 0 15px 20px 15px; /* 手機版減少左右padding但保留下方 */
+          padding: 0 24px;
         }
       }
     </style>
