@@ -439,27 +439,32 @@
         border: 1px solid #e0e0e0 !important;
       }
 
-      /* 禁止課程卡片嵌套（不應有 .course-card 在 .course-card 內） */
-      .course-card .course-card,
-      .card .card {
-        width: 100% !important;
-        max-width: none !important;
-        margin: 12px 0 0 0 !important;
-        box-shadow: none !important;
-        border-radius: 10px !important;
-        border: none !important;
-        background: #fcfcfc !important;
-        padding: 16px 14px !important;
+      .course-card,
+      .card {
+        border: 1px solid #e0e0e0 !important; /* 清晰灰色框線 */
+        background-color: white !important; /* 白底框線才明顯 */
+        border-radius: 16px !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
+        padding: 24px 28px !important;
+        margin-bottom: 36px !important;
+        width: 96% !important;
+        max-width: 720px !important;
+        box-sizing: border-box !important;
+        transition: none !important;
+        transform: none !important;
       }
 
-      /* 建議改：詳細資訊區塊另用 course-detail （不要用 .course-card） */
-      .course-detail {
-        background: #f9fbfc !important;
-        border-left: 4px solid #4285f4 !important;
-        border-radius: 10px !important;
-        margin: 16px 0 0 0 !important;
-        padding: 16px 14px !important;
-        box-shadow: none !important;
+      /* 手機也保持框線 */
+      @media (max-width: 768px) {
+        .course-card,
+        .card {
+          width: 99vw !important;
+          max-width: 99vw !important;
+          border: 1px solid #e0e0e0 !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+          padding: 18px 12px !important;
+        }
       }
     </style>
   </head>
