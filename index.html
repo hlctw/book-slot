@@ -467,8 +467,8 @@
         </div>
 
         <div class="form-group">
-          <label>🕐 結束時間</label>
-          <input type="time" id="endTime" placeholder="選填" />
+          <label>🕐 結束時間 *</label>
+          <input type="time" id="endTime" placeholder="11:30" required />
         </div>
 
         <div class="form-group">
@@ -764,7 +764,7 @@
           startDate: document.getElementById("startDate").value,
           courseEndDate: document.getElementById("courseEndDate").value,
           startTime: document.getElementById("startTime").value,
-          endTime: document.getElementById("endTime").value || null,
+          endTime: document.getElementById("endTime").value,
           organizer: document.getElementById("organizer").value.trim(),
           capacity: Number(document.getElementById("capacity").value) || 100,
           zoomId: document.getElementById("zoomId").value.trim(),
@@ -777,6 +777,7 @@
           !formData.bookTitle ||
           !formData.startDate ||
           !formData.startTime ||
+          !formData.endTime ||
           !formData.organizer ||
           !formData.zoomId
         ) {
