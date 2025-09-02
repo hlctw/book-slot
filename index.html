@@ -1137,7 +1137,7 @@
   <!-- 詳細資訊 -->
   <div class="join-info hidden" id="joinInfo-${session.id}">
     <p><strong>🎉 課程資訊</strong></p>
-    <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
+${session.zoomId ? `<p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>` : ""}
     ${
       session.zoomPass
         ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
