@@ -1119,14 +1119,14 @@
 
   <!-- 課程基本資訊 -->
   <div class="course-info">
-    <p><strong>📚 背誦書目：</strong>${session.bookTitle}</p>
+    <p><strong>📚 背念書目：</strong><strong>${session.bookTitle}</strong></p>
     <p><strong>📅 課程日期：</strong>${dateRange}</p>
     <p><strong>🕐 上課時間：</strong>${session.startTime}${
               session.endTime ? " - " + session.endTime : ""
             }</p>
     ${repeatFrequency}
-    <p><strong>👤 主揪：</strong>${session.organizer}</p>
-    <p><strong>👥 名額：</strong>${session.capacity} 人</p>
+    <p><strong>👤 主揪團長：</strong>${session.organizer}</p>
+    <p><strong>👥 人數上限：</strong>${session.capacity} 人</p>
   </div>
 
   <!-- 展開按鈕 -->
