@@ -903,10 +903,12 @@
       function linkifyText(text) {
         if (!text) return "";
         const urlRegex = /(https?:\/\/[^\s]+)/g;
-        return text.replace(
-          urlRegex,
-          '<a href="$1" target="_blank" style="color: #4285f4; text-decoration: none;">$1</a>'
-        );
+        return text
+          .replace(
+            urlRegex,
+            '<a href="$1" target="_blank" style="color: #4285f4; text-decoration: none;">$1</a>'
+          )
+          .replace(/\n/g, "<br>");
       }
 
       // 時間範圍搜尋功能
@@ -1101,41 +1103,41 @@
             }
 
             return `
-      <div class="course-card">
-        <h3>📖 ${session.title}${badge}</h3>
-        <div class="course-info">
-          <p><strong>📚 背誦書目：</strong>${session.bookTitle}</p>
-          <p><strong>📅 課程日期：</strong>${dateRange}</p>
-          <p><strong>🕐 上課時間：</strong>${session.startTime}${
+        <div class="course-card">
+          <h3>📖 ${session.title}${badge}</h3>
+          <div class="course-info">
+            <p><strong>📚 背誦書目：</strong>${session.bookTitle}</p>
+            <p><strong>📅 課程日期：</strong>${dateRange}</p>
+            <p><strong>🕐 上課時間：</strong>${session.startTime}${
               session.endTime ? " - " + session.endTime : ""
             }</p>
-          ${repeatFrequency}
-          <p><strong>👤 主揪：</strong>${session.organizer}</p>
-          <p><strong>👥 名額：</strong>${session.capacity} 人</p>
+            ${repeatFrequency}
+            <p><strong>👤 主揪：</strong>${session.organizer}</p>
+            <p><strong>👥 名額：</strong>${session.capacity} 人</p>
+          </div>
+          <button class="btn" onclick="toggleJoinInfo('${session.id}')">
+        📝 查看課程資訊
+      </button>
+       <div class="join-info hidden" id="joinInfo-${session.id}">
+        <p><strong>🎉 課程資訊</strong></p>
+        <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
+        ${
+          session.zoomPass
+            ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
+            : ""
+        }
+        ${
+          session.note
+            ? `<p><strong>📝 備註：</strong><span>${linkifyText(
+                session.note
+              )}</span></p>`
+            : ""
+        }
+        <p style="color: #7f8c8d; font-size: 14px; margin-top: 15px;">
+          💡 請按時參加課程，共同學習進步！
+        </p>
         </div>
-        <button class="btn" onclick="toggleJoinInfo('${session.id}')">
-      📝 查看課程資訊
-    </button>
-     <div class="join-info hidden" id="joinInfo-${session.id}">
-      <p><strong>🎉 課程資訊</strong></p>
-      <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
-      ${
-        session.zoomPass
-          ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
-          : ""
-      }
-      ${
-        session.note
-          ? `<p><strong>📝 備註：</strong><span>${linkifyText(
-              session.note
-            )}</span></p>`
-          : ""
-      }
-      <p style="color: #7f8c8d; font-size: 14px; margin-top: 15px;">
-        💡 請按時參加課程，共同學習進步！
-      </p>
-      </div>
-    `;
+      `;
           })
           .join("");
 
