@@ -593,8 +593,8 @@
         </div>
 
         <div class="form-group">
-          <label>🔗 Zoom ID *</label>
-          <input type="text" id="zoomId" placeholder="123456789" required />
+          <label>🔗 Zoom ID </label>
+          <input type="text" id="zoomId" placeholder="123456789" />
         </div>
 
         <div class="form-group">
@@ -727,554 +727,554 @@
     </div>
 
     <script>
-      // 修正：正確的 Supabase 初始化方式
-      let supabaseClient;
+            // 修正：正確的 Supabase 初始化方式
+            let supabaseClient;
 
-      // 頁面載入完成後初始化 Supabase
-      document.addEventListener("DOMContentLoaded", function () {
-        // 使用 window.supabase 來初始化 - 請替換為您的實際金鑰
-        supabaseClient = window.supabase.createClient(
-          "https://zcauebtlabxyijhafexr.supabase.co",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I"
-        );
-      });
-
-      // 分頁功能
-      // 分頁功能 - 修正版本
-      function showTab(tabName) {
-        // 隱藏所有分頁內容
-        document.querySelectorAll(".tab-content").forEach((content) => {
-          content.classList.remove("active");
-        });
-
-        // 顯示選中的分頁內容
-        document.getElementById(tabName + "Tab").classList.add("active");
-
-        // 更新主按鈕狀態
-        document.querySelectorAll(".main-buttons button").forEach((btn) => {
-          btn.classList.remove("btn-primary");
-          btn.classList.add("btn-secondary");
-        });
-
-        // 設定當前按鈕為主要狀態
-        if (tabName === "search") {
-          document
-            .querySelector(".main-buttons button:first-child")
-            .classList.remove("btn-secondary");
-          document
-            .querySelector(".main-buttons button:first-child")
-            .classList.add("btn-primary");
-        } else if (tabName === "create") {
-          document
-            .querySelector(".main-buttons button:last-child")
-            .classList.remove("btn-secondary");
-          document
-            .querySelector(".main-buttons button:last-child")
-            .classList.add("btn-primary");
-        }
-      }
-
-      // 處理重複類型變更
-      function handleRepeatTypeChange() {
-        const repeatType = document.getElementById("repeatType").value;
-        const customDaysGroup = document.getElementById("customDaysGroup");
-
-        if (repeatType === "custom") {
-          customDaysGroup.style.display = "block";
-        } else {
-          customDaysGroup.style.display = "none";
-          // 清除所有自訂日期選擇
-          document
-            .querySelectorAll('#customDaysGroup input[type="checkbox"]')
-            .forEach((cb) => {
-              cb.checked = false;
-            });
-        }
-      }
-
-      // 取得重複設定資料
-      function getRepeatSettings() {
-        const repeatType = document.getElementById("repeatType").value;
-        let repeatDays = [];
-
-        switch (repeatType) {
-          case "daily":
-            repeatDays = [0, 1, 2, 3, 4, 5, 6]; // 週日到週六
-            break;
-          case "weekdays":
-            repeatDays = [1, 2, 3, 4, 5]; // 週一到週五
-            break;
-          case "custom":
-            document
-              .querySelectorAll(
-                '#customDaysGroup input[type="checkbox"]:checked'
-              )
-              .forEach((cb) => {
-                repeatDays.push(parseInt(cb.value));
-              });
-            break;
-        }
-
-        return {
-          repeatType: repeatType,
-          repeatDays: repeatDays,
-        };
-      }
-
-      // 驗證重複設定
-      function validateRepeatSettings() {
-        const repeatType = document.getElementById("repeatType").value;
-
-        if (repeatType === "custom") {
-          const checkedDays = document.querySelectorAll(
-            '#customDaysGroup input[type="checkbox"]:checked'
-          );
-          if (checkedDays.length === 0) {
-            showMessage("❌ 自訂星期幾至少要選擇一天", "error");
-            return false;
-          }
-        }
-
-        return true;
-      }
-
-      // 清空重複設定
-      function clearRepeatSettings() {
-        document.getElementById("repeatType").value = "daily";
-        document.getElementById("customDaysGroup").style.display = "none";
-        document
-          .querySelectorAll('#customDaysGroup input[type="checkbox"]')
-          .forEach((cb) => {
-            cb.checked = false;
-          });
-      }
-
-      // 取得重複頻率標籤
-      function getRepeatDayLabel(repeatType, repeatDays, startDate) {
-        if (!repeatType || !repeatDays) return "";
-
-        const dayNames = [
-          "週日",
-          "週一",
-          "週二",
-          "週三",
-          "週四",
-          "週五",
-          "週六",
-        ];
-
-        switch (repeatType) {
-          case "daily":
-            return "每天";
-          case "weekdays":
-            return "週一至週五";
-          case "custom":
-            if (repeatDays.length === 7) {
-              return "每天";
-            } else if (
-              repeatDays.length === 5 &&
-              repeatDays.includes(1) &&
-              repeatDays.includes(2) &&
-              repeatDays.includes(3) &&
-              repeatDays.includes(4) &&
-              repeatDays.includes(5)
-            ) {
-              return "週一至週五";
-            } else {
-              const selectedDays = repeatDays
-                .map((day) => dayNames[day])
-                .join("、");
-              return selectedDays;
-            }
-          default:
-            return "";
-        }
-      }
-
-      // 備註字數計算
-      function updateNoteCounter() {
-        const noteField = document.getElementById("note");
-        const counter = document.getElementById("noteCounter");
-        const currentLength = noteField.value.length;
-
-        counter.textContent = `${currentLength}/150 字`;
-
-        if (currentLength > 130) {
-          counter.style.color = "#e74c3c";
-        } else {
-          counter.style.color = "#7f8c8d";
-        }
-      }
-
-      // 連結化文字
-      function linkifyText(text) {
-        if (!text) return "";
-        const urlRegex = /(https?:\/\/[^\s]+)/g;
-        return text
-          .replace(
-            urlRegex,
-            '<a href="$1" target="_blank" style="color: #4285f4; text-decoration: none;">$1</a>'
-          )
-          .replace(/\n/g, "<br>");
-      }
-
-      // 時間範圍搜尋功能
-      function handleTimeSearch() {
-        const startTime = document.getElementById("filterStartTime").value;
-        const endTime = document.getElementById("filterEndTime").value;
-        const keyword = document.getElementById("keyword").value.trim();
-
-        if (!startTime && !endTime && !keyword) {
-          showMessage("❗ 請至少選擇一個搜尋條件", "info");
-          return;
-        }
-
-        console.log("時間搜尋條件:", { startTime, endTime, keyword });
-
-        const filter = { startTime, endTime, q: keyword };
-
-        getSessions(filter).then((sessions) => {
-          displaySessions(sessions);
-          if (sessions.length === 0) {
-            showMessage("🔍 未找到符合條件的課程", "info");
-          } else {
-            showMessage(
-              `✅ 找到 ${sessions.length} 個符合條件的課程`,
-              "success"
-            );
-          }
-        });
-      }
-
-      // 顯示全部
-      // 顯示全部 - 修正版本
-      function showAll() {
-        console.log("showAll 被調用");
-
-        // 檢查 supabaseClient 是否已初始化
-        if (!supabaseClient) {
-          console.log("supabaseClient 未初始化，嘗試重新初始化...");
-          // 嘗試重新初始化
-          try {
-            supabaseClient = window.supabase.createClient(
-              "https://zcauebtlabxyijhafexr.supabase.co",
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I"
-            );
-          } catch (e) {
-            console.error("Supabase 初始化失敗:", e);
-            showMessage("⚠️ 系統初始化失敗，請重新載入頁面", "error");
-            return;
-          }
-        }
-
-        // 清空搜尋條件
-        document.getElementById("filterStartTime").value = "";
-        document.getElementById("filterEndTime").value = "";
-        document.getElementById("keyword").value = "";
-
-        console.log("開始載入所有課程...");
-
-        // 載入所有課程
-        getSessions({})
-          .then((sessions) => {
-            console.log("取得課程資料:", sessions);
-            displaySessions(sessions);
-            if (sessions && sessions.length > 0) {
-              showMessage(`📋 載入了 ${sessions.length} 個課程`, "success");
-            } else {
-              showMessage("📋 目前沒有可用的課程", "info");
-            }
-          })
-          .catch((error) => {
-            console.error("載入課程失敗:", error);
-            showMessage("❌ 載入課程失敗", "error");
-          });
-      }
-
-      // 取得課程資料
-      // 取得課程資料（改善錯誤處理）
-      async function getSessions(filter = {}) {
-        try {
-          console.log("getSessions 開始，filter:", filter);
-
-          // 檢查 supabaseClient 是否已初始化
-          if (!supabaseClient) {
-            throw new Error("Supabase 客戶端未初始化");
-          }
-
-          let query = supabaseClient
-            .from("Sessions")
-            .select("*")
-            .eq("status", "open");
-
-          // 開始時間篩選
-          if (filter.startTime) {
-            console.log("應用開始時間篩選:", filter.startTime);
-            query = query.gte("startTime", filter.startTime);
-          }
-
-          // 結束時間篩選
-          if (filter.endTime) {
-            console.log("應用結束時間篩選:", filter.endTime);
-            query = query.lte("startTime", filter.endTime);
-          }
-
-          // 關鍵字搜尋
-          if (filter.q) {
-            const keyword = filter.q.trim();
-            if (keyword) {
-              console.log("應用關鍵字搜尋:", keyword);
-              query = query.or(
-                `title.ilike.%${keyword}%,bookTitle.ilike.%${keyword}%,organizer.ilike.%${keyword}%`
+            // 頁面載入完成後初始化 Supabase
+            document.addEventListener("DOMContentLoaded", function () {
+              // 使用 window.supabase 來初始化 - 請替換為您的實際金鑰
+              supabaseClient = window.supabase.createClient(
+                "https://zcauebtlabxyijhafexr.supabase.co",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I"
               );
-            }
-          }
+            });
 
-          console.log("執行查詢...");
-          const { data, error } = await query.order("startTime", {
-            ascending: true,
-          });
+            // 分頁功能
+            // 分頁功能 - 修正版本
+            function showTab(tabName) {
+              // 隱藏所有分頁內容
+              document.querySelectorAll(".tab-content").forEach((content) => {
+                content.classList.remove("active");
+              });
 
-          if (error) {
-            console.error("查詢錯誤:", error);
-            showMessage("❌ 查詢失敗：" + error.message, "error");
-            return [];
-          }
+              // 顯示選中的分頁內容
+              document.getElementById(tabName + "Tab").classList.add("active");
 
-          console.log("查詢成功，結果數量:", data ? data.length : 0);
-          return data || [];
-        } catch (err) {
-          console.error("getSessions 執行錯誤:", err);
-          showMessage("❌ 系統錯誤：" + err.message, "error");
-          return [];
-        }
-      }
+              // 更新主按鈕狀態
+              document.querySelectorAll(".main-buttons button").forEach((btn) => {
+                btn.classList.remove("btn-primary");
+                btn.classList.add("btn-secondary");
+              });
 
-      // 顯示課程列表
-      function displaySessions(sessions) {
-        const container = document.getElementById("courseList");
-
-        if (!sessions.length) {
-          container.innerHTML = `...`; // 這部分不變
-          return;
-        }
-
-        container.innerHTML = sessions
-          .map((session) => {
-            let dateRange = session.startDate;
-            if (
-              session.endDate &&
-              session.endDate !== session.startDate &&
-              session.endDate !== "EMPTY"
-            ) {
-              dateRange = `${session.startDate} ~ ${session.endDate}`;
-            }
-
-            let badge = "";
-            if (session.endTime && session.totalDays && session.totalDays > 1) {
-              badge = `<span class="course-badge">${session.totalDays} 天課程</span>`;
-            }
-
-            // ✅ 新加入的代碼放在這裡
-            let repeatFrequency = "";
-            if (session.repeatType) {
-              try {
-                let repeatDays = [];
-                if (session.repeatDays && session.repeatDays !== "EMPTY") {
-                  if (typeof session.repeatDays === "string") {
-                    repeatDays = session.repeatDays
-                      .split(",")
-                      .map((day) => parseInt(day.trim()))
-                      .filter((day) => !isNaN(day));
-                  } else if (Array.isArray(session.repeatDays)) {
-                    repeatDays = session.repeatDays;
-                  }
-                }
-
-                const frequencyLabel = getRepeatDayLabel(
-                  session.repeatType,
-                  repeatDays,
-                  session.startDate
-                );
-                if (frequencyLabel) {
-                  repeatFrequency = `<p><strong>📆 課程頻率：</strong>${frequencyLabel}</p>`;
-                }
-              } catch (e) {
-                console.warn("解析課程頻率失敗:", e, "session:", session.id);
-                if (session.repeatType === "daily") {
-                  repeatFrequency = `<p><strong>📆 課程頻率：</strong>每天</p>`;
-                } else if (session.repeatType === "weekdays") {
-                  repeatFrequency = `<p><strong>📆 課程頻率：</strong>週一至週五</p>`;
-                }
+              // 設定當前按鈕為主要狀態
+              if (tabName === "search") {
+                document
+                  .querySelector(".main-buttons button:first-child")
+                  .classList.remove("btn-secondary");
+                document
+                  .querySelector(".main-buttons button:first-child")
+                  .classList.add("btn-primary");
+              } else if (tabName === "create") {
+                document
+                  .querySelector(".main-buttons button:last-child")
+                  .classList.remove("btn-secondary");
+                document
+                  .querySelector(".main-buttons button:last-child")
+                  .classList.add("btn-primary");
               }
             }
 
-            return `
-<div class="course-card">
-  <!-- 課程標題 + badge -->
-  <div class="course-header">
-    <h3 class="course-title">📖 ${session.title}</h3>
-    ${badge}
-  </div>
+            // 處理重複類型變更
+            function handleRepeatTypeChange() {
+              const repeatType = document.getElementById("repeatType").value;
+              const customDaysGroup = document.getElementById("customDaysGroup");
 
-  <!-- 課程基本資訊 -->
-  <div class="course-info">
-    <p><strong>📚 背念書目：</strong><strong>${session.bookTitle}</strong></p>
-    <p><strong>📅 課程日期：</strong>${dateRange}</p>
-    <p><strong>🕐 上課時間：</strong>${session.startTime}${
-              session.endTime ? " - " + session.endTime : ""
-            }</p>
-    ${repeatFrequency}
-    <p><strong>👤 主揪團長：</strong>${session.organizer}</p>
-    <p><strong>👥 人數上限：</strong>${session.capacity} 人</p>
-  </div>
+              if (repeatType === "custom") {
+                customDaysGroup.style.display = "block";
+              } else {
+                customDaysGroup.style.display = "none";
+                // 清除所有自訂日期選擇
+                document
+                  .querySelectorAll('#customDaysGroup input[type="checkbox"]')
+                  .forEach((cb) => {
+                    cb.checked = false;
+                  });
+              }
+            }
 
-  <!-- 展開按鈕 -->
-  <button class="btn" onclick="toggleJoinInfo('${session.id}')">
-    📝 查看課程資訊
-  </button>
+            // 取得重複設定資料
+            function getRepeatSettings() {
+              const repeatType = document.getElementById("repeatType").value;
+              let repeatDays = [];
 
-  <!-- 詳細資訊 -->
-  <div class="join-info hidden" id="joinInfo-${session.id}">
-    <p><strong>🎉 課程資訊</strong></p>
-    <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
-    ${
-      session.zoomPass
-        ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
-        : ""
-    }
-    ${
-      session.note
-        ? `<p><strong>📝 備註：</strong><span style="white-space: pre-wrap;">${linkifyText(
-            session.note
-          )}</span></p>`
-        : ""
-    }
-    <p style="color: #7f8c8d; font-size: 14px; margin-top: 15px;">
-      💡 請按時參加課程，共同學習進步！
-    </p>
-  </div>
-</div>
-      `;
-          })
-          .join("");
+              switch (repeatType) {
+                case "daily":
+                  repeatDays = [0, 1, 2, 3, 4, 5, 6]; // 週日到週六
+                  break;
+                case "weekdays":
+                  repeatDays = [1, 2, 3, 4, 5]; // 週一到週五
+                  break;
+                case "custom":
+                  document
+                    .querySelectorAll(
+                      '#customDaysGroup input[type="checkbox"]:checked'
+                    )
+                    .forEach((cb) => {
+                      repeatDays.push(parseInt(cb.value));
+                    });
+                  break;
+              }
 
-        console.log(`✅ 已顯示 ${sessions.length} 個課程`);
-      }
+              return {
+                repeatType: repeatType,
+                repeatDays: repeatDays,
+              };
+            }
 
-      // 切換課程資訊顯示
-      function toggleJoinInfo(sessionId) {
-        const joinInfo = document.getElementById(`joinInfo-${sessionId}`);
-        joinInfo.classList.toggle("hidden");
-      }
+            // 驗證重複設定
+            function validateRepeatSettings() {
+              const repeatType = document.getElementById("repeatType").value;
 
-      // 建立課程
-      // 建立課程
-      async function handleCreateSession() {
-        if (!supabaseClient) {
-          showMessage("❌ 系統未初始化，請重新載入頁面", "error");
-          return;
-        }
+              if (repeatType === "custom") {
+                const checkedDays = document.querySelectorAll(
+                  '#customDaysGroup input[type="checkbox"]:checked'
+                );
+                if (checkedDays.length === 0) {
+                  showMessage("❌ 自訂星期幾至少要選擇一天", "error");
+                  return false;
+                }
+              }
 
-        // 驗證重複設定
-        if (!validateRepeatSettings()) {
-          return;
-        }
+              return true;
+            }
 
-        const formData = {
-          title: document.getElementById("title").value.trim(),
-          bookTitle: document.getElementById("bookTitle").value.trim(),
-          startDate: document.getElementById("startDate").value,
-          courseEndDate: document.getElementById("courseEndDate").value,
-          startTime: document.getElementById("startTime").value,
-          endTime: document.getElementById("endTime").value,
-          organizer: document.getElementById("organizer").value.trim(),
-          capacity: Number(document.getElementById("capacity").value) || 100,
-          zoomId: document.getElementById("zoomId").value.trim(),
-          zoomPass: document.getElementById("zoomPass").value.trim() || "",
-          note: document.getElementById("note").value.trim() || null,
-        };
+            // 清空重複設定
+            function clearRepeatSettings() {
+              document.getElementById("repeatType").value = "daily";
+              document.getElementById("customDaysGroup").style.display = "none";
+              document
+                .querySelectorAll('#customDaysGroup input[type="checkbox"]')
+                .forEach((cb) => {
+                  cb.checked = false;
+                });
+            }
 
-        // 取得重複設定
-        const repeatSettings = getRepeatSettings();
+            // 取得重複頻率標籤
+            function getRepeatDayLabel(repeatType, repeatDays, startDate) {
+              if (!repeatType || !repeatDays) return "";
 
-        if (
-          !formData.title ||
-          !formData.bookTitle ||
-          !formData.startDate ||
-          !formData.startTime ||
-          !formData.endTime ||
-          !formData.organizer ||
-          !formData.zoomId
-        ) {
-          showMessage("❌ 請填寫所有必填欄位", "error");
-          return;
-        }
+              const dayNames = [
+                "週日",
+                "週一",
+                "週二",
+                "週三",
+                "週四",
+                "週五",
+                "週六",
+              ];
 
-        try {
-          const sessionData = {
-            title: formData.title,
-            bookTitle: formData.bookTitle,
-            startDate: formData.startDate,
-            endDate: formData.courseEndDate || null,
-            startTime: formData.startTime,
-            endTime: formData.endTime,
-            organizer: formData.organizer,
-            capacity: formData.capacity,
-            zoomId: formData.zoomId,
-            zoomPass: formData.zoomPass,
-            status: "open",
-            note: formData.note,
-            repeatType: repeatSettings.repeatType,
-            repeatDays: JSON.stringify(repeatSettings.repeatDays), // 存為JSON字串
-            createdAt: new Date().toISOString(),
-          };
+              switch (repeatType) {
+                case "daily":
+                  return "每天";
+                case "weekdays":
+                  return "週一至週五";
+                case "custom":
+                  if (repeatDays.length === 7) {
+                    return "每天";
+                  } else if (
+                    repeatDays.length === 5 &&
+                    repeatDays.includes(1) &&
+                    repeatDays.includes(2) &&
+                    repeatDays.includes(3) &&
+                    repeatDays.includes(4) &&
+                    repeatDays.includes(5)
+                  ) {
+                    return "週一至週五";
+                  } else {
+                    const selectedDays = repeatDays
+                      .map((day) => dayNames[day])
+                      .join("、");
+                    return selectedDays;
+                  }
+                default:
+                  return "";
+              }
+            }
 
-          const { data, error } = await supabaseClient
-            .from("Sessions")
-            .insert([sessionData])
-            .select();
+            // 備註字數計算
+            function updateNoteCounter() {
+              const noteField = document.getElementById("note");
+              const counter = document.getElementById("noteCounter");
+              const currentLength = noteField.value.length;
 
-          if (error) {
-            console.error("建立失敗:", error);
-            showMessage("❌ 建立失敗：" + error.message, "error");
-            return;
+              counter.textContent = `${currentLength}/150 字`;
+
+              if (currentLength > 130) {
+                counter.style.color = "#e74c3c";
+              } else {
+                counter.style.color = "#7f8c8d";
+              }
+            }
+
+            // 連結化文字
+            function linkifyText(text) {
+              if (!text) return "";
+              const urlRegex = /(https?:\/\/[^\s]+)/g;
+              return text
+                .replace(
+                  urlRegex,
+                  '<a href="$1" target="_blank" style="color: #4285f4; text-decoration: none;">$1</a>'
+                )
+                .replace(/\n/g, "<br>");
+            }
+
+            // 時間範圍搜尋功能
+            function handleTimeSearch() {
+              const startTime = document.getElementById("filterStartTime").value;
+              const endTime = document.getElementById("filterEndTime").value;
+              const keyword = document.getElementById("keyword").value.trim();
+
+              if (!startTime && !endTime && !keyword) {
+                showMessage("❗ 請至少選擇一個搜尋條件", "info");
+                return;
+              }
+
+              console.log("時間搜尋條件:", { startTime, endTime, keyword });
+
+              const filter = { startTime, endTime, q: keyword };
+
+              getSessions(filter).then((sessions) => {
+                displaySessions(sessions);
+                if (sessions.length === 0) {
+                  showMessage("🔍 未找到符合條件的課程", "info");
+                } else {
+                  showMessage(
+                    `✅ 找到 ${sessions.length} 個符合條件的課程`,
+                    "success"
+                  );
+                }
+              });
+            }
+
+            // 顯示全部
+            // 顯示全部 - 修正版本
+            function showAll() {
+              console.log("showAll 被調用");
+
+              // 檢查 supabaseClient 是否已初始化
+              if (!supabaseClient) {
+                console.log("supabaseClient 未初始化，嘗試重新初始化...");
+                // 嘗試重新初始化
+                try {
+                  supabaseClient = window.supabase.createClient(
+                    "https://zcauebtlabxyijhafexr.supabase.co",
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYXVlYnRsYWJ4eWlqaGFmZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxODcwNDQsImV4cCI6MjA3MTc2MzA0NH0.F8auMujCIxl3umWj7O5jp9N8QfbPrFJ06McYiz3y49I"
+                  );
+                } catch (e) {
+                  console.error("Supabase 初始化失敗:", e);
+                  showMessage("⚠️ 系統初始化失敗，請重新載入頁面", "error");
+                  return;
+                }
+              }
+
+              // 清空搜尋條件
+              document.getElementById("filterStartTime").value = "";
+              document.getElementById("filterEndTime").value = "";
+              document.getElementById("keyword").value = "";
+
+              console.log("開始載入所有課程...");
+
+              // 載入所有課程
+              getSessions({})
+                .then((sessions) => {
+                  console.log("取得課程資料:", sessions);
+                  displaySessions(sessions);
+                  if (sessions && sessions.length > 0) {
+                    showMessage(`📋 載入了 ${sessions.length} 個課程`, "success");
+                  } else {
+                    showMessage("📋 目前沒有可用的課程", "info");
+                  }
+                })
+                .catch((error) => {
+                  console.error("載入課程失敗:", error);
+                  showMessage("❌ 載入課程失敗", "error");
+                });
+            }
+
+            // 取得課程資料
+            // 取得課程資料（改善錯誤處理）
+            async function getSessions(filter = {}) {
+              try {
+                console.log("getSessions 開始，filter:", filter);
+
+                // 檢查 supabaseClient 是否已初始化
+                if (!supabaseClient) {
+                  throw new Error("Supabase 客戶端未初始化");
+                }
+
+                let query = supabaseClient
+                  .from("Sessions")
+                  .select("*")
+                  .eq("status", "open");
+
+                // 開始時間篩選
+                if (filter.startTime) {
+                  console.log("應用開始時間篩選:", filter.startTime);
+                  query = query.gte("startTime", filter.startTime);
+                }
+
+                // 結束時間篩選
+                if (filter.endTime) {
+                  console.log("應用結束時間篩選:", filter.endTime);
+                  query = query.lte("startTime", filter.endTime);
+                }
+
+                // 關鍵字搜尋
+                if (filter.q) {
+                  const keyword = filter.q.trim();
+                  if (keyword) {
+                    console.log("應用關鍵字搜尋:", keyword);
+                    query = query.or(
+                      `title.ilike.%${keyword}%,bookTitle.ilike.%${keyword}%,organizer.ilike.%${keyword}%`
+                    );
+                  }
+                }
+
+                console.log("執行查詢...");
+                const { data, error } = await query.order("startTime", {
+                  ascending: true,
+                });
+
+                if (error) {
+                  console.error("查詢錯誤:", error);
+                  showMessage("❌ 查詢失敗：" + error.message, "error");
+                  return [];
+                }
+
+                console.log("查詢成功，結果數量:", data ? data.length : 0);
+                return data || [];
+              } catch (err) {
+                console.error("getSessions 執行錯誤:", err);
+                showMessage("❌ 系統錯誤：" + err.message, "error");
+                return [];
+              }
+            }
+
+            // 顯示課程列表
+            function displaySessions(sessions) {
+              const container = document.getElementById("courseList");
+
+              if (!sessions.length) {
+                container.innerHTML = `...`; // 這部分不變
+                return;
+              }
+
+              container.innerHTML = sessions
+                .map((session) => {
+                  let dateRange = session.startDate;
+                  if (
+                    session.endDate &&
+                    session.endDate !== session.startDate &&
+                    session.endDate !== "EMPTY"
+                  ) {
+                    dateRange = `${session.startDate} ~ ${session.endDate}`;
+                  }
+
+                  let badge = "";
+                  if (session.endTime && session.totalDays && session.totalDays > 1) {
+                    badge = `<span class="course-badge">${session.totalDays} 天課程</span>`;
+                  }
+
+                  // ✅ 新加入的代碼放在這裡
+                  let repeatFrequency = "";
+                  if (session.repeatType) {
+                    try {
+                      let repeatDays = [];
+                      if (session.repeatDays && session.repeatDays !== "EMPTY") {
+                        if (typeof session.repeatDays === "string") {
+                          repeatDays = session.repeatDays
+                            .split(",")
+                            .map((day) => parseInt(day.trim()))
+                            .filter((day) => !isNaN(day));
+                        } else if (Array.isArray(session.repeatDays)) {
+                          repeatDays = session.repeatDays;
+                        }
+                      }
+
+                      const frequencyLabel = getRepeatDayLabel(
+                        session.repeatType,
+                        repeatDays,
+                        session.startDate
+                      );
+                      if (frequencyLabel) {
+                        repeatFrequency = `<p><strong>📆 課程頻率：</strong>${frequencyLabel}</p>`;
+                      }
+                    } catch (e) {
+                      console.warn("解析課程頻率失敗:", e, "session:", session.id);
+                      if (session.repeatType === "daily") {
+                        repeatFrequency = `<p><strong>📆 課程頻率：</strong>每天</p>`;
+                      } else if (session.repeatType === "weekdays") {
+                        repeatFrequency = `<p><strong>📆 課程頻率：</strong>週一至週五</p>`;
+                      }
+                    }
+                  }
+
+                  return `
+      <div class="course-card">
+        <!-- 課程標題 + badge -->
+        <div class="course-header">
+          <h3 class="course-title">📖 ${session.title}</h3>
+          ${badge}
+        </div>
+
+        <!-- 課程基本資訊 -->
+        <div class="course-info">
+          <p><strong>📚 背念書目：</strong><strong>${session.bookTitle}</strong></p>
+          <p><strong>📅 課程日期：</strong>${dateRange}</p>
+          <p><strong>🕐 上課時間：</strong>${session.startTime}${
+                    session.endTime ? " - " + session.endTime : ""
+                  }</p>
+          ${repeatFrequency}
+          <p><strong>👤 主揪團長：</strong>${session.organizer}</p>
+          <p><strong>👥 人數上限：</strong>${session.capacity} 人</p>
+        </div>
+
+        <!-- 展開按鈕 -->
+        <button class="btn" onclick="toggleJoinInfo('${session.id}')">
+          📝 查看課程資訊
+        </button>
+
+        <!-- 詳細資訊 -->
+        <div class="join-info hidden" id="joinInfo-${session.id}">
+          <p><strong>🎉 課程資訊</strong></p>
+          <p><strong>🔗 Zoom ID：</strong>${session.zoomId}</p>
+          ${
+            session.zoomPass
+              ? `<p><strong>🔐 Zoom 密碼：</strong>${session.zoomPass}</p>`
+              : ""
           }
+          ${
+            session.note
+              ? `<p><strong>📝 備註：</strong><span style="white-space: pre-wrap;">${linkifyText(
+                  session.note
+                )}</span></p>`
+              : ""
+          }
+          <p style="color: #7f8c8d; font-size: 14px; margin-top: 15px;">
+            💡 請按時參加課程，共同學習進步！
+          </p>
+        </div>
+      </div>
+            `;
+                })
+                .join("");
 
-          showMessage("🎉 共背團建立成功！", "success");
+              console.log(`✅ 已顯示 ${sessions.length} 個課程`);
+            }
 
-          // 清空表單
-          document.getElementById("title").value = "";
-          document.getElementById("bookTitle").value = "";
-          document.getElementById("startDate").value = "";
-          document.getElementById("courseEndDate").value = "";
-          document.getElementById("startTime").value = "11:00";
-          document.getElementById("endTime").value = "";
-          document.getElementById("organizer").value = "";
-          document.getElementById("capacity").value = "100";
-          document.getElementById("zoomId").value = "";
-          document.getElementById("zoomPass").value = "";
-          document.getElementById("note").value = "";
-          clearRepeatSettings(); // 清空重複設定
-          updateNoteCounter();
-        } catch (err) {
-          console.error("建立過程錯誤:", err);
-          showMessage("❌ 系統錯誤：" + err.message, "error");
-        }
-      }
+            // 切換課程資訊顯示
+            function toggleJoinInfo(sessionId) {
+              const joinInfo = document.getElementById(`joinInfo-${sessionId}`);
+              joinInfo.classList.toggle("hidden");
+            }
 
-      // 顯示訊息
-      function showMessage(message, type = "info") {
-        const messageDiv = document.createElement("div");
-        messageDiv.className = `message ${type}`;
-        messageDiv.textContent = message;
+            // 建立課程
+            // 建立課程
+            async function handleCreateSession() {
+              if (!supabaseClient) {
+                showMessage("❌ 系統未初始化，請重新載入頁面", "error");
+                return;
+              }
 
-        document.body.appendChild(messageDiv);
+              // 驗證重複設定
+              if (!validateRepeatSettings()) {
+                return;
+              }
 
-        setTimeout(() => {
-          messageDiv.remove();
-        }, 3000);
-      }
+              const formData = {
+                title: document.getElementById("title").value.trim(),
+                bookTitle: document.getElementById("bookTitle").value.trim(),
+                startDate: document.getElementById("startDate").value,
+                courseEndDate: document.getElementById("courseEndDate").value,
+                startTime: document.getElementById("startTime").value,
+                endTime: document.getElementById("endTime").value,
+                organizer: document.getElementById("organizer").value.trim(),
+                capacity: Number(document.getElementById("capacity").value) || 100,
+                zoomId: document.getElementById("zoomId").value.trim() || "",
+                zoomPass: document.getElementById("zoomPass").value.trim() || "",
+                note: document.getElementById("note").value.trim() || null,
+              };
+
+              // 取得重複設定
+              const repeatSettings = getRepeatSettings();
+
+              if (
+                !formData.title ||
+                !formData.bookTitle ||
+                !formData.startDate ||
+                !formData.startTime ||
+                !formData.endTime ||
+                !formData.organizer ||
+
+              ) {
+                showMessage("❌ 請填寫所有必填欄位", "error");
+                return;
+              }
+
+              try {
+                const sessionData = {
+                  title: formData.title,
+                  bookTitle: formData.bookTitle,
+                  startDate: formData.startDate,
+                  endDate: formData.courseEndDate || null,
+                  startTime: formData.startTime,
+                  endTime: formData.endTime,
+                  organizer: formData.organizer,
+                  capacity: formData.capacity,
+                  zoomId: formData.zoomId,
+                  zoomPass: formData.zoomPass,
+                  status: "open",
+                  note: formData.note,
+                  repeatType: repeatSettings.repeatType,
+                  repeatDays: JSON.stringify(repeatSettings.repeatDays), // 存為JSON字串
+                  createdAt: new Date().toISOString(),
+                };
+
+                const { data, error } = await supabaseClient
+                  .from("Sessions")
+                  .insert([sessionData])
+                  .select();
+
+                if (error) {
+                  console.error("建立失敗:", error);
+                  showMessage("❌ 建立失敗：" + error.message, "error");
+                  return;
+                }
+
+                showMessage("🎉 共背團建立成功！", "success");
+
+                // 清空表單
+                document.getElementById("title").value = "";
+                document.getElementById("bookTitle").value = "";
+                document.getElementById("startDate").value = "";
+                document.getElementById("courseEndDate").value = "";
+                document.getElementById("startTime").value = "11:00";
+                document.getElementById("endTime").value = "";
+                document.getElementById("organizer").value = "";
+                document.getElementById("capacity").value = "100";
+                document.getElementById("zoomId").value = "";
+                document.getElementById("zoomPass").value = "";
+                document.getElementById("note").value = "";
+                clearRepeatSettings(); // 清空重複設定
+                updateNoteCounter();
+              } catch (err) {
+                console.error("建立過程錯誤:", err);
+                showMessage("❌ 系統錯誤：" + err.message, "error");
+              }
+            }
+
+            // 顯示訊息
+            function showMessage(message, type = "info") {
+              const messageDiv = document.createElement("div");
+              messageDiv.className = `message ${type}`;
+              messageDiv.textContent = message;
+
+              document.body.appendChild(messageDiv);
+
+              setTimeout(() => {
+                messageDiv.remove();
+              }, 3000);
+            }
     </script>
   </body>
 </html>
