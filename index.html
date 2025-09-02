@@ -217,27 +217,31 @@
         transform: none !important; /* 不位移 */
       }
 
-      /* 防止「卡片套卡片」：內層改為內容容器，不再縮窄/再套卡片視覺 */
       .course-card,
       .card {
         background: #fff !important;
-        border-radius: 12px !important;
-
-        border: 1px solid #c2c2c2 !important; /* 清晰灰色框線 */
-        box-shadow: none !important; /* 移除陰影 */
-
+        border: 1px solid #e0e0e0 !important; /* 淺灰邊框 */
+        border-radius: 16px !important; /* 圓角 */
+        box-shadow: none !important; /* 不要陰影 */
         padding: 24px 28px !important;
         margin: 0 auto 36px !important;
-
-        width: 95% !important;
+        width: 100% !important;
         max-width: 720px !important;
         box-sizing: border-box !important;
-
         transition: none !important;
         transform: none !important;
       }
 
-      /* 防止卡片嵌套造成變窄；內層看作內容容器 */
+      /* hover：只稍微加深邊框色，不加陰影/位移 */
+      .course-card:hover,
+      .card:hover {
+        border-color: #c2c2c2 !important;
+        background: #fff !important;
+        transform: none !important;
+        box-shadow: none !important;
+      }
+
+      /* 避免「卡片套卡片」時內層再套框線與縮窄 */
       .course-card .course-card,
       .card .card,
       .course-card .card,
@@ -251,34 +255,36 @@
         padding: 0 !important;
       }
 
-      /* hover 時只加深邊框，不加陰影 */
-      .course-card:hover,
-      .card:hover {
-        border-color: #999 !important;
-        background: #fff !important;
-        transform: none !important;
+      /* 內容排版（標題＋徽章、資訊行距等） */
+      .course-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
       }
+
+      .course-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0;
+      }
+
       .course-badge {
         background: linear-gradient(135deg, #4285f4, #34a853);
-        color: white;
-        padding: 6px 15px;
+        color: #fff;
+        padding: 6px 12px;
         border-radius: 20px;
         font-size: 12px;
-        font-weight: 600;
-        margin-left: 10px;
-        text-transform: uppercase;
+        font-weight: 700;
       }
 
       .course-info p {
         margin: 10px 0;
         line-height: 1.6;
-        font-size: 1.1em;
-      }
-
-      .course-info strong {
+        font-size: 1.05em;
         color: #2c3e50;
       }
-
       .btn {
         background: linear-gradient(135deg, #34a853, #4caf50);
         color: white;
@@ -455,16 +461,17 @@
         }
 
         /* 卡片在手機上維持滿寬且置中 */
-        .course-card,
-        .card {
-          width: 94% !important;
-          max-width: 100% !important;
-          margin: 0 auto 24px auto !important;
-          padding: 18px 16px !important;
-
-          border: 1px solid #c2c2c2 !important; /* 框線更明顯 */
-          border-radius: 10px !important;
-          box-shadow: none !important; /* 移除陰影 */
+        @media (max-width: 768px) {
+          .course-card,
+          .card {
+            width: 94% !important;
+            max-width: 100% !important;
+            margin: 0 auto 24px !important;
+            padding: 18px 16px !important;
+            border: 1px solid #e0e0e0 !important; /* 保持淺灰 */
+            border-radius: 12px !important;
+            box-shadow: none !important;
+          }
         }
 
         /* 內部資訊區塊微調 */
