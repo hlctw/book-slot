@@ -459,55 +459,7 @@
           font-size: 12px;
           color: #999;
         }
-        /* 容器：桌機 4 欄、可自動換行 */
-        .weekday-group {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 12px 10px;
-          width: 100%;
-          box-sizing: border-box;
-        }
 
-        /* 每一個「星期」方塊：大觸控區，邊框清楚 */
-        .weekday-item {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 10px 12px;
-          border: 2px solid #c2c2c2;
-          border-radius: 12px;
-          background: #fff;
-          cursor: pointer;
-          user-select: none;
-          white-space: nowrap; /* 避免「週一」被切行 */
-        }
-
-        /* 原生 checkbox 保留可見，但緊貼文字好點擊 */
-        .weekday-item input[type="checkbox"] {
-          width: 18px;
-          height: 18px;
-          margin: 0;
-          flex: 0 0 auto;
-        }
-
-        /* 文字大小 >=16px，避免 iOS 自動放大 */
-        .weekday-text {
-          font-size: 16px;
-          color: #2c3e50;
-        }
-
-        /* 勾選狀態：強調邊框和文字 */
-        .weekday-item input[type="checkbox"]:checked + .weekday-text,
-        .weekday-item input[type="checkbox"]:checked ~ .weekday-text {
-          color: #1b5e20;
-          font-weight: 700;
-        }
-        .weekday-item input[type="checkbox"]:checked {
-          accent-color: #4285f4; /* 支援的瀏覽器會套藍色勾選 */
-        }
-        .weekday-item:has(input[type="checkbox"]:checked) {
-          border-color: #8fb3ff; /* 兼容性：新瀏覽器有加成，舊的忽略也沒關係 */
-        }
         /* 卡片在手機上維持滿寬且置中 */
         @media (max-width: 768px) {
           .course-card,
@@ -521,19 +473,7 @@
             box-shadow: none !important;
           }
         }
-        @media (max-width: 768px) {
-          .weekday-group {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 10px 8px;
-          }
-          .weekday-item {
-            padding: 10px;
-            border-radius: 10px;
-          }
-          .weekday-text {
-            font-size: 16px; /* 保持 16px */
-          }
-        }
+
         /* 內部資訊區塊微調 */
         .join-info {
           margin-top: 14px !important;
@@ -684,43 +624,84 @@
             <label style="font-weight: normal; margin-bottom: 10px">
               <strong>自訂星期 (多選)</strong>
             </label>
-            <div id="customDaysGroup" style="display: none">
-              <label style="font-weight: normal; margin-bottom: 10px">
-                <strong>自訂星期 (多選)</strong>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px">
+              <label
+                style="font-weight: normal; display: flex; align-items: center"
+              >
+                <input
+                  type="checkbox"
+                  id="day1"
+                  value="1"
+                  style="margin-right: 5px"
+                />
+                週一
               </label>
-
-              <!-- 這一行開始是新的 -->
-              <div class="weekday-group">
-                <label class="weekday-item">
-                  <input type="checkbox" id="day1" value="1" />
-                  <span class="weekday-text">週一</span>
-                </label>
-                <label class="weekday-item">
-                  <input type="checkbox" id="day2" value="2" />
-                  <span class="weekday-text">週二</span>
-                </label>
-                <label class="weekday-item">
-                  <input type="checkbox" id="day3" value="3" />
-                  <span class="weekday-text">週三</span>
-                </label>
-                <label class="weekday-item">
-                  <input type="checkbox" id="day4" value="4" />
-                  <span class="weekday-text">週四</span>
-                </label>
-                <label class="weekday-item">
-                  <input type="checkbox" id="day5" value="5" />
-                  <span class="weekday-text">週五</span>
-                </label>
-                <label class="weekday-item">
-                  <input type="checkbox" id="day6" value="6" />
-                  <span class="weekday-text">週六</span>
-                </label>
-                <label class="weekday-item">
-                  <input type="checkbox" id="day0" value="0" />
-                  <span class="weekday-text">週日</span>
-                </label>
-              </div>
-              <!-- 新的到這裡結束 -->
+              <label
+                style="font-weight: normal; display: flex; align-items: center"
+              >
+                <input
+                  type="checkbox"
+                  id="day2"
+                  value="2"
+                  style="margin-right: 5px"
+                />
+                週二
+              </label>
+              <label
+                style="font-weight: normal; display: flex; align-items: center"
+              >
+                <input
+                  type="checkbox"
+                  id="day3"
+                  value="3"
+                  style="margin-right: 5px"
+                />
+                週三
+              </label>
+              <label
+                style="font-weight: normal; display: flex; align-items: center"
+              >
+                <input
+                  type="checkbox"
+                  id="day4"
+                  value="4"
+                  style="margin-right: 5px"
+                />
+                週四
+              </label>
+              <label
+                style="font-weight: normal; display: flex; align-items: center"
+              >
+                <input
+                  type="checkbox"
+                  id="day5"
+                  value="5"
+                  style="margin-right: 5px"
+                />
+                週五
+              </label>
+              <label
+                style="font-weight: normal; display: flex; align-items: center"
+              >
+                <input
+                  type="checkbox"
+                  id="day6"
+                  value="6"
+                  style="margin-right: 5px"
+                />
+                週六
+              </label>
+              <label
+                style="font-weight: normal; display: flex; align-items: center"
+              >
+                <input
+                  type="checkbox"
+                  id="day0"
+                  value="0"
+                  style="margin-right: 5px"
+                />
+                週日
+              </label>
             </div>
           </div>
         </div>
