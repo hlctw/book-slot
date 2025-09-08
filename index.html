@@ -351,7 +351,7 @@
         font-size: 16px;
       }
 
-      .form-group input,
+      .form-group input:not([type="checkbox"]),
       .form-group textarea,
       .form-group select {
         width: 100%;
@@ -361,6 +361,16 @@
         font-size: 16px;
         box-sizing: border-box;
         transition: all 0.2s;
+      }
+
+      /* 給 checkbox 單獨樣式 */
+      .form-group input[type="checkbox"] {
+        width: auto;
+        height: auto;
+        margin-right: 5px;
+        padding: 0;
+        border: none;
+        appearance: auto;
       }
 
       .form-group input:focus,
