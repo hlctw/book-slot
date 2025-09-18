@@ -903,8 +903,7 @@
           case "weekdays":
             return "週一至週五";
           case "custom":
-            // 確保 repeatDays 是數字陣列
-            repeatDays = repeatDays.map((d) => Number(d));
+            repeatDays = repeatDays.map((d) => Number(d)); // 確保是數字
 
             if (repeatDays.length === 7) {
               return "每天";
@@ -1118,13 +1117,22 @@
               try {
                 let repeatDays = [];
                 if (session.repeatDays && session.repeatDays !== "EMPTY") {
-                  if (typeof session.repeatDays === "string") {
-                    repeatDays = session.repeatDays
-                      .split(",")
-                      .map((day) => parseInt(day.trim()))
-                      .filter((day) => !isNaN(day));
-                  } else if (Array.isArray(session.repeatDays)) {
-                    repeatDays = session.repeatDays;
+                  if (Array.isArray(session.repeatDays)) {
+                    repeatDays = session.repeatDays.map((d) => Number(d));
+                  } else {
+                    try {
+                      // 嘗試解析 JSON
+                      repeatDays = JSON.parse(session.repeatDays);
+                      if (!Array.isArray(repeatDays)) {
+                        repeatDays = [Number(repeatDays)];
+                      }
+                    } catch {
+                      // 後備方案：用逗號分隔
+                      repeatDays = String(session.repeatDays)
+                        .split(",")
+                        .map((d) => Number(d.trim()))
+                        .filter((d) => !isNaN(d));
+                    }
                   }
                 }
 
