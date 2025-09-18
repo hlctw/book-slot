@@ -902,6 +902,9 @@
           case "weekdays":
             return "週一至週五";
           case "custom":
+            // 確保 repeatDays 是數字陣列
+            repeatDays = repeatDays.map((d) => Number(d));
+
             if (repeatDays.length === 7) {
               return "每天";
             } else if (
@@ -913,11 +916,11 @@
               repeatDays.includes(5)
             ) {
               return "週一至週五";
+            } else if (repeatDays.length === 1) {
+              // ✅ 單一天的情況
+              return dayNames[repeatDays[0]];
             } else {
-              const selectedDays = repeatDays
-                .map((day) => dayNames[day])
-                .join("、");
-              return selectedDays;
+              return repeatDays.map((day) => dayNames[day]).join("、");
             }
           default:
             return "";
